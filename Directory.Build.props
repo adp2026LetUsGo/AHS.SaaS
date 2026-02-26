@@ -1,2 +1,12 @@
 <Project>
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <Authors>Ancon Hill Services</Authors>
+    <Company>Ancon Hill Services</Company>
+    <Product>AHS.SaaS Ecosystem</Product>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
 </Project>

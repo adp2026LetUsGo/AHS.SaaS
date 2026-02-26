@@ -1,0 +1,32 @@
+name: CI Main
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+          include-prerelease: true
+
+      - name: Restore dependencies
+        run: dotnet restore AHS.SaaS.slnx
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Test
+        run: dotnet test --no-build -c Release --verbosity normal
+
+      - name: Native AOT Publish Check (Gateway API)
+        run: dotnet publish src/Presentation/AHS.Gateway.API/AHS.Gateway.API.csproj -c Release -r linux-x64 --no-restore

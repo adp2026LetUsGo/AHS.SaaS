@@ -10,7 +10,7 @@ public class PredictExcursionRiskHandler : IRequestHandler<PredictExcursionRiskC
 {
     private readonly TemperaturePredictionEngine _engine = new();
 
-    public Task<Result<PredictionResponseDTO>> Handle(PredictExcursionRiskCommand request)
+    public async Task<Result<PredictionResponseDTO>> Handle(PredictExcursionRiskCommand request)
     {
         var input = new PredictionInput(
             request.RouteId,
@@ -26,9 +26,13 @@ public class PredictExcursionRiskHandler : IRequestHandler<PredictExcursionRiskC
         var result = Result.Success(new PredictionResponseDTO(score, isHighRisk));
 
         // GxP Compliance: Hash the prediction result for audit trail
-        var hash = ComplianceService.HashSha256($"Score={score}|HighRisk={isHighRisk}");
-        Console.WriteLine($"[AUDIT] Hash: {hash} | Score: {score} | HighRisk: {isHighRisk}");
+        var data = $"Score={score}|HighRisk={isHighRisk}";
+        var hash = ComplianceService.HashSha256(data);
+        
+        await AuditTrailService.LogAsync("PredictExcursionRisk", data, hash);
+        
+        Console.WriteLine($"[AUDIT-JSON] Hash: {hash} | Data: {data}");
 
-        return Task.FromResult(result);
+        return result;
     }
 }
