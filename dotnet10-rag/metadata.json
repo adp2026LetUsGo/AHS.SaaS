@@ -1,0 +1,31 @@
+﻿{
+  "dataset": "dotnet10-rag",
+  "version": "1.0",
+  "language": "en",
+  "excluded_sections": [
+    "Visual Basic",
+    "F#",
+    "Windows Forms",
+    "WPF",
+    "MAUI Windows-specific"
+  ],
+  "included_sections": [
+    "Runtime",
+    "Libraries",
+    "SDK",
+    "C# 14",
+    "ASP.NET Core",
+    "EF Core",
+    "Aspire",
+    "Containers",
+    "NativeAOT",
+    "MAUI Cross-platform",
+    "Tooling",
+    "Performance"
+  ],
+  "chunking": {
+    "size_tokens": 1000,
+    "overlap_tokens": 150,
+    "method": "semantic + structural"
+  }
+}

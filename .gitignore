@@ -1,0 +1,25 @@
+﻿# --- AHS.SaaS Master GitIgnore ---
+
+# .NET 10 & Visual Studio
+[Bb]in/
+[Oo]bj/
+.vs/
+.vscode/
+*.user
+*.sln.docuser
+*.sln.docstates
+
+# JetBrains / Java IDEs
+.idea/
+
+# Environment & Secrets (SECURITY)
+.env*
+!.env.example
+
+# Antigravity / Cursor / AI tools
+.antigravity/
+.cursor/
+
+# OS Specific
+.DS_Store
+Thumbs.db

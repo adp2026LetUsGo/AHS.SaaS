@@ -1,0 +1,22 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Engines/">
+    <Project Path="src/Engines/Inference.Prediction.Engine/AHS.Engines.Inference.Prediction.Engine.csproj" />
+  </Folder>
+  <Folder Name="/src/Suites/" />
+  <Folder Name="/src/Suites/Pharma/">
+    <Project Path="src/Suites/Pharma/GxP.Traceability.BC/AHS.Suites.Pharma.GxP.Traceability.BC.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/SharedKernel/AHS.SharedKernel.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/AHS.Gateway.API/AHS.Gateway.API.csproj" />
+  </Folder>
+  <Folder Name="/src/Platform/">
+    <Project Path="src/Platform/AHS.Platform.Compliance/AHS.Platform.Compliance.csproj" />
+  </Folder>
+  <Folder Name="/src/Common/">
+    <Project Path="src/Common/AHS.Common.csproj" />
+  </Folder>
+</Solution>

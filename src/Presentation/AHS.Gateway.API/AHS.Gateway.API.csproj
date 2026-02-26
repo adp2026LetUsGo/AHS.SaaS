@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <AssemblyName>AHS.Gateway.API</AssemblyName>
+    <RootNamespace>AHS.Gateway.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\AHS.Common.csproj" />
+    <ProjectReference Include="..\..\SharedKernel\AHS.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Engines\Inference.Prediction.Engine\AHS.Engines.Inference.Prediction.Engine.csproj" />
+    <ProjectReference Include="..\..\Suites\Pharma\GxP.Traceability.BC\AHS.Suites.Pharma.GxP.Traceability.BC.csproj" />
+    <ProjectReference Include="..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
+  </ItemGroup>
+</Project>

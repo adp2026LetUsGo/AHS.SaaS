@@ -1,0 +1,7 @@
+API KEY: AIzaSyD_1Id-42wPeRe73vhG125rjr2Ty6sXTvA
+
+name: gxp-traceability-bc
+
+project name: projects/1026995081671
+
+project number: 1026995081671
