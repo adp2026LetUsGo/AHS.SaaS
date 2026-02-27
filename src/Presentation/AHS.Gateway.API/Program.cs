@@ -31,7 +31,17 @@ try {
     builder.Services.AddSingleton<PredictExcursionRiskHandler>();
     builder.Services.AddSingleton<AuditTrailService>();
 
+    builder.Services.AddCors(options => {
+        options.AddPolicy("BentoPolicy", policy => {
+            policy.WithOrigins("http://localhost:5001", "https://localhost:5001")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    });
+
     var app = builder.Build();
+    
+    app.UseCors("BentoPolicy");
     
     var projectId = builder.Configuration["FIREBASE_PROJECT_ID"];
     Console.WriteLine($"📡 STARTUP: Firebase ProjectId is '{(string.IsNullOrEmpty(projectId) ? "EMPTY" : projectId)}'");
@@ -67,9 +77,6 @@ try {
 } catch (InvalidOperationException ex) { Console.WriteLine($"[CRITICAL] Startup failed: {ex.Message}"); throw; }
 
 namespace AHS.Gateway.API {
-    internal sealed record PredictRiskRequest(string RouteId, string Carrier, int TransitTime, double AvgTemp, string Packaging, bool Delay);
-    internal sealed record PredictRiskResponse(double Score, string Status, bool IsHighRisk);
-
     [JsonSerializable(typeof(PredictRiskRequest))]
     [JsonSerializable(typeof(PredictRiskResponse))]
     [JsonSerializable(typeof(PredictionResponseDTO))]

@@ -11,7 +11,8 @@ public record PredictExcursionRiskCommand(
     string PackagingType,
     bool DelayFlag) : IRequest<Result<PredictionResponseDTO>>;
 
-public record PredictionResponseDTO(double Score, bool IsHighRisk);
+
+
 
 public static class ExcursionPredictionPolicy
 {

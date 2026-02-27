@@ -12,7 +12,7 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     
     <!-- Native AOT Runtime Support -->
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers Condition="'$(UsingMicrosoftNETSdkBlazorWebAssembly)' != 'true'">win-x64;linux-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <!-- Size Optimization for Release/CI -->
