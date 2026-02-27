@@ -2,6 +2,17 @@ API KEY: AIzaSyD_1Id-42wPeRe73vhG125rjr2Ty6sXTvA
 
 name: gxp-traceability-bc
 
+
 project name: projects/1026995081671
 
 project number: 1026995081671
+
+
+FIREBASE_PROJECT_ID:
+Pon: saas-temp-excursions
+(Nota: Si al intentar conectar da un error de "Project not found", el ID podría tener unos números extra al final, pero por ahora usa ese que aparece en "Name").
+FIREBASE_API_KEY:
+Copia y pega la cadena larga que empieza por AIzaSyD... (puedes darle al botón "Copy key" que se ve en tu imagen).
+
+
+otro : saas-temp-excursions

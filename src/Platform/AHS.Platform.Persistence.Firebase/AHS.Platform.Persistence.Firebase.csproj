@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>AHS.Platform.Persistence.Firebase</AssemblyName>
+    <RootNamespace>AHS.Platform.Persistence.Firebase</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SharedKernel\AHS.SharedKernel.csproj" />
+    <ProjectReference Include="..\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
+  </ItemGroup>
+</Project>

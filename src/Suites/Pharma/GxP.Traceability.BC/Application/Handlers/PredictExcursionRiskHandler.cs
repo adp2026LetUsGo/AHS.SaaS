@@ -1,38 +1,36 @@
 using AHS.Common;
-using AHS.SharedKernel;
 using AHS.Engines.Inference.Prediction.Engine;
-using AHS.Platform.Compliance;
 using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Commands;
+using AHS.Platform.Compliance;
 
 namespace AHS.Suites.Pharma.GxP.Traceability.BC.Application.Handlers;
 
-public class PredictExcursionRiskHandler : IRequestHandler<PredictExcursionRiskCommand, Result<PredictionResponseDTO>>
+public class PredictExcursionRiskHandler(AuditTrailService auditService)
 {
     private readonly TemperaturePredictionEngine _engine = new();
+    private readonly AuditTrailService _auditService = auditService;
 
     public async Task<Result<PredictionResponseDTO>> Handle(PredictExcursionRiskCommand request)
     {
-        var input = new PredictionInput(
-            request.RouteId,
-            request.Carrier,
-            request.TransitTimeHrs,
-            request.ExternalTempAvg,
-            request.PackagingType,
-            request.DelayFlag);
+        try
+        {
+            var input = new PredictionInput(request.RouteId, request.Carrier, request.TransitTimeHrs, request.ExternalTempAvg, request.PackagingType, request.DelayFlag);
+            var score = _engine.Predict(input);
+            
+            // Logical check for risk
+            var isHighRisk = score > 0.7; // Example threshold
 
-        var score = _engine.Predict(input);
-        var isHighRisk = ExcursionPredictionPolicy.IsHighRisk(score);
+            var signature = Sha256Hasher.Hash($"{request.RouteId}|{score}|{DateTime.UtcNow:yyyyMMdd}");
+            
+            // GxP Compliance: Audit must succeed for the operation to be valid.
+            await _auditService.SaveAsync(new AuditRecord(request.RouteId, "TENANT_001", score, signature, DateTime.UtcNow));
 
-        var result = Result.Success(new PredictionResponseDTO(score, isHighRisk));
-
-        // GxP Compliance: Hash the prediction result for audit trail
-        var data = $"Score={score}|HighRisk={isHighRisk}";
-        var hash = ComplianceService.HashSha256(data);
-        
-        await AuditTrailService.LogAsync("PredictExcursionRisk", data, hash);
-        
-        Console.WriteLine($"[AUDIT-JSON] Hash: {hash} | Data: {data}");
-
-        return result;
+            return Result.Success(new PredictionResponseDTO(score, isHighRisk));
+        }
+        catch (Exception ex)
+        {
+            // Atomicity: If auditing or processing fails, return a failure.
+            return Result.Failure<PredictionResponseDTO>($"Risk prediction or audit logging failed: {ex.Message}");
+        }
     }
 }

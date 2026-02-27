@@ -15,5 +15,6 @@
     <ProjectReference Include="..\..\Engines\Inference.Prediction.Engine\AHS.Engines.Inference.Prediction.Engine.csproj" />
     <ProjectReference Include="..\..\Suites\Pharma\GxP.Traceability.BC\AHS.Suites.Pharma.GxP.Traceability.BC.csproj" />
     <ProjectReference Include="..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
+    <ProjectReference Include="..\..\Platform\AHS.Platform.Persistence.Firebase\AHS.Platform.Persistence.Firebase.csproj" />
   </ItemGroup>
 </Project>

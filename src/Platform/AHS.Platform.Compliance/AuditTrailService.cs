@@ -1,24 +1,8 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace AHS.Platform.Compliance;
 
-public record AuditLog(DateTime Timestamp, string Action, string Data, string Hash);
-
-public static class AuditTrailService
+public class AuditTrailService(IAuditRepository repository)
 {
-    private const string AuditFilePath = "audit_trail.json";
+    private readonly IAuditRepository _repository = repository;
 
-    public static async Task LogAsync(string action, string data, string hash)
-    {
-        var entry = new AuditLog(DateTime.UtcNow, action, data, hash);
-        var json = JsonSerializer.Serialize(entry, AuditJsonContext.Default.AuditLog);
-        
-        // Simple append for monorepo demonstration
-        await File.AppendAllTextAsync(AuditFilePath, json + Environment.NewLine);
-    }
+    public async Task SaveAsync(AuditRecord record) => await _repository.SaveAsync(record);
 }
-
-[JsonSourceGenerationOptions(WriteIndented = false)]
-[JsonSerializable(typeof(AuditLog))]
-internal partial class AuditJsonContext : JsonSerializerContext { }

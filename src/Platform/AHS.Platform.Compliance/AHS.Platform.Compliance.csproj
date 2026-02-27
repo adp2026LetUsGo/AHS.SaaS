@@ -6,4 +6,7 @@
     <AssemblyName>AHS.Platform.Compliance</AssemblyName>
     <RootNamespace>AHS.Platform.Compliance</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\AHS.Common.csproj" />
+  </ItemGroup>
 </Project>

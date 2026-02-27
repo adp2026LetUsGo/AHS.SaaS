@@ -1,0 +1,3 @@
+namespace AHS.Platform.Compliance;
+
+public record AuditRecord(string BatchId, string TenantId, double RiskScore, string Hash, DateTime Timestamp);
