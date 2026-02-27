@@ -41,12 +41,12 @@ try {
 
     app.MapGet("/api/platform/health/firebase", async (IAuditRepository repository) => {
         try {
-            var result = await repository.CheckHealthAsync();
+            var result = await repository.CheckHealthAsync().ConfigureAwait(false);
             if (result.IsSuccess) return Results.Ok(result);
             
             Console.WriteLine($"[ERROR] {result.Error}");
             return Results.Text(result.Error, "text/plain", statusCode: 400);
-        } catch (Exception ex) {
+        } catch (HttpRequestException ex) {
             var error = $"Firebase Connectivity Error: {ex.Message}";
             Console.WriteLine($"[ERROR] {error}");
             return Results.Text(error, "text/plain", statusCode: 400);
@@ -55,7 +55,7 @@ try {
 
     app.MapPost("/api/pharma/traceability/predict-risk", async (PredictRiskRequest request, PredictExcursionRiskHandler handler) => {
         var command = new PredictExcursionRiskCommand(request.RouteId, request.Carrier, request.TransitTime, request.AvgTemp, request.Packaging, request.Delay);
-        var result = await handler.Handle(command);
+        var result = await handler.Handle(command).ConfigureAwait(false);
         if (!result.IsSuccess) {
             Console.WriteLine($"[ERROR] Prediction Failed: {result.Error}");
             return Results.Text(result.Error, "text/plain", statusCode: 400);
@@ -64,11 +64,11 @@ try {
     });
 
     app.Run();
-} catch (Exception ex) { Console.WriteLine($"[CRITICAL] Startup failed: {ex.Message}"); throw; }
+} catch (InvalidOperationException ex) { Console.WriteLine($"[CRITICAL] Startup failed: {ex.Message}"); throw; }
 
 namespace AHS.Gateway.API {
-    public record PredictRiskRequest(string RouteId, string Carrier, int TransitTime, double AvgTemp, string Packaging, bool Delay);
-    public record PredictRiskResponse(double Score, string Status, bool IsHighRisk);
+    internal sealed record PredictRiskRequest(string RouteId, string Carrier, int TransitTime, double AvgTemp, string Packaging, bool Delay);
+    internal sealed record PredictRiskResponse(double Score, string Status, bool IsHighRisk);
 
     [JsonSerializable(typeof(PredictRiskRequest))]
     [JsonSerializable(typeof(PredictRiskResponse))]
@@ -79,5 +79,5 @@ namespace AHS.Gateway.API {
     [JsonSerializable(typeof(Result<PredictRiskResponse>))]
     [JsonSerializable(typeof(string))]
     [JsonSerializable(typeof(bool))]
-    internal partial class AppJsonSerializerContext : JsonSerializerContext { }
+    internal sealed partial class AppJsonSerializerContext : JsonSerializerContext { }
 }

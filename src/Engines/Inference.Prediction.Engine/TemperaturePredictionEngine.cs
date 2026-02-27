@@ -8,10 +8,12 @@ public record PredictionInput(
     string PackagingType,
     bool DelayFlag);
 
-public class TemperaturePredictionEngine
+public static class TemperaturePredictionEngine
 {
-    public double Predict(PredictionInput input)
+    public static double Predict(PredictionInput input)
     {
+        ArgumentNullException.ThrowIfNull(input);
+
         double baseScore = 0.05;
         if (input.ExternalTempAvg > 25) baseScore += 0.1;
         if (input.TransitTimeHrs > 48) baseScore += 0.15;

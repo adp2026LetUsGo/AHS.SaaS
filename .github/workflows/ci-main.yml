@@ -17,14 +17,21 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: "10.0.100-preview.1.25077.10"
           include-prerelease: true
 
       - name: Install Native AOT prerequisites
         run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
 
+      - name: Install Native AOT Workload
+        run: dotnet workload install microsoft-net-sdk-aot
+        env:
+          DOTNET_INSTALL_KEEP_TEMPORARY_FILES: true
+
       - name: Restore dependencies
         run: dotnet restore AHS.SaaS.slnx -r linux-x64
+        env:
+          DOTNET_INSTALL_KEEP_TEMPORARY_FILES: true
 
       - name: Build
         run: dotnet build AHS.SaaS.slnx -c Release --no-restore

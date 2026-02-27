@@ -10,8 +10,12 @@ public class FirestoreAuditRepository(HttpClient httpClient, FirebaseOptions opt
     private readonly HttpClient _httpClient = httpClient;
     private readonly FirebaseOptions _options = options;
 
+    private const string DiagnosticSeparator = "==========================================";
+
     public async Task SaveAsync(AuditRecord record)
     {
+        ArgumentNullException.ThrowIfNull(record);
+
         // 1. Sanitize ProjectId (Trim slashes)
         var projectId = _options.ProjectId.Trim('/');
         var id = Guid.NewGuid().ToString();
@@ -20,22 +24,20 @@ public class FirestoreAuditRepository(HttpClient httpClient, FirebaseOptions opt
         // Using relative URL based on https://firestore.googleapis.com/ BaseAddress
         var url = $"v1/projects/{projectId}/databases/(default)/documents/tenants/{record.TenantId}/audit_logs?documentId={id}&key={_options.ApiKey}";
 
-        var firestoreDocument = new FirestoreDocument
+        var firestoreDocument = new FirestoreDocument(new Dictionary<string, FirestoreField>
         {
-            Fields = new Dictionary<string, FirestoreField>
-            {
-                ["batchId"] = new() { StringValue = record.BatchId },
-                ["tenantId"] = new() { StringValue = record.TenantId },
-                ["riskScore"] = new() { DoubleValue = record.RiskScore },
-                ["hash"] = new() { StringValue = record.Hash },
-                ["timestamp"] = new() { StringValue = record.Timestamp.ToString("o") }
-            }
-        };
+            ["batchId"] = new() { StringValue = record.BatchId },
+            ["tenantId"] = new() { StringValue = record.TenantId },
+            ["riskScore"] = new() { DoubleValue = record.RiskScore },
+            ["hash"] = new() { StringValue = record.Hash },
+            ["timestamp"] = new() { StringValue = record.Timestamp.ToString("o") }
+        });
 
-        var response = await _httpClient.PostAsJsonAsync(url, firestoreDocument, FirestoreJsonContext.Default.FirestoreDocument);
+        var response = await _httpClient.PostAsJsonAsync(url, firestoreDocument, FirestoreJsonContext.Default.FirestoreDocument).ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "Diagnostic console output, not user-facing.")]
     public async Task<Result<string>> CheckHealthAsync()
     {
         try
@@ -44,12 +46,12 @@ public class FirestoreAuditRepository(HttpClient httpClient, FirebaseOptions opt
             if (string.IsNullOrEmpty(projectId)) return Result.Failure<string>("Firebase ProjectId is empty.");
 
             // Health ping to verify connectivity and API Key
-            var url = $"v1/projects/{projectId}/databases/(default)/documents/health_check_ping?key={_options.ApiKey}";
+            var url = new Uri($"v1/projects/{projectId}/databases/(default)/documents/health_check_ping?key={_options.ApiKey}", UriKind.Relative);
             
             var maskedUrl = $"v1/projects/{projectId}/databases/(default)/documents/health_check_ping?key=***";
             Console.WriteLine($"📡 DIAGNOSTIC: Attempting health check at {maskedUrl}");
 
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(url).ConfigureAwait(false);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -60,10 +62,10 @@ public class FirestoreAuditRepository(HttpClient httpClient, FirebaseOptions opt
 
             return Result.Success("Firebase Connection Healthy");
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
         {
             // Deep diagnostics for Native AOT environments
-            Console.WriteLine("==========================================");
+            Console.WriteLine(DiagnosticSeparator);
             Console.WriteLine($"🔥 REAL EXCEPTION: {ex.GetType().Name}");
             Console.WriteLine($"📝 MESSAGE: {ex.Message}");
             if (ex.InnerException != null) 
@@ -71,7 +73,7 @@ public class FirestoreAuditRepository(HttpClient httpClient, FirebaseOptions opt
                 Console.WriteLine($"🔗 INNER: {ex.InnerException.Message}");
             }
             Console.WriteLine($"📍 STACK: {ex.StackTrace}");
-            Console.WriteLine("==========================================");
+            Console.WriteLine(DiagnosticSeparator);
             
             return Result.Failure<string>("Connection failed. Check console logs for details.");
         }
@@ -84,10 +86,10 @@ public class FirebaseOptions
     public string ApiKey { get; set; } = string.Empty; 
 }
 
-public class FirestoreDocument 
+public class FirestoreDocument(Dictionary<string, FirestoreField> fields)
 { 
     [JsonPropertyName("fields")] 
-    public Dictionary<string, FirestoreField> Fields { get; set; } = new(); 
+    public Dictionary<string, FirestoreField> Fields { get; } = fields;
 }
 
 public class FirestoreField 
@@ -102,4 +104,4 @@ public class FirestoreField
 }
 
 [JsonSerializable(typeof(FirestoreDocument))]
-internal partial class FirestoreJsonContext : JsonSerializerContext { }
+internal sealed partial class FirestoreJsonContext : JsonSerializerContext { }
