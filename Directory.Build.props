@@ -6,7 +6,18 @@
     <Product>AHS.SaaS Ecosystem</Product>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AnalysisLevel>latest</AnalysisLevel>
+    
+    <!-- Quality Gates: Unicorn Standards -->
+    <AnalysisLevel>latest-all</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    
+    <!-- Native AOT Runtime Support -->
+    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <!-- Size Optimization for Release/CI -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TrimMode>full</TrimMode>
+    <StackTraceSupport>false</StackTraceSupport>
   </PropertyGroup>
 </Project>
