@@ -10,8 +10,6 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    env:
-      DOTNET_ROOT: /usr/share/dotnet
 
     steps:
       - uses: actions/checkout@v4
