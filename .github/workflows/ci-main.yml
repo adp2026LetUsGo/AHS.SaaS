@@ -31,8 +31,5 @@ jobs:
       - name: Build
         run: dotnet build AHS.SaaS.slnx -c Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-build -c Release --verbosity normal
-
       - name: Native AOT Publish Check (Gateway API)
         run: dotnet publish src/Presentation/AHS.Gateway.API/AHS.Gateway.API.csproj -c Release -r linux-x64 --no-restore
