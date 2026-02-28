@@ -1,6 +1,6 @@
 namespace AHS.Web.BentoUI.Models;
 
-public sealed class ShipmentRecord
+internal sealed class ShipmentRecord
 {
     public string RouteId { get; set; } = string.Empty;
     public string Carrier { get; set; } = string.Empty;

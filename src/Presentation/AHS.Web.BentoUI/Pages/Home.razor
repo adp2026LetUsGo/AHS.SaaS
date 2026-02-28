@@ -1,6 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http
-@inject ShipmentService ShipmentService
+@inject HttpClient Http
 
 <PageTitle>Bento UI - GxP Local Bridge</PageTitle>
 
@@ -109,7 +109,9 @@
 
     private void UpdateHash()
     {
-        var rawData = $"{newRecord.RouteId}|{newRecord.Carrier}|{newRecord.ExternalTempAvg}|{newRecord.TransitTimeHrs}";
+        var rawData = System.Runtime.CompilerServices.FormattableStringFactory.Create("{0}|{1}|{2}|{3}", 
+            newRecord.RouteId, newRecord.Carrier, newRecord.ExternalTempAvg, newRecord.TransitTimeHrs)
+            .ToString(System.Globalization.CultureInfo.InvariantCulture);
         currentHash = Sha256Hasher.Hash(rawData).Substring(0, 16) + "...";
     }
 
@@ -122,7 +124,7 @@
         if (file.Name.EndsWith(".csv"))
         {
             using var stream = file.OpenReadStream();
-            var loaded = await ShipmentService.LoadFromStreamAsync(stream);
+            var loaded = await ShipmentService.LoadFromStreamAsync(stream).ConfigureAwait(false);
             foreach (var r in loaded)
             {
                 r.Hash = Sha256Hasher.Hash($"{r.RouteId}{r.DepartureTime}");
@@ -138,11 +140,11 @@
         
         // Trigger inference
         var request = new PredictRiskRequest(newRecord.RouteId, newRecord.Carrier, (int)newRecord.TransitTimeHrs, newRecord.ExternalTempAvg, "Passive", newRecord.DelayFlag);
-        var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request);
+        var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request).ConfigureAwait(false);
         
         if (result.IsSuccessStatusCode)
         {
-            var response = await result.Content.ReadFromJsonAsync<PredictRiskResponse>();
+            var response = await result.Content.ReadFromJsonAsync<PredictRiskResponse>().ConfigureAwait(false);
             if (response != null)
             {
                 newRecord.RiskScore = response.Score;

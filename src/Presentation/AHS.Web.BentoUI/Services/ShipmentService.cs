@@ -4,17 +4,17 @@ using System.Globalization;
 
 namespace AHS.Web.BentoUI.Services;
 
-public sealed class ShipmentService
+internal sealed class ShipmentService
 {
-    public async Task<List<ShipmentRecord>> LoadFromStreamAsync(Stream stream)
+    public static async Task<List<ShipmentRecord>> LoadFromStreamAsync(Stream stream)
     {
         var records = new List<ShipmentRecord>();
         using var reader = new StreamReader(stream, Encoding.UTF8);
         
         // Skip header
-        var header = await reader.ReadLineAsync();
+        var header = await reader.ReadLineAsync().ConfigureAwait(false);
         
-        while (await reader.ReadLineAsync() is { } line)
+        while (await reader.ReadLineAsync().ConfigureAwait(false) is { } line)
         {
             var parts = line.Split(',');
             if (parts.Length < 10) continue;
@@ -30,12 +30,12 @@ public sealed class ShipmentService
                     ExternalTempAvg = double.Parse(parts[4], CultureInfo.InvariantCulture),
                     PackagingType = parts[5],
                     ProductType = parts[6],
-                    ShipmentSize = int.Parse(parts[7]),
+                    ShipmentSize = int.Parse(parts[7], CultureInfo.InvariantCulture),
                     DelayFlag = parts[8] == "1",
                     TempExcursion = parts[9] == "1"
                 });
             }
-            catch
+            catch (Exception)
             {
                 // Silently skip malformed rows for stability
             }
