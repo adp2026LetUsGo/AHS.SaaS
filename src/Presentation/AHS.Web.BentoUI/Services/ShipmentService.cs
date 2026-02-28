@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace AHS.Web.BentoUI.Services;
 
-internal sealed class ShipmentService
+internal static class ShipmentService
 {
     public static async Task<List<ShipmentRecord>> LoadFromStreamAsync(Stream stream)
     {
