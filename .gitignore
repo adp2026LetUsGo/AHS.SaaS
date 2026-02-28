@@ -23,3 +23,6 @@
 # OS Specific
 .DS_Store
 Thumbs.db
+# Samples & Data
+!samples/
+**/shipments_sample.*

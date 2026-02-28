@@ -21,14 +21,17 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: "10.0.x"
+          dotnet-version: "10.0.102"
           dotnet-quality: "preview"
+
+      - name: Install Blazor WebAssembly Tools
+        run: dotnet workload install wasm-tools
 
       - name: Install Native AOT Dependencies
         run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
 
       - name: Restore
-        run: dotnet restore AHS.SaaS.slnx -r linux-x64
+        run: dotnet restore AHS.SaaS.slnx
 
       - name: Build
         run: dotnet build AHS.SaaS.slnx -c Release --no-restore

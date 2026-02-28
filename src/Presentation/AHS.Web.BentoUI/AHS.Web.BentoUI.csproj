@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
   </ItemGroup>
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\AHS.Common.csproj" />
     <ProjectReference Include="..\..\SharedKernel\AHS.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
   </ItemGroup>
 
 </Project>

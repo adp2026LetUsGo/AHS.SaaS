@@ -1,102 +1,171 @@
 ﻿@page "/"
-@using AHS.Common
 @inject HttpClient Http
+@inject ShipmentService ShipmentService
 
-<PageTitle>Bento UI - Insulin Traceability</PageTitle>
+<PageTitle>Bento UI - GxP Local Bridge</PageTitle>
 
-<div class="container mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold accent-text">AHS.Web.BentoUI</h1>
-        <p class="lead">Intelligent GxP Traceability & Risk Prediction</p>
+<div class="container-fluid px-4 py-5">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h1 class="display-5 fw-bold accent-text mb-0">AHS Data Vault</h1>
+            <p class="text-secondary">GxP Validated Local File Bridge & Inference</p>
+        </div>
+        <div class="system-status d-flex gap-4">
+            <span class="badge rounded-pill bg-dark border border-success text-success p-2 px-3">🟢 API: Online</span>
+            <span class="badge rounded-pill bg-dark border border-info text-info p-2 px-3">🔵 AOT: Optimized</span>
+        </div>
     </div>
 
-    <div class="bento-grid">
-        <!-- Prediction Card -->
-        <div class="bento-card" style="grid-column: span 2;">
-            <h3 class="accent-text mb-4">Insulin Excursion Risk</h3>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label">Route ID</label>
-                    <input type="text" class="form-control bg-dark text-white border-secondary" @bind="request.RouteId" placeholder="RT-1001" />
+    <!-- Main Bento Grid -->
+    <div class="row g-4">
+        <!-- Top Row: Ingestion and Quick Inut -->
+        <div class="col-lg-4">
+            <div class="bento-card h-100">
+                <h3 class="accent-text mb-3">📁 Local File Ingestion</h3>
+                <p class="text-secondary small mb-4">Load GxP datasets from local storage or USB encrypted drives.</p>
+                <div class="upload-zone p-5 border border-secondary border-dashed rounded text-center mb-3">
+                    <InputFile OnChange="LoadFile" accept=".csv,.xlsx" id="file-upload" class="d-none" />
+                    <label for="file-upload" class="btn btn-primary btn-lg px-4 mb-2">
+                        Select Dataset
+                    </label>
+                    <div class="text-muted small mt-2">@statusMessage</div>
                 </div>
-                <div class="col-md-6">
-                    <label class="form-label">Carrier</label>
-                    <input type="text" class="form-control bg-dark text-white border-secondary" @bind="request.Carrier" placeholder="FedEx ColdChain" />
+                @if (showXlsxWarning)
+                {
+                    <div class="alert alert-warning border-warning bg-dark text-warning small animate-pulse">
+                        ⚠️ <strong>Native AOT Mode:</strong> Please use Excel-generated CSV for maximum performance.
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="bento-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="accent-text">🏗️ Add New Record</h3>
+                    <div class="live-hash font-monospace small text-primary">
+                         HASH: @currentHash
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <label class="form-label">Avg Temp (°C)</label>
-                    <input type="number" class="form-control bg-dark text-white border-secondary" @bind="request.AvgTemp" step="0.1" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Transit Time (Hr)</label>
-                    <input type="number" class="form-control bg-dark text-white border-secondary" @bind="request.TransitTime" />
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Packaging</label>
-                    <select class="form-select bg-dark text-white border-secondary" @bind="request.Packaging">
-                        <option value="VIP-Passive">VIP-Passive</option>
-                        <option value="Active-PlugIn">Active-PlugIn</option>
-                    </select>
-                </div>
-                <div class="col-12 mt-4">
-                    <button class="btn btn-primary w-100 py-3" @onclick="PredictRisk" disabled="@isProcessing">
-                        @if (isProcessing) {
-                            <span class="spinner-border spinner-border-sm me-2"></span>
-                            <span>Analyzing Core Inference...</span>
-                        } else {
-                            <span>Run GxP Inference</span>
-                        }
-                    </button>
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label small text-secondary">Route ID</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" @bind="newRecord.RouteId" @bind:event="oninput" @onkeyup="UpdateHash" />
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small text-secondary">Carrier</label>
+                        <input type="text" class="form-control bg-dark text-white border-secondary" @bind="newRecord.Carrier" @bind:event="oninput" @onkeyup="UpdateHash" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-secondary">Avg Temp</label>
+                        <input type="number" class="form-control bg-dark text-white border-secondary" @bind="newRecord.ExternalTempAvg" @bind:event="oninput" @onkeyup="UpdateHash" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label small text-secondary">Hrs</label>
+                        <input type="number" class="form-control bg-dark text-white border-secondary" @bind="newRecord.TransitTimeHrs" @bind:event="oninput" @onkeyup="UpdateHash" />
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-primary w-100 h-100" style="margin-top: 1.8rem;" @onclick="AddRecord">Save & Audit</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Result Card -->
-        @if (response != null) {
-            <div class="bento-card">
-                <h3 class="accent-text mb-3">Analysis Result</h3>
-                <div class="d-flex align-items-center mb-3">
-                    <div class="fs-1 me-3">@(response.IsHighRisk ? "⚠️" : "✅")</div>
-                    <div>
-                        <div class="fw-bold">Scoring: @response.Score.ToString("P2")</div>
-                        <div class="badge @(response.IsHighRisk ? "bg-danger" : "bg-success")">@response.Status</div>
-                    </div>
+        <!-- Data Grid Row -->
+        <div class="col-12">
+            <div class="bento-card overflow-hidden p-0">
+                <div class="p-4 border-bottom border-secondary">
+                    <h3 class="accent-text mb-0">📦 Shipment Ledger</h3>
                 </div>
-                <p class="small text-secondary">
-                    Inference powered by ML.NET & Native AOT.
-                    Compliance SHA256 Hash generated and audited.
-                </p>
+                <div class="quick-grid-container px-3">
+                    <QuickGrid Items="@shipments.AsQueryable()" Class="table table-dark mb-0">
+                        <PropertyColumn Property="@(p => p.RouteId)" Title="Route" Sortable="true" />
+                        <PropertyColumn Property="@(p => p.Carrier)" Title="Carrier" />
+                        <PropertyColumn Property="@(p => p.ExternalTempAvg)" Title="Temp (°C)" Format="0.0" />
+                        <PropertyColumn Property="@(p => p.TransitTimeHrs)" Title="Time (Hr)" />
+                        <PropertyColumn Property="@(p => p.RiskScore)" Title="Risk Score" Format="P1" Sortable="true" />
+                        <TemplateColumn Title="Status" Class="text-end">
+                            <ChildContent>
+                                <span class="badge @(context.RiskScore > 0.7 || context.TempExcursion ? "bg-danger shadow-danger-glow" : "bg-success")">
+                                    @(context.RiskScore > 0.7 || context.TempExcursion ? "HIGH RISK" : "VALID")
+                                </span>
+                            </ChildContent>
+                        </TemplateColumn>
+                        <PropertyColumn Property="@(p => p.Hash.Substring(0, 8))" Title="Audit Hash" Class="font-monospace text-secondary" />
+                    </QuickGrid>
+                </div>
             </div>
-        }
-
-        <!-- Stats Card -->
-        <div class="bento-card">
-            <h3 class="accent-text mb-3">System Health</h3>
-            <ul class="list-unstyled">
-                <li class="mb-2">🟢 Gateway API: Connected</li>
-                <li class="mb-2">🟢 AOT Runtime: Optimized</li>
-                <li class="mb-2">🟢 Firebase: Authenticated</li>
-            </ul>
         </div>
     </div>
 </div>
 
 @code {
-    private PredictRiskRequest request = new("RT-Default", "Global-Logistics", 24, 4.5, "VIP-Passive", false);
-    private PredictRiskResponse? response;
-    private bool isProcessing = false;
+    private List<ShipmentRecord> shipments = new();
+    private ShipmentRecord newRecord = new();
+    private string statusMessage = "No file selected";
+    private bool showXlsxWarning = false;
+    private string currentHash = "ENTER DATA...";
 
-    private async Task PredictRisk() {
-        isProcessing = true;
-        try {
-            var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request);
-            if (result.IsSuccessStatusCode) {
-                response = await result.Content.ReadFromJsonAsync<PredictRiskResponse>();
+    private void UpdateHash()
+    {
+        var rawData = $"{newRecord.RouteId}|{newRecord.Carrier}|{newRecord.ExternalTempAvg}|{newRecord.TransitTimeHrs}";
+        currentHash = Sha256Hasher.Hash(rawData).Substring(0, 16) + "...";
+    }
+
+    private async Task LoadFile(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        showXlsxWarning = file.Name.EndsWith(".xlsx");
+        statusMessage = $"Loading {file.Name}...";
+
+        if (file.Name.EndsWith(".csv"))
+        {
+            using var stream = file.OpenReadStream();
+            var loaded = await ShipmentService.LoadFromStreamAsync(stream);
+            foreach (var r in loaded)
+            {
+                r.Hash = Sha256Hasher.Hash($"{r.RouteId}{r.DepartureTime}");
+                shipments.Insert(0, r);
             }
-        } catch (Exception ex) {
-            Console.WriteLine($"Error: {ex.Message}");
-        } finally {
-            isProcessing = false;
+            statusMessage = $"Loaded {loaded.Count} records.";
         }
     }
+
+    private async Task AddRecord()
+    {
+        newRecord.Hash = Sha256Hasher.Hash($"{newRecord.RouteId}{DateTime.UtcNow}");
+        
+        // Trigger inference
+        var request = new PredictRiskRequest(newRecord.RouteId, newRecord.Carrier, (int)newRecord.TransitTimeHrs, newRecord.ExternalTempAvg, "Passive", newRecord.DelayFlag);
+        var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request);
+        
+        if (result.IsSuccessStatusCode)
+        {
+            var response = await result.Content.ReadFromJsonAsync<PredictRiskResponse>();
+            if (response != null)
+            {
+                newRecord.RiskScore = response.Score;
+                newRecord.TempExcursion = response.IsHighRisk;
+            }
+        }
+
+        shipments.Insert(0, newRecord);
+        newRecord = new();
+        UpdateHash();
+    }
 }
+
+<style>
+    .border-dashed { border-style: dashed !important; }
+    .shadow-danger-glow { box-shadow: 0 0 15px rgba(220, 53, 69, 0.5); }
+    .animate-pulse { animation: pulse 2s infinite; }
+    @@keyframes pulse {
+        0% { opacity: 1; }
+        50% { opacity: 0.6; }
+        100% { opacity: 1; }
+    }
+    .quick-grid-container ::deep table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
+    .quick-grid-container ::deep tr { background: rgba(255, 255, 255, 0.03); border-radius: 8px; transition: all 0.3s ease; }
+    .quick-grid-container ::deep tr:hover { background: rgba(255, 255, 255, 0.07); transform: scale(1.002); }
+</style>
