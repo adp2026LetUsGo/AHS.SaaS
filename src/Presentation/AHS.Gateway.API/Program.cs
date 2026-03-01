@@ -1,11 +1,10 @@
 using System.Text.Json.Serialization;
 using AHS.Gateway.API;
-using AHS.Common;
-using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Commands;
-using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Handlers;
+using AHS.Gateway.API.Handlers;
+using AHS.Engines.ML;
 using AHS.Platform.Compliance;
 using AHS.Platform.Persistence.Firebase;
-using AHS.Engines.ML;
+using AHS.Common;
 
 try {
     if (!File.Exists(".env")) Console.WriteLine("⚠️ WARNING: .env file not found at root!");
@@ -30,7 +29,7 @@ try {
     });
 
     builder.Services.AddSingleton(new ExcursionInferenceService("excursion_risk_v1.onnx"));
-    builder.Services.AddSingleton<PredictExcursionRiskHandler>();
+    builder.Services.AddScoped<PredictExcursionRiskHandler>();
     builder.Services.AddSingleton<AuditTrailService>();
 
     builder.Services.AddCors(options => {
@@ -65,14 +64,14 @@ try {
         }
     });
 
-    app.MapPost("/api/pharma/traceability/predict-risk", async (PredictRiskRequest request, PredictExcursionRiskHandler handler) => {
-        var command = new PredictExcursionRiskCommand(request.RouteId, request.Carrier, request.TransitTime, request.AvgTemp, request.Packaging, request.Delay);
-        var result = await handler.Handle(command).ConfigureAwait(false);
-        if (!result.IsSuccess) {
-            Console.WriteLine($"[ERROR] Prediction Failed: {result.Error}");
-            return Results.Text(result.Error, "text/plain", statusCode: 400);
+    app.MapPost("/api/pharma/traceability/predict-risk", (PredictRiskRequest request, PredictExcursionRiskHandler handler) => {
+        try {
+            var response = handler.Handle(request);
+            return Results.Ok(response);
+        } catch (Exception ex) {
+            Console.WriteLine($"[ERROR] Prediction Failed: {ex.Message}");
+            return Results.Text(ex.Message, "text/plain", statusCode: 400);
         }
-        return Results.Ok(new PredictRiskResponse(result.Value.Score, result.Value.IsHighRisk ? "High Risk" : "Normal", result.Value.IsHighRisk));
     });
 
     app.Run();
@@ -80,12 +79,11 @@ try {
 
 namespace AHS.Gateway.API {
     [JsonSerializable(typeof(PredictRiskRequest))]
-    [JsonSerializable(typeof(PredictRiskResponse))]
     [JsonSerializable(typeof(PredictionResponse))]
+    [JsonSerializable(typeof(AHS.Common.Result<PredictionResponse>))]
     [JsonSerializable(typeof(Microsoft.AspNetCore.Mvc.ProblemDetails))]
     [JsonSerializable(typeof(Result<string>))]
     [JsonSerializable(typeof(Result<double>))]
-    [JsonSerializable(typeof(Result<PredictRiskResponse>))]
     [JsonSerializable(typeof(string))]
     [JsonSerializable(typeof(bool))]
     internal sealed partial class AppJsonSerializerContext : JsonSerializerContext { }

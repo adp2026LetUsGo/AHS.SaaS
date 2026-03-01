@@ -16,20 +16,28 @@ public class PredictExcursionRiskHandler(AuditTrailService auditService, Excursi
 
         try
         {
-            var inferenceResult = _inferenceService.Predict(
-                (float)request.TransitTimeHrs, 
-                (float)request.ExternalTempAvg, 
+            var inferenceResult = _inferenceService.PredictExcursion(
+                (float)(request.RouteId.GetHashCode() % 10), 
+                (float)(request.Carrier.GetHashCode() % 5), 
+                (float)(request.PackagingType.GetHashCode() % 3),
                 request.DelayFlag ? 1.0f : 0.0f);
             
-            var isHighRisk = inferenceResult.IsHighRisk;
-            double score = isHighRisk ? 0.95 : 0.05; // Simplified score for now as model outputs label
+            var isHighRisk = inferenceResult.IsExcursion;
+            float score = inferenceResult.Probability;
+
+            string risk = score switch
+            {
+                > 0.7f => "High",
+                > 0.3f => "Medium",
+                _ => "Low"
+            };
 
             var signature = Sha256Hasher.Hash($"{request.RouteId}|{score}|{DateTime.UtcNow:yyyyMMdd}");
             
             // GxP Compliance: Audit must succeed for the operation to be valid.
-            await _auditService.SaveAsync(new AuditRecord(request.RouteId, "TENANT_001", score, signature, DateTime.UtcNow)).ConfigureAwait(false);
+            await _auditService.SaveAsync(new AuditRecord(request.RouteId, "TENANT_001", (double)score, signature, DateTime.UtcNow)).ConfigureAwait(false);
 
-            return Result.Success(new PredictionResponse(score, isHighRisk));
+            return Result.Success(new PredictionResponse(isHighRisk, score, risk));
         }
         catch (Exception ex)
         {
