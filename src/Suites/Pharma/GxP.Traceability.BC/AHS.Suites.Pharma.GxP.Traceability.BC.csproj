@@ -5,6 +5,7 @@
     <ProjectReference Include="..\..\..\SharedKernel\AHS.SharedKernel.csproj" />
     <ProjectReference Include="..\..\..\Engines\Inference.Prediction.Engine\AHS.Engines.Inference.Prediction.Engine.csproj" />
     <ProjectReference Include="..\..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
+    <ProjectReference Include="..\..\..\Engines\AHS.Engines.ML\AHS.Engines.ML.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

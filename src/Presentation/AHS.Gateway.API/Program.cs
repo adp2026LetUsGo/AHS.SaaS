@@ -5,6 +5,7 @@ using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Commands;
 using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Handlers;
 using AHS.Platform.Compliance;
 using AHS.Platform.Persistence.Firebase;
+using AHS.Engines.ML;
 
 try {
     if (!File.Exists(".env")) Console.WriteLine("⚠️ WARNING: .env file not found at root!");
@@ -28,6 +29,7 @@ try {
         Console.WriteLine($"🌐 HttpClient BaseAddress configured: {client.BaseAddress}");
     });
 
+    builder.Services.AddSingleton(new ExcursionInferenceService("excursion_risk_v1.onnx"));
     builder.Services.AddSingleton<PredictExcursionRiskHandler>();
     builder.Services.AddSingleton<AuditTrailService>();
 
@@ -79,7 +81,7 @@ try {
 namespace AHS.Gateway.API {
     [JsonSerializable(typeof(PredictRiskRequest))]
     [JsonSerializable(typeof(PredictRiskResponse))]
-    [JsonSerializable(typeof(PredictionResponseDTO))]
+    [JsonSerializable(typeof(PredictionResponse))]
     [JsonSerializable(typeof(Microsoft.AspNetCore.Mvc.ProblemDetails))]
     [JsonSerializable(typeof(Result<string>))]
     [JsonSerializable(typeof(Result<double>))]

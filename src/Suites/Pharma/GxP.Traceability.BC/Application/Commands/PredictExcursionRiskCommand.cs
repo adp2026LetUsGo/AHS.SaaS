@@ -9,7 +9,7 @@ public record PredictExcursionRiskCommand(
     int TransitTimeHrs,
     double ExternalTempAvg,
     string PackagingType,
-    bool DelayFlag) : IRequest<Result<PredictionResponseDTO>>;
+    bool DelayFlag) : IRequest<Result<PredictionResponse>>;
 
 
 

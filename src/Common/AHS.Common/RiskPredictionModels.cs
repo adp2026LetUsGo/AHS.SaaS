@@ -23,4 +23,4 @@ public sealed class PredictRiskRequest
 }
 
 public sealed record PredictRiskResponse(double Score, string Status, bool IsHighRisk);
-public sealed record PredictionResponseDTO(double Score, bool IsHighRisk);
+public sealed record PredictionResponse(double Score, bool IsHighRisk);
