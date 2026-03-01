@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using AHS.Gateway.API;
 using AHS.Gateway.API.Handlers;
@@ -5,6 +6,8 @@ using AHS.Engines.ML;
 using AHS.Platform.Compliance;
 using AHS.Platform.Persistence.Firebase;
 using AHS.Common;
+
+[assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Scope = "member", Target = "~M:Program.<Main>$(System.String[])", Justification = "Main entry point error handling.")]
 
 try {
     if (!File.Exists(".env")) Console.WriteLine("⚠️ WARNING: .env file not found at root!");
@@ -28,7 +31,7 @@ try {
         Console.WriteLine($"🌐 HttpClient BaseAddress configured: {client.BaseAddress}");
     });
 
-    builder.Services.AddSingleton(new ExcursionInferenceService("excursion_risk_v1.onnx"));
+    builder.Services.AddSingleton<ExcursionInferenceService>(sp => new ExcursionInferenceService("excursion_risk_v1.onnx"));
     builder.Services.AddScoped<PredictExcursionRiskHandler>();
     builder.Services.AddSingleton<AuditTrailService>();
 
@@ -68,9 +71,14 @@ try {
         try {
             var response = handler.Handle(request);
             return Results.Ok(response);
+        } catch (ArgumentNullException ex) {
+            return Results.Problem(ex.Message, statusCode: 400);
+        } catch (Exception ex) when (ex is Microsoft.ML.OnnxRuntime.OnnxRuntimeException) {
+            Console.WriteLine($"[ERROR] Inference Failed: {ex.Message}");
+            return Results.Problem("The ONNX model failed to process the request.", statusCode: 500);
         } catch (Exception ex) {
-            Console.WriteLine($"[ERROR] Prediction Failed: {ex.Message}");
-            return Results.Text(ex.Message, "text/plain", statusCode: 400);
+            Console.WriteLine($"[ERROR] Unexpected error: {ex.Message}");
+            return Results.Problem("An internal error occurred.", statusCode: 500);
         }
     });
 

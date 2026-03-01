@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using AHS.Engines.ML;
 using AHS.Common;
 
@@ -6,7 +7,8 @@ namespace AHS.Gateway.API.Handlers;
 /// <summary>
 /// Orchestrates the prediction logic by bridging the API request to the ONNX Engine.
 /// </summary>
-public sealed class PredictExcursionRiskHandler
+[SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Instantiated by the Dependency Injection container.")]
+internal sealed class PredictExcursionRiskHandler
 {
     private readonly ExcursionInferenceService _inferenceService;
 
@@ -17,11 +19,13 @@ public sealed class PredictExcursionRiskHandler
 
     public PredictionResponse Handle(PredictRiskRequest request)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         // 1. Map categorical strings to floats (Pilot mapping)
-        float route = (float)(request.RouteId.GetHashCode() % 10);
-        float carrier = (float)(request.Carrier.GetHashCode() % 5);
-        float packaging = (float)(request.Packaging.GetHashCode() % 3);
-        float weather = (float)(request.Weather.GetHashCode() % 4);
+        float route = (float)(request.RouteId.GetHashCode(StringComparison.OrdinalIgnoreCase) % 10);
+        float carrier = (float)(request.Carrier.GetHashCode(StringComparison.OrdinalIgnoreCase) % 5);
+        float packaging = (float)(request.Packaging.GetHashCode(StringComparison.OrdinalIgnoreCase) % 3);
+        float weather = (float)(request.Weather.GetHashCode(StringComparison.OrdinalIgnoreCase) % 4);
 
         // 2. Call the Real ONNX Engine (No more placeholders)
         var result = _inferenceService.PredictExcursion(route, carrier, packaging, weather);

@@ -3,6 +3,8 @@ using AHS.Engines.ML;
 using AHS.Suites.Pharma.GxP.Traceability.BC.Application.Commands;
 using AHS.Platform.Compliance;
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace AHS.Suites.Pharma.GxP.Traceability.BC.Application.Handlers;
 
 public class PredictExcursionRiskHandler(AuditTrailService auditService, ExcursionInferenceService inferenceService)
@@ -10,6 +12,7 @@ public class PredictExcursionRiskHandler(AuditTrailService auditService, Excursi
     private readonly AuditTrailService _auditService = auditService;
     private readonly ExcursionInferenceService _inferenceService = inferenceService;
 
+    [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Top-level boundary for returning Result.Failure.")]
     public async Task<Result<PredictionResponse>> Handle(PredictExcursionRiskCommand request)
     {
         ArgumentNullException.ThrowIfNull(request);
@@ -17,9 +20,9 @@ public class PredictExcursionRiskHandler(AuditTrailService auditService, Excursi
         try
         {
             var inferenceResult = _inferenceService.PredictExcursion(
-                (float)(request.RouteId.GetHashCode() % 10), 
-                (float)(request.Carrier.GetHashCode() % 5), 
-                (float)(request.PackagingType.GetHashCode() % 3),
+                (float)(request.RouteId.GetHashCode(StringComparison.OrdinalIgnoreCase) % 10), 
+                (float)(request.Carrier.GetHashCode(StringComparison.OrdinalIgnoreCase) % 5), 
+                (float)(request.PackagingType.GetHashCode(StringComparison.OrdinalIgnoreCase) % 3),
                 request.DelayFlag ? 1.0f : 0.0f);
             
             var isHighRisk = inferenceResult.IsExcursion;

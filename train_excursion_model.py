@@ -38,6 +38,7 @@ print("Exporting to ONNX with input shape [1, 4]...")
 # 'float_input' matches the C# code expectation.
 initial_type = [('float_input', FloatTensorType([None, 4]))]
 onnx_model = convert_sklearn(model, initial_types=initial_type, 
+                             target_opset=21,
                              options={type(model): {'zipmap': False}})
 
 onnx_filename = "excursion_risk_v1.onnx"
