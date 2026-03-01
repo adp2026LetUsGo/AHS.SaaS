@@ -41,6 +41,14 @@ onnx_model = convert_sklearn(model, initial_types=initial_type,
                              target_opset=21,
                              options={type(model): {'zipmap': False}})
 
+# Explicitly rename outputs to ensure synchronization with C#
+onnx_model.graph.output[0].name = 'output_label'
+onnx_model.graph.output[1].name = 'output_probability'
+for node in onnx_model.graph.node:
+    for i, output in enumerate(node.output):
+        if output == 'label': node.output[i] = 'output_label'
+        if output == 'probabilities': node.output[i] = 'output_probability'
+
 onnx_filename = "excursion_risk_v1.onnx"
 with open(onnx_filename, "wb") as f:
     f.write(onnx_model.SerializeToString())

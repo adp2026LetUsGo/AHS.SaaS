@@ -1,5 +1,7 @@
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AHS.Engines.ML;
 
@@ -38,26 +40,25 @@ public sealed class ExcursionInferenceService : IDisposable
             NamedOnnxValue.CreateFromTensor("float_input", inputTensor)
         };
 
+        var outputNames = _session.OutputMetadata.Keys.ToList();
+        var labelName = outputNames.Contains("output_label") ? "output_label" : outputNames[0];
+        var probName = outputNames.Contains("output_probability") ? "output_probability" : outputNames[1];
+
         using var results = _session.Run(inputs);
         
-        // skl2onnx standard outputs: 'output_label' (Int64) and 'output_probability' (Sequence of Maps)
-        var labelResult = results.FirstOrDefault(r => r.Name == "output_label");
-        var probResult = results.FirstOrDefault(r => r.Name == "output_probability");
-
-        if (labelResult == null)
-        {
-            throw new InvalidOperationException("❌ GxP CRITICAL ERROR: Model output 'output_label' not found.");
-        }
+        var labelResult = results.First(v => v.Name == labelName);
+        var probResult = results.First(v => v.Name == probName);
 
         var label = labelResult.AsEnumerable<long>().First();
         float probability = 0.5f;
 
-        // Extract probability if available (depends on scikit-learn model type and options)
-        if (probResult != null)
+        // Extraction depends on zipmap setting (zipmap=False -> Tensor, zipmap=True -> IEnumerable<IDictionary>)
+        if (probResult.Value is IEnumerable<IDictionary<long, float>> probMap)
         {
-            // For RandomForestClassifier, it's often a sequence of maps (if zipmap=True) 
-            // or an array of floats (if zipmap=False as I set in training script).
-            // Since I set zipmap=False, it's a Tensor<float> of shape [batch, classes].
+            probability = probMap.First()[(int)label];
+        }
+        else
+        {
             var probTensor = probResult.AsTensor<float>();
             probability = probTensor[0, (int)label];
         }
