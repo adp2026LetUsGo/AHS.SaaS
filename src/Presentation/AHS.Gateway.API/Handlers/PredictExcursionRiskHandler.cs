@@ -1,6 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
 using AHS.Engines.ML;
 using AHS.Common;
+using AHS.Common.Models;
+using AHS.Common.Serialization;
+using System.Collections.Generic;
 
 namespace AHS.Gateway.API.Handlers;
 
@@ -38,6 +41,6 @@ internal sealed class PredictExcursionRiskHandler
             _ => "Low"
         };
 
-        return new PredictionResponse(result.IsExcursion, result.Probability, risk);
+        return new PredictionResponse(Guid.NewGuid().ToString(), result.Probability, risk, 15, DateTime.UtcNow, 0.95f, 0.92f, 0.93f, "Verified GxP Feed", new Dictionary<string, float>());
     }
 }

@@ -6,6 +6,9 @@ using AHS.Engines.ML;
 using AHS.Platform.Compliance;
 using AHS.Platform.Persistence.Firebase;
 using AHS.Common;
+using AHS.Common.Models;
+using AHS.Common.Serialization;
+using System.Collections.Generic;
 
 [assembly: SuppressMessage("Design", "CA1031:Do not catch general exception types", Scope = "member", Target = "~M:Program.<Main>$(System.String[])", Justification = "Main entry point error handling.")]
 
