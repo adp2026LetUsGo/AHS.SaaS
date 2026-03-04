@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using AHS.Common;
+using AHS.Common.Models;
 using AHS.Web.BentoUI.Models;
 
 namespace AHS.Web.BentoUI;

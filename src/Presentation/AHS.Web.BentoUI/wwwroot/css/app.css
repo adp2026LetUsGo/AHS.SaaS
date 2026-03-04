@@ -5,9 +5,6 @@
     --accent-blue: #38bdf8;
     --text-main: #f8fafc;
     --glass-border: rgba(255, 255, 255, 0.1);
-    --risk-green: #10b981;
-    --risk-yellow: #f59e0b;
-    --risk-red: #ef4444;
 }
 
 body {
@@ -19,32 +16,26 @@ body {
     overflow-x: hidden;
 }
 
-/* FIXED SIDEBAR */
 .sidebar {
     width: var(--sidebar-width);
     height: 100vh;
     background: var(--sidebar-bg);
     backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     border-right: 1px solid var(--glass-border);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     padding: 2.5rem 1.25rem;
-    overflow-y: auto;
 }
 
-/* MAIN CONTENT WITH OFFSET */
 .main-body {
     margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
-    padding: 3rem;
+    padding: 2.5rem;
     min-height: 100vh;
-    transition: margin-left 0.3s ease;
 }
 
-/* ACTIVE APP & PULSE */
 .nav-active {
     background: rgba(56, 189, 248, 0.12);
     border-left: 4px solid var(--accent-blue);
@@ -53,41 +44,34 @@ body {
 }
 
 .active-pulse {
-    animation: icon-glow 2s infinite;
+    animation: blue-glow 2s infinite;
+    color: var(--accent-blue);
 }
 
-@keyframes icon-glow {
+@keyframes blue-glow {
     0% {
         filter: drop-shadow(0 0 2px var(--accent-blue));
-        transform: scale(1);
     }
 
     50% {
-        filter: drop-shadow(0 0 8px var(--accent-blue));
-        transform: scale(1.1);
+        filter: drop-shadow(0 0 10px var(--accent-blue));
     }
 
     100% {
         filter: drop-shadow(0 0 2px var(--accent-blue));
-        transform: scale(1);
     }
 }
 
-/* ROADMAP DISABLED STATE */
 .nav-roadmap {
-    opacity: 0.35;
+    opacity: 0.4;
     filter: grayscale(1);
-    cursor: not-allowed;
     pointer-events: none;
     font-size: 0.85rem;
-    margin-bottom: 0.5rem;
-    transition: opacity 0.3s;
 }
 
 .suite-badge {
     font-size: 0.6rem;
     font-weight: 800;
-    letter-spacing: 1px;
     background: var(--accent-blue);
     color: var(--bg-dark);
     padding: 2px 8px;

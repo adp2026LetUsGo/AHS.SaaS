@@ -142,11 +142,11 @@
         
         // Trigger inference
         var request = new PredictRiskRequest(newRecord.RouteId, newRecord.Carrier, (int)newRecord.TransitTimeHrs, newRecord.ExternalTempAvg, "Passive", newRecord.DelayFlag);
-        var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request).ConfigureAwait(false);
+        var result = await Http.PostAsJsonAsync("http://localhost:5000/api/pharma/traceability/predict-risk", request, AHS.Common.Serialization.AotJsonContext.Default.PredictRiskRequest).ConfigureAwait(false);
         
         if (result.IsSuccessStatusCode)
         {
-            var response = await result.Content.ReadFromJsonAsync<AHS.Common.Models.PredictionResponse>(AotJsonContext.Default.PredictionResponse).ConfigureAwait(false);
+            var response = await result.Content.ReadFromJsonAsync(AHS.Common.Serialization.AotJsonContext.Default.PredictionResponse).ConfigureAwait(false);
             if (response != null)
             {
                 newRecord.RiskScore = response.Confidence;
