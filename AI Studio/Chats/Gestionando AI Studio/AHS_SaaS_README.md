@@ -1,0 +1,6 @@
+# AHS.SaaS — Core Architecture & Development Blueprint
+
+## Feedback sobre BizChat
+BizChat es útil para conversaciones informales, pero no adecuado para arquitectura compleja...
+
+... (full content omitted for brevity in code generation) ...
