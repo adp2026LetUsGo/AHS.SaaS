@@ -1,153 +1,71 @@
 :root {
     --bg-dark: #020617;
-    --sidebar-width: 300px;
-    --sidebar-bg: rgba(2, 6, 23, 0.98);
     --accent-blue: #38bdf8;
-    --text-main: #f8fafc;
     --glass-bg: rgba(15, 23, 42, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
     background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-    background-attachment: fixed;
-    color: var(--text-main);
+    color: #f8fafc;
     font-family: 'Outfit', sans-serif;
     margin: 0;
-    overflow-x: hidden;
 }
 
-.sidebar {
-    width: var(--sidebar-width);
-    height: 100vh;
-    background: var(--sidebar-bg);
-    backdrop-filter: blur(24px);
-    border-right: 1px solid var(--glass-border);
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1000;
-    padding: 2.5rem 1.25rem;
+.dashboard-header {
+    padding: 2rem 30px 1rem;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent-blue);
 }
 
-/* RESPONSIVE LAYOUT INTEGRITY */
-.main-body {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-    padding: 2.5rem;
-    transition: all 0.3s ease;
+.dashboard-wrapper {
     min-height: 100vh;
 }
 
-@media (max-width: 992px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .main-body {
-        margin-left: 0;
-        width: 100%;
-        padding: 1.5rem;
-    }
-}
-
-/* BENTO GRID RESPONSIVENESS */
-.bento-grid {
+.main-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 30px 30px;
 }
 
-/* GLASS LEDGER GRID */
-.glass-ledger {
+.glass-card {
     background: var(--glass-bg);
-    border-radius: 1.5rem;
+    backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
+    border-radius: 1.5rem;
+    padding: 2rem;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 400px;
 }
 
-.ledger-header {
-    background: rgba(255, 255, 255, 0.05);
-    padding: 1rem 1.5rem;
-    font-weight: 700;
+.methodology-summary {
     font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent-blue);
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 100px;
-}
-
-.ledger-row {
-    padding: 1.25rem 1.5rem;
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 100px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.2s ease;
-    align-items: center;
-}
-
-.ledger-row:hover {
-    background: rgba(56, 189, 248, 0.08);
-    box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05);
-    transform: scale(1.005);
-}
-
-/* RISK SPARKLINE */
-.sparkline-container {
-    height: 40px;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.sparkline-path {
-    fill: none;
-    stroke: var(--accent-blue);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    filter: drop-shadow(0 0 3px var(--accent-blue));
-}
-
-.nav-active {
-    background: rgba(56, 189, 248, 0.12);
-    border-left: 4px solid var(--accent-blue);
-    color: var(--accent-blue) !important;
     font-weight: 600;
-}
-
-.active-pulse {
-    animation: blue-glow 2s infinite;
-    color: var(--accent-blue);
-}
-
-@keyframes blue-glow {
-    0% {
-        filter: drop-shadow(0 0 2px var(--accent-blue));
-    }
-
-    50% {
-        filter: drop-shadow(0 0 10px var(--accent-blue));
-    }
-
-    100% {
-        filter: drop-shadow(0 0 2px var(--accent-blue));
-    }
-}
-
-.nav-roadmap {
-    opacity: 0.4;
-    filter: grayscale(1);
-    pointer-events: none;
-    font-size: 0.85rem;
-}
-
-.suite-badge {
-    font-size: 0.6rem;
-    font-weight: 800;
-    background: var(--accent-blue);
-    color: var(--bg-dark);
-    padding: 2px 8px;
-    border-radius: 4px;
     text-transform: uppercase;
+    opacity: 0.6;
+    margin-top: 1rem;
+}
+
+.modal-glass {
+    background: #0f172a;
+    border: 1px solid var(--glass-border);
+    border-radius: 2rem;
+    color: white;
+}
+
+@media (max-width: 1200px) {
+    .main-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
 }
