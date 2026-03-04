@@ -4,6 +4,7 @@
     --sidebar-bg: rgba(2, 6, 23, 0.98);
     --accent-blue: #38bdf8;
     --text-main: #f8fafc;
+    --glass-bg: rgba(15, 23, 42, 0.7);
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
@@ -29,11 +30,83 @@ body {
     padding: 2.5rem 1.25rem;
 }
 
+/* RESPONSIVE LAYOUT INTEGRITY */
 .main-body {
     margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
     padding: 2.5rem;
+    transition: all 0.3s ease;
     min-height: 100vh;
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .main-body {
+        margin-left: 0;
+        width: 100%;
+        padding: 1.5rem;
+    }
+}
+
+/* BENTO GRID RESPONSIVENESS */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* GLASS LEDGER GRID */
+.glass-ledger {
+    background: var(--glass-bg);
+    border-radius: 1.5rem;
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+}
+
+.ledger-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-blue);
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 100px;
+}
+
+.ledger-row {
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 100px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+    align-items: center;
+}
+
+.ledger-row:hover {
+    background: rgba(56, 189, 248, 0.08);
+    box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.05);
+    transform: scale(1.005);
+}
+
+/* RISK SPARKLINE */
+.sparkline-container {
+    height: 40px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.sparkline-path {
+    fill: none;
+    stroke: var(--accent-blue);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 3px var(--accent-blue));
 }
 
 .nav-active {

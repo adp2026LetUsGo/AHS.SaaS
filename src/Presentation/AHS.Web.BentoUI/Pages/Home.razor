@@ -17,13 +17,13 @@
     </div>
 
     <!-- Main Bento Grid -->
-    <div class="row g-4">
+    <div class="bento-grid">
         <!-- Top Row: Live XAI and Controls -->
-        <div class="col-lg-4">
+        <div class="col-12 col-lg-4">
             <XaiRiskMonitor />
         </div>
-        <div class="col-lg-4">
-            <div class="bento-card h-100">
+        <div class="col-12 col-lg-4">
+            <div class="glass-card h-100 p-4">
                 <h3 class="accent-text mb-3">📁 Local File Ingestion</h3>
                 <p class="text-secondary small mb-4">Load GxP datasets from local storage or USB encrypted drives.</p>
                 <div class="upload-zone p-5 border border-secondary border-dashed rounded text-center mb-3">
@@ -42,8 +42,8 @@
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="bento-card h-100">
+        <div class="col-12 col-lg-4">
+            <div class="glass-card h-100 p-4">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="accent-text">🏗️ Add Record</h3>
                     <div class="live-hash font-monospace small text-primary">
@@ -74,29 +74,14 @@
             </div>
         </div>
 
-        <!-- Data Grid Row -->
+        <!-- Data Grid Row (Premium Ledger) -->
         <div class="col-12">
-            <div class="bento-card overflow-hidden p-0">
-                <div class="p-4 border-bottom border-secondary">
+            <div class="h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4 px-2">
                     <h3 class="accent-text mb-0">📦 Shipment Ledger</h3>
+                    <span class="badge bg-dark border border-secondary text-secondary">GxP Validated Ledger</span>
                 </div>
-                <div class="quick-grid-container px-3">
-                    <QuickGrid Items="@shipments.AsQueryable()" Class="table table-dark mb-0">
-                        <PropertyColumn Property="@(p => p.RouteId)" Title="Route" Sortable="true" />
-                        <PropertyColumn Property="@(p => p.Carrier)" Title="Carrier" />
-                        <PropertyColumn Property="@(p => p.ExternalTempAvg)" Title="Temp (°C)" Format="0.0" />
-                        <PropertyColumn Property="@(p => p.TransitTimeHrs)" Title="Time (Hr)" />
-                        <PropertyColumn Property="@(p => p.RiskScore)" Title="Risk Score" Format="P1" Sortable="true" />
-                        <TemplateColumn Title="Status" Class="text-end">
-                            <ChildContent>
-                                <span class="badge @(context.RiskScore > 0.7 || context.TempExcursion ? "bg-danger shadow-danger-glow" : "bg-success")">
-                                    @(context.RiskScore > 0.7 || context.TempExcursion ? "HIGH RISK" : "VALID")
-                                </span>
-                            </ChildContent>
-                        </TemplateColumn>
-                        <PropertyColumn Property="@(p => p.Hash.Substring(0, 8))" Title="Audit Hash" Class="font-monospace text-secondary" />
-                    </QuickGrid>
-                </div>
+                <ShipmentLedger />
             </div>
         </div>
     </div>

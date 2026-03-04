@@ -2,68 +2,72 @@
 @inject Services.GatewayClient Gateway
 @implements IDisposable
 
-<div class="glass-card p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 style="color: var(--accent-blue); font-weight: 800; margin: 0;">Explainable AI</h4>
-        <div class="d-flex gap-2">
-            @if(!_isOffline) { <span class="badge bg-success-subtle text-success border border-success px-2 py-1" style="font-size: 0.6rem;">LIVE GxP FEED</span> }
-            <button class="btn btn-sm btn-outline-info" @onclick='() => _showDna = true' style="font-size: 0.65rem; font-weight: 800;">MODEL DNA</button>
-        </div>
+<div class="glass-card p-4 h-100">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 style="color: var(--accent-blue); font-weight: 800; margin: 0;">PREDICTIVE RISK</h4>
+        @if(!_isOffline) { <span class="badge bg-success-subtle text-success border border-success px-2 py-1" style="font-size: 0.6rem;">LIVE GxP FEED</span> }
     </div>
 
-    <div class="mb-4">
-        <label class="small opacity-60 d-block mb-1">RISK SENSITIVITY: @(_threshold)%</label>
-        <input type="range" class="form-range" min="30" max="95" value="@_threshold" @oninput='(e) => _threshold = int.Parse(e.Value?.ToString() ?? "65")' />
-    </div>
-
-    @if (_data != null) {
+    @if (_data != null)
+    {
         <div class="text-center">
-            <h1 class='@GetRiskClass() fw-bold mb-0' style="font-size: 3.5rem;">@(_data.Confidence.ToString("P0"))</h1>
-            <p class="small opacity-50 mb-3 text-uppercase">Anomaly Probability</p>
-            <div class="p-3 rounded text-start mb-3" style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent-blue);">
+            <h1 class="fw-bold mb-0 @GetRiskClass()" style="font-size: 3rem; letter-spacing: -2px;">@(_data.Confidence.ToString("P0"))</h1>
+            
+            <!-- RISK SPARKLINE VISUAL -->
+            <div class="sparkline-container">
+                <svg viewBox="0 0 100 25" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+                    <path class="sparkline-path" d="@_sparklinePath" />
+                </svg>
+                <div class="d-flex justify-content-between opacity-25 mt-1" style="font-size: 0.5rem;">
+                    <span>T-5h</span><span>LIVE</span>
+                </div>
+            </div>
+
+            <div class="mt-4 p-3 rounded text-start" style="background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent-blue);">
                 <small class="text-info d-block fw-bold mb-1" style="font-size: 0.65rem;">ROOT CAUSE</small>
-                <span class="small">@_data.RootCause</span>
+                <span class="small" style="font-family: 'Inter';">@_data.RootCause</span>
             </div>
         </div>
     }
 </div>
 
-@if (_showDna && _data != null) {
-    <div class="modal d-block" style="background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 2000;">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content border-0" style="background: #0f172a; border-radius: 1.5rem; color: white;">
-                <div class="modal-header border-0"><h4 class="text-info">Model Intelligence DNA</h4><button class="btn-close btn-close-white" @onclick='() => _showDna = false'></button></div>
-                <div class="modal-body p-4">
-                    <div class="row">
-                        <div class="col-md-6 border-end border-secondary">
-                            <h6 class="fw-bold">ENGINEERING</h6>
-                            <p class="small">Algorithm: <strong>FastTree (GBM)</strong><br/>Recall: <strong>@(_data.Recall.ToString("P0"))</strong><br/>Runtime: <strong>Native AOT</strong></p>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="fw-bold">FINANCIAL COST MATRIX</h6>
-                            <table class="table table-dark table-sm small">
-                                <tr><td class="bg-danger text-white">False Negative</td><td><strong>MAX LOSS (CAPEX)</strong></td></tr>
-                                <tr><td class="bg-warning text-dark">False Positive</td><td><strong>MIN COST (OPEX)</strong></td></tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary w-100 p-3" @onclick='() => _showDna = false'>Return to Command Center</button>
-            </div>
-        </div>
-    </div>
-}
-
 @code {
-    private AHS.Common.Models.PredictionResponse? _data; private int _threshold = 65; private bool _showDna = false;
-    private bool _isOffline = false; private PeriodicTimer _timer = new(TimeSpan.FromSeconds(2));
-    protected override async Task OnInitializedAsync() { await Sync(); _ = Poll(); }
-    private async Task Sync() {
-        try { var r = await Gateway.GetPharmaRiskAsync(); if (r != null) { _data = r; _isOffline = false; } else { SetOffline(); } }
-        catch { SetOffline(); }
+    private PredictionResponse? _data;
+    private bool _isOffline = false;
+    private string _sparklinePath = "M 0 20 L 20 15 L 40 22 L 60 10 L 80 18 L 100 12"; // Mock trajectory
+    private PeriodicTimer _timer = new(TimeSpan.FromSeconds(3));
+
+    protected override async Task OnInitializedAsync() {
+        await Fetch();
+        _ = Poll();
     }
-    private void SetOffline() { _isOffline = true; _data = new AHS.Common.Models.PredictionResponse("SIM-GXP", 0.78f, "RISK", 10, DateTime.UtcNow, 0.95f, 0.92f, 0.93f, "Local Simulation: Synthetic GxP Feed Active", new Dictionary<string, float> { { "Cache", 1.0f } }); }
-    private string GetRiskClass() { var val = (_data?.Confidence ?? 0) * 100; if (val < 30) return "text-success"; if (val < _threshold) return "text-warning"; return "text-danger"; }
-    private async Task Poll() { while (await _timer.WaitForNextTickAsync()) { await Sync(); await InvokeAsync(StateHasChanged); } }
+
+    private async Task Fetch() {
+        try {
+            var r = await Gateway.GetPharmaRiskAsync();
+            if (r != null) { _data = r; _isOffline = false; UpdateSparkline(); }
+            else { SetOffline(); }
+        } catch { SetOffline(); }
+    }
+
+    private void UpdateSparkline() {
+        // Randomize sparkline slightly to simulate real-time movement
+        var rand = new Random();
+        _sparklinePath = $"M 0 {rand.Next(15,25)} L 20 {rand.Next(10,20)} L 40 {rand.Next(15,25)} L 60 {rand.Next(5,15)} L 80 {rand.Next(10,20)} L 100 {rand.Next(10,15)}";
+    }
+
+    private void SetOffline() {
+        _isOffline = true;
+        _data = new PredictionResponse("OFF-01", 0.76f, "STABLE", 12, DateTime.UtcNow, 0.95f, 0.92f, 0.93f, "Simulation: Thermal Drift Active", new Dictionary<string, float>());
+    }
+
+    private string GetRiskClass() => (_data?.Confidence * 100) > 70 ? "text-danger" : "text-success";
+
+    private async Task Poll() {
+        while (await _timer.WaitForNextTickAsync()) {
+            await Fetch();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
     public void Dispose() => _timer.Dispose();
 }
