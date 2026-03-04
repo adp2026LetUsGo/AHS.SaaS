@@ -1,26 +1,80 @@
 :root {
     --bg-dark: #020617;
     --bg-gradient: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-    --glass-bg: rgba(15, 23, 42, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-bg: rgba(15, 23, 42, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.08);
     --accent-blue: #38bdf8;
     --text-main: #f8fafc;
 }
 
 body {
     background: var(--bg-gradient);
-    background-attachment: fixed;
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
-    margin: 0;
     min-height: 100vh;
 }
 
 .glass-card {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
     border-radius: 1.5rem;
     padding: 1.5rem;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* RISK COLORS */
+.risk-low {
+    color: #10b981 !important;
+}
+
+.risk-med {
+    color: #f59e0b !important;
+}
+
+.risk-high {
+    color: #ef4444 !important;
+    animation: pulse 2s infinite;
+}
+
+.risk-bar {
+    transition: all 0.5s ease;
+    height: 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.risk-bar.risk-low {
+    background: #10b981;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+}
+
+.risk-bar.risk-med {
+    background: #f59e0b;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+}
+
+.risk-bar.risk-high {
+    background: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.modal-glass {
+    background: rgba(15, 23, 42, 0.9) !important;
+    border: 1px solid var(--accent-blue) !important;
+    color: white;
+    border-radius: 1.5rem;
 }

@@ -1,6 +1,5 @@
 ﻿@page "/"
 @inject HttpClient Http
-@inject HttpClient Http
 
 <PageTitle>Bento UI - GxP Local Bridge</PageTitle>
 
@@ -19,7 +18,10 @@
 
     <!-- Main Bento Grid -->
     <div class="row g-4">
-        <!-- Top Row: Ingestion and Quick Inut -->
+        <!-- Top Row: Live XAI and Controls -->
+        <div class="col-lg-4">
+            <XaiRiskMonitor />
+        </div>
         <div class="col-lg-4">
             <div class="bento-card h-100">
                 <h3 class="accent-text mb-3">📁 Local File Ingestion</h3>
@@ -40,33 +42,33 @@
             </div>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-lg-4">
             <div class="bento-card h-100">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h3 class="accent-text">🏗️ Add New Record</h3>
+                    <h3 class="accent-text">🏗️ Add Record</h3>
                     <div class="live-hash font-monospace small text-primary">
                          HASH: @currentHash
                     </div>
                 </div>
-                <div class="row g-3">
-                    <div class="col-md-3">
+                <div class="row g-2">
+                    <div class="col-12">
                         <label class="form-label small text-secondary">Route ID</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" @bind="newRecord.RouteId" @bind:event="oninput" @onkeyup="UpdateHash" />
+                        <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" @bind="newRecord.RouteId" @bind:event="oninput" @onkeyup="UpdateHash" />
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-12">
                         <label class="form-label small text-secondary">Carrier</label>
-                        <input type="text" class="form-control bg-dark text-white border-secondary" @bind="newRecord.Carrier" @bind:event="oninput" @onkeyup="UpdateHash" />
+                        <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary" @bind="newRecord.Carrier" @bind:event="oninput" @onkeyup="UpdateHash" />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-6">
                         <label class="form-label small text-secondary">Avg Temp</label>
-                        <input type="number" class="form-control bg-dark text-white border-secondary" @bind="newRecord.ExternalTempAvg" @bind:event="oninput" @onkeyup="UpdateHash" />
+                        <input type="number" class="form-control form-control-sm bg-dark text-white border-secondary" @bind="newRecord.ExternalTempAvg" @bind:event="oninput" @onkeyup="UpdateHash" />
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-6">
                         <label class="form-label small text-secondary">Hrs</label>
-                        <input type="number" class="form-control bg-dark text-white border-secondary" @bind="newRecord.TransitTimeHrs" @bind:event="oninput" @onkeyup="UpdateHash" />
+                        <input type="number" class="form-control form-control-sm bg-dark text-white border-secondary" @bind="newRecord.TransitTimeHrs" @bind:event="oninput" @onkeyup="UpdateHash" />
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-outline-primary w-100 h-100" style="margin-top: 1.8rem;" @onclick="AddRecord">Save & Audit</button>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary w-100" @onclick="AddRecord">Save & Audit</button>
                     </div>
                 </div>
             </div>
@@ -144,11 +146,11 @@
         
         if (result.IsSuccessStatusCode)
         {
-            var response = await result.Content.ReadFromJsonAsync<PredictRiskResponse>().ConfigureAwait(false);
+            var response = await result.Content.ReadFromJsonAsync<AHS.Common.Models.PredictionResponse>(AotJsonContext.Default.PredictionResponse).ConfigureAwait(false);
             if (response != null)
             {
-                newRecord.RiskScore = response.Score;
-                newRecord.TempExcursion = response.IsHighRisk;
+                newRecord.RiskScore = response.Confidence;
+                newRecord.TempExcursion = response.Label == "RISK DETECTED";
             }
         }
 
