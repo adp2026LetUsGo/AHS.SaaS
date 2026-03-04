@@ -1,3 +1,5 @@
+using AHS.Common.Models;
+using System.Collections.Generic;
 using AHS.Common;
 using AHS.SharedKernel;
 
@@ -10,9 +12,6 @@ public record PredictExcursionRiskCommand(
     double ExternalTempAvg,
     string PackagingType,
     bool DelayFlag) : IRequest<Result<PredictionResponse>>;
-
-
-
 
 public static class ExcursionPredictionPolicy
 {
