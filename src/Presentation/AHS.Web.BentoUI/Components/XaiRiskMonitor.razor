@@ -5,54 +5,51 @@
 <div class="glass-card">
     <div>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 style="color: var(--accent-blue); margin: 0; font-weight: 700;">Predictive Risk</h4>
-            <button class="btn btn-sm btn-outline-info" @onclick='() => _showDna = true'>Engine DNA</button>
+            <h4 style="color: var(--accent-blue); margin: 0; font-weight: 700; letter-spacing: -0.5px;">Predictive Risk</h4>
+            <button class="btn btn-sm btn-outline-info px-3 py-1 fw-bold" style="font-size: 0.65rem; border-radius: 8px;" @onclick="() => _showDna = true">ENGINE DNA</button>
         </div>
-        @if (_data != null) {
-            <div class="text-center mt-4">
-                <h1 style="font-size: 4rem; font-weight: 900; margin: 0; color: @GetRiskColor()">@(_data.Confidence.ToString("P0"))</h1>
-                <div class="methodology-summary">FastTree Engine | SMOTE Balanced | 95% Recall</div>
+
+        <div class="text-center mt-5">
+            <h1 class="risk-display">@(_data?.Confidence.ToString("P0") ?? "--%")</h1>
+            <div class="methodology-summary">
+                FastTree Engine | SMOTE Balanced | 95% Recall
             </div>
-        }
+        </div>
     </div>
+
     <div class="mt-4">
-        <label class="small opacity-50 mb-2 d-block text-uppercase">Risk Sensitivity</label>
+        <label class="small opacity-50 mb-2 d-block text-uppercase fw-bold" style="font-size: 0.6rem; letter-spacing: 1.5px;">Risk Sensitivity Threshold</label>
         <input type="range" class="form-range" min="30" max="95" value="65" />
     </div>
 </div>
 
-@if (_showDna) {
-    <div class="modal d-block" style="background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(10px);">
+@if (_showDna)
+{
+    <div class="modal d-block" style="background: rgba(0,0,0,0.85); z-index: 2000; backdrop-filter: blur(12px);">
         <div class="modal-dialog modal-xl modal-dialog-centered">
             <div class="modal-content modal-glass p-4 border-0">
-                <div class="modal-header border-0">
-                    <h3 class="modal-title fw-bold text-info">XAI Model DNA & Methodology</h3>
-                    <button type="button" class="btn-close btn-close-white" @onclick='() => _showDna = false'></button>
+                <div class="modal-header border-0 p-4">
+                    <h3 class="modal-title fw-bold text-info">Model Methodology DNA</h3>
+                    <button type="button" class="btn-close btn-close-white" @onclick="() => _showDna = false"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-4">
                     <div class="row g-5">
                         <div class="col-md-6 border-end border-secondary">
-                            <h5 class="text-white mb-4 fw-bold">Engineering DNA</h5>
+                            <h5 class="text-white mb-4 fw-bold">Engineering Stack</h5>
                             <ul class="list-unstyled">
                                 <li class="mb-3">🔹 Algorithm: <strong>FastTree MART (Gradient Boosting)</strong></li>
-                                <li class="mb-3">🔹 Class Balancing: <strong>SMOTE (Oversampling)</strong></li>
-                                <li class="mb-3">🔹 Temporal Features: <strong>Lags (T-1 Window)</strong></li>
-                                <li class="mb-3">🔹 Serialization: <strong>ONNX Opset 21</strong></li>
-                                <li class="mb-3">🔹 Optimization: <strong>.NET 10 Native AOT</strong></li>
-                                <li class="mb-3">🔹 Pattern: <strong>Clean Architecture Result Pattern</strong></li>
-                                <li class="mb-3">🔹 IO: <strong>Source Generated JSON Contexts</strong></li>
+                                <li class="mb-3">🔹 Balancing: <strong>SMOTE (Synthetic Minority)</strong></li>
+                                <li class="mb-3">🔹 Features: <strong>Temporal Lags (T-1 analytics)</strong></li>
+                                <li class="mb-3">🔹 Format: <strong>ONNX Opset 21 Serialization</strong></li>
+                                <li class="mb-3">🔹 Runtime: <strong>.NET 10 Native AOT Ready</strong></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h5 class="text-white mb-4 fw-bold">Performance & Business</h5>
-                            <div class="row text-center mb-4">
-                                <div class="col-4"><small class="opacity-50">RECALL</small><br/><strong class="text-success" style="font-size: 1.2rem;">95%</strong></div>
-                                <div class="col-4"><small class="opacity-50">PRECISION</small><br/><strong style="font-size: 1.2rem;">92%</strong></div>
-                                <div class="col-4"><small class="opacity-50">F1-SCORE</small><br/><strong style="font-size: 1.2rem;">93%</strong></div>
-                            </div>
-                            <h6 class="text-info fw-bold mb-3">Business Cost Matrix</h6>
-                            <table class="table table-dark table-sm small opacity-75">
-                                <thead><tr><th>Matrix State</th><th>Impact</th><th>Cost focus</th></tr></thead>
+                            <h5 class="text-white mb-4 fw-bold">Financial Matrix Focus</h5>
+                            <table class="table table-dark table-sm small opacity-75 mt-3">
+                                <thead class="text-info">
+                                    <tr><th>Matrix State</th><th>Business Impact</th><th>Cost focus</th></tr>
+                                </thead>
                                 <tbody>
                                     <tr><td>True Positive</td><td>Intervention Success</td><td>OPEX Savings</td></tr>
                                     <tr><td>False Negative</td><td class="text-danger">Product Loss</td><td>MAX LOSS</td></tr>
@@ -62,8 +59,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer border-0 mt-4">
-                    <button class="btn btn-primary w-100 p-3" @onclick='() => _showDna = false'>Return to Dashboard</button>
+                <div class="modal-footer border-0 p-4">
+                    <button class="btn btn-primary w-100 p-3 fw-bold" style="border-radius: 12px;" @onclick="() => _showDna = false">Return to Dashboard</button>
                 </div>
             </div>
         </div>
@@ -75,21 +72,23 @@
     private bool _showDna = false;
     private PeriodicTimer _timer = new(TimeSpan.FromSeconds(3));
 
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
         await Fetch();
         _ = Poll();
     }
 
-    private async Task Fetch() {
+    private async Task Fetch()
+    {
         try {
             _data = await Gateway.GetPharmaRiskAsync();
         } catch { }
     }
 
-    private string GetRiskColor() => (_data?.Confidence * 100) > 70 ? "var(--bs-danger)" : "var(--bs-success)";
-
-    private async Task Poll() {
-        while (await _timer.WaitForNextTickAsync()) {
+    private async Task Poll()
+    {
+        while (await _timer.WaitForNextTickAsync())
+        {
             await Fetch();
             await InvokeAsync(StateHasChanged);
         }
