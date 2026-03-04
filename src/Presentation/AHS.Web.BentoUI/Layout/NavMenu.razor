@@ -1,39 +1,29 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">AHS.Web.BentoUI</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿<div class="sidebar">
+    <div class="px-3 mb-5">
+        <h3 style="font-weight: 900; letter-spacing: -1.5px; color: white; margin: 0;">AHS.SaaS</h3>
+        <small class="opacity-40" style="font-family: 'Inter'; font-weight: 500;">Enterprise Command Center</small>
+    </div>
+
+    <div class="nav flex-column">
+        <!-- ACTIVE APP -->
+        <div class="mb-5">
+            <span class="suite-badge ms-3 mb-2">PHARMA SUITE</span>
+            <div class="nav-link nav-active py-3 d-flex align-items-center">
+                <i class="bi bi-thermometer-high me-3 active-pulse" style="font-size: 1.25rem;"></i>
+                <span>Temperature Excursions</span>
+            </div>
+        </div>
+
+        <!-- ROADMAP APPS -->
+        <small class="px-3 mb-3 d-block opacity-40 fw-bold" style="font-size: 0.65rem; letter-spacing: 1.5px;">ROADMAP ECOSYSTEM</small>
+        
+        <div class="nav-link nav-roadmap"><i class="bi bi-droplet me-3"></i> Dairy Yield Forecasting</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-tools me-3"></i> Asset Maintenance</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-clipboard-check me-3"></i> Pharma Batch Auditor</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-truck me-3"></i> Cold Chain Optimizer</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-heart-pulse me-3"></i> Livestock Health</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-graph-down me-3"></i> GL Anomalies</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-people me-3"></i> Employee Retention</div>
+        <div class="nav-link nav-roadmap"><i class="bi bi-fuel-pump me-3"></i> Fuel Traceability</div>
     </div>
 </div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}

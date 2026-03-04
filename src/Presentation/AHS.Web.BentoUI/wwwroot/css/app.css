@@ -1,80 +1,96 @@
 :root {
     --bg-dark: #020617;
-    --bg-gradient: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
-    --glass-bg: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.08);
+    --sidebar-width: 300px;
+    --sidebar-bg: rgba(2, 6, 23, 0.98);
     --accent-blue: #38bdf8;
     --text-main: #f8fafc;
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --risk-green: #10b981;
+    --risk-yellow: #f59e0b;
+    --risk-red: #ef4444;
 }
 
 body {
-    background: var(--bg-gradient);
+    background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    background-attachment: fixed;
     color: var(--text-main);
     font-family: 'Outfit', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* FIXED SIDEBAR */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid var(--glass-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 2.5rem 1.25rem;
+    overflow-y: auto;
+}
+
+/* MAIN CONTENT WITH OFFSET */
+.main-body {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    padding: 3rem;
     min-height: 100vh;
+    transition: margin-left 0.3s ease;
 }
 
-.glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 1.5rem;
-    padding: 1.5rem;
+/* ACTIVE APP & PULSE */
+.nav-active {
+    background: rgba(56, 189, 248, 0.12);
+    border-left: 4px solid var(--accent-blue);
+    color: var(--accent-blue) !important;
+    font-weight: 600;
 }
 
-/* RISK COLORS */
-.risk-low {
-    color: #10b981 !important;
+.active-pulse {
+    animation: icon-glow 2s infinite;
 }
 
-.risk-med {
-    color: #f59e0b !important;
-}
-
-.risk-high {
-    color: #ef4444 !important;
-    animation: pulse 2s infinite;
-}
-
-.risk-bar {
-    transition: all 0.5s ease;
-    height: 12px;
-    border-radius: 6px;
-    margin-top: 10px;
-}
-
-.risk-bar.risk-low {
-    background: #10b981;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-}
-
-.risk-bar.risk-med {
-    background: #f59e0b;
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
-}
-
-.risk-bar.risk-high {
-    background: #ef4444;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
-}
-
-@keyframes pulse {
+@keyframes icon-glow {
     0% {
-        opacity: 1;
+        filter: drop-shadow(0 0 2px var(--accent-blue));
+        transform: scale(1);
     }
 
     50% {
-        opacity: 0.7;
+        filter: drop-shadow(0 0 8px var(--accent-blue));
+        transform: scale(1.1);
     }
 
     100% {
-        opacity: 1;
+        filter: drop-shadow(0 0 2px var(--accent-blue));
+        transform: scale(1);
     }
 }
 
-.modal-glass {
-    background: rgba(15, 23, 42, 0.9) !important;
-    border: 1px solid var(--accent-blue) !important;
-    color: white;
-    border-radius: 1.5rem;
+/* ROADMAP DISABLED STATE */
+.nav-roadmap {
+    opacity: 0.35;
+    filter: grayscale(1);
+    cursor: not-allowed;
+    pointer-events: none;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+    transition: opacity 0.3s;
+}
+
+.suite-badge {
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    background: var(--accent-blue);
+    color: var(--bg-dark);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
 }
