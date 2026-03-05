@@ -1,40 +1,24 @@
-<div class="glass-ledger mt-5">
-    <div class="ledger-header ledger-grid">
+<div class="glass-card mt-4" style="min-height: auto;">
+    <div class="ledger-header ledger-grid mb-3" style="color: var(--accent-blue); font-weight: 800; font-size: 0.7rem; text-transform: uppercase;">
         <span>Shipment / Batch</span>
         <span>Route Segment</span>
-        <span>Temp.</span>
-        <span class="text-end">GxP Status</span>
+        <span>Temp</span>
+        <span class="text-end">Status</span>
     </div>
-
-    @foreach (var s in _shipments)
-    {
-        <div class="ledger-row ledger-grid">
-            <div>
-                <strong class="text-white">@s.Id</strong><br />
-                <small class="opacity-50">@s.Batch</small>
-            </div>
-            <div class="small opacity-75">@s.Route</div>
-            <div>
-                <span class="badge @(s.Temp > 5.0 ? "bg-danger" : "bg-success")" style="font-size: 0.7rem;">
-                    @s.Temp.ToString("F1") °C
-                </span>
-            </div>
-            <div class="text-end">
-                <span class="fw-bold @(s.Status == "VALID" ? "text-success" : "risk-med")" style="font-size: 0.75rem;">
-                    ● @s.Status
-                </span>
-            </div>
+    @foreach(var s in _shipments) {
+        <div class="ledger-row ledger-grid py-3 border-top border-secondary border-opacity-25">
+            <div><strong class="text-white">@s.Id</strong><br/><small class="opacity-50">@s.Batch</small></div>
+            <div class="small">@s.Route</div>
+            <div><span class="badge @(s.Temp > 5 ? "bg-danger" : "bg-success")">@s.Temp°C</span></div>
+            <div class="text-end fw-bold" style="color: #10b981;">● @s.Status</div>
         </div>
     }
 </div>
 
 @code {
-    private record Shipment(string Id, string Batch, string Route, double Temp, string Status);
-    private List<Shipment> _shipments = new()
-    {
-        new Shipment("GXP-L-9901", "B-992-GXP", "PTY -> DAV (Road)", 4.2, "VALID"),
-        new Shipment("GXP-L-9902", "B-992-GXP", "DAV -> PTY (Road)", 6.1, "EXCURSION"),
-        new Shipment("GXP-L-9903", "B-102-GXP", "MIA -> PTY (Air)", 3.8, "VALID"),
-        new Shipment("GXP-L-9904", "B-105-GXP", "PTY -> COL (Sea)", 4.5, "VALID")
+    private record S(string Id, string Batch, string Route, float Temp, string Status);
+    private List<S> _shipments = new() {
+        new S("GXP-L-9901", "B-992", "PTY -> DAV (Road)", 4.2f, "VALID"),
+        new S("GXP-L-9902", "B-102", "MIA -> PTY (Air)", 3.8f, "VALID")
     };
 }

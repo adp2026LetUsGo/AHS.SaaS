@@ -1,7 +1,9 @@
 :root {
     --bg-dark: #020617;
+    --sidebar-width: 300px;
     --accent-blue: #38bdf8;
-    --glass-glow: rgba(56, 189, 248, 0.2);
+    --glass-bg: rgba(15, 23, 42, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.08);
 }
 
 body {
@@ -12,46 +14,64 @@ body {
     margin: 0;
 }
 
-/* COMMAND CENTER BENTO GRID (3 Rows, 2 Columns) */
+/* COMMAND CENTER BENTO GRID */
 .command-center-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
     gap: 24px;
+    margin-left: var(--sidebar-width);
     padding: 30px;
-    margin-left: 300px;
-    /* Sidebar Offset */
 }
 
-.ledger-full-width {
+.full-width-tier {
     grid-column: 1 / -1;
 }
 
-/* FLOATING GLASS ELEMENT (NO BORDER) */
-.risk-floating-value {
-    font-size: 5rem;
-    font-weight: 900;
-    color: white;
-    margin: 0;
-    filter: drop-shadow(0 0 15px var(--accent-blue));
-    background: none;
-    border: none;
-}
-
 .glass-card {
-    background: rgba(15, 23, 42, 0.7);
+    background: var(--glass-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--glass-border);
     border-radius: 1.5rem;
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
+    min-height: 400px;
 }
 
-.telemetry-label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+/* SIDEBAR FIXED */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: rgba(2, 6, 23, 0.95);
+    border-right: 1px solid var(--glass-border);
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 2rem 1.25rem;
+    z-index: 1000;
+}
+
+/* LEDGER GRID (200px 1fr 120px 180px) */
+.ledger-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr 120px 180px;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.pulse-blue {
+    animation: blue-glow 2s infinite;
     color: var(--accent-blue);
-    font-weight: 800;
+}
+
+@keyframes blue-glow {
+    0% {
+        filter: drop-shadow(0 0 2px var(--accent-blue));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 10px var(--accent-blue));
+    }
+
+    100% {
+        filter: drop-shadow(0 0 2px var(--accent-blue));
+    }
 }
