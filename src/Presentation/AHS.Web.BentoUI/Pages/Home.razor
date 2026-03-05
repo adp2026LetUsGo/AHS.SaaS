@@ -1,15 +1,12 @@
 ﻿@page "/"
-
-<div class="dashboard-wrapper">
-    <header class="dashboard-header">AHS Data Vault / Pharma Suite</header>
+<div class="command-center-grid">
+    <XaiRiskMonitor />
+    <PerformanceMonitor />
     
-    <section class="main-content">
-        <XaiRiskMonitor />
-        <DataIngestion />
-        <AddRecordForm />
-    </section>
-
-    <footer class="px-4 pb-5">
+    <DataIngestion />
+    <AddRecordForm />
+    
+    <div class="ledger-full-width">
         <ShipmentLedger />
-    </footer>
+    </div>
 </div>

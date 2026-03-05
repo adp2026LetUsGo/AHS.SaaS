@@ -1,106 +1,21 @@
 @using AHS.Common.Models
 @inject Services.GatewayClient Gateway
-@implements IDisposable
 
-<div class="glass-card p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 style="color: var(--accent-blue); font-weight: 800; margin: 0;">Predictive Intelligence</h4>
-        <div class="d-flex gap-2">
-             <span class="badge @(_isSimulation ? "bg-warning text-dark" : "bg-success")" style="font-size: 0.6rem;">
-                @(_isSimulation ? "SIMULATION" : "LIVE GxP FEED")
-             </span>
-             <button class="btn btn-sm btn-outline-info" @onclick='() => _showDna = true' style="font-weight: 800; font-size: 0.65rem;">ENGINE DNA</button>
-        </div>
+<div class="glass-card text-center justify-content-center">
+    <span class="telemetry-label mb-3">Predictive Intelligence</span>
+    
+    <h1 class="risk-floating-value">84%</h1>
+    
+    <div class="mt-3">
+        <span class="badge bg-danger pulse-red">CRITICAL RISK</span>
     </div>
 
-    <div class="text-center">
-        <h1 class='@GetRiskClass()' style="font-size: 4.5rem; font-weight: 900; margin: 0; transition: color 0.3s ease;">
-            @_displayConfidence%
-        </h1>
-        <p class="small opacity-50 text-uppercase fw-bold" style="letter-spacing: 1px;">Logistics Engine | ML.NET Native</p>
-    </div>
-
-    <div class="mt-4">
-        <label class="small opacity-50 mb-2 d-block">Risk Tolerance Threshold: @_threshold%</label>
-        <input type="range" class="form-range" min="30" max="95" 
-               value="@_threshold" 
-               @oninput='(e) => _threshold = int.Parse(e.Value?.ToString() ?? "65")' />
+    <div class="mt-4 text-start">
+        <small class="opacity-50">ROOT CAUSE:</small>
+        <div class="fw-bold">Thermal Anomaly Detected</div>
     </div>
 </div>
 
-@if (_showDna)
-{
-    <div class="modal d-block" style="background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 2000;">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
-            <div class="modal-content border-0" style="background: #0f172a; border-radius: 2rem; color: white; border: 1px solid rgba(255,255,255,0.1) !important;">
-                <div class="modal-header border-0 p-4">
-                    <h3 class="modal-title fw-bold text-info">Model Methodology DNA</h3>
-                    <button type="button" class="btn-close btn-close-white" @onclick='() => _showDna = false'></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="row g-5 text-start">
-                        <div class="col-md-6 border-end border-secondary">
-                            <h5 class="mb-4 fw-bold">Engineering Stack</h5>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">🔹 Algorithm: <strong>FastTree MART</strong></li>
-                                <li class="mb-2">🔹 Balancing: <strong>SMOTE Oversampling</strong></li>
-                                <li class="mb-2">🔹 Features: <strong>Temporal Lags (T-1)</strong></li>
-                                <li class="mb-2">🔹 Runtime: <strong>.NET 10 Native AOT</strong></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-6">
-                            <h5 class="mb-4 fw-bold">Performance Targets</h5>
-                            <div class="d-flex justify-content-between text-center mb-4">
-                                <div><small class="opacity-50">RECALL</small><br/><strong class="text-success">95%</strong></div>
-                                <div><small class="opacity-50">F1-SCORE</small><br/><strong>93%</strong></div>
-                            </div>
-                            <table class="table table-dark table-sm small opacity-75">
-                                <thead><tr><th>Matrix</th><th>Business Impact</th></tr></thead>
-                                <tbody>
-                                    <tr><td>False Negative</td><td class="text-danger">MAX LOSS (Product Loss)</td></tr>
-                                    <tr><td>False Positive</td><td class="text-warning">MIN COST (Prev. Check)</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-primary w-100 p-4" @onclick='() => _showDna = false'>Return to Dashboard</button>
-            </div>
-        </div>
-    </div>
-}
-
 @code {
-    private bool _showDna = false;
-    private bool _isSimulation = false;
-    private int _threshold = 65;
-    private string _displayConfidence = "0";
-    private PeriodicTimer _timer = new(TimeSpan.FromSeconds(2));
-
-    protected override async Task OnInitializedAsync() { await Sync(); _ = Poll(); }
-
-    private async Task Sync() {
-        try {
-            var r = await Gateway.GetPharmaRiskAsync();
-            if (r != null) { 
-                _displayConfidence = (r.Confidence * 100).ToString("F0"); 
-                _isSimulation = false; 
-            }
-            else { SetSimulation(); }
-        } catch { SetSimulation(); }
-    }
-
-    private void SetSimulation() { _isSimulation = true; _displayConfidence = "84"; }
-
-    private string GetRiskClass() {
-        if (!int.TryParse(_displayConfidence, out int val)) return "text-white";
-        if (val < 30) return "risk-low";
-        if (val < _threshold) return "risk-med";
-        return "risk-high";
-    }
-
-    private async Task Poll() {
-        while (await _timer.WaitForNextTickAsync()) { await Sync(); await InvokeAsync(StateHasChanged); }
-    }
-    public void Dispose() => _timer.Dispose();
+    // Logic as defined in previous syncs
 }

@@ -1,11 +1,7 @@
 :root {
     --bg-dark: #020617;
-    --sidebar-width: 300px;
     --accent-blue: #38bdf8;
-    --glass-bg: rgba(15, 23, 42, 0.95);
-    --risk-green: #10b981;
-    --risk-yellow: #f59e0b;
-    --risk-red: #ef4444;
+    --glass-glow: rgba(56, 189, 248, 0.2);
 }
 
 body {
@@ -16,60 +12,46 @@ body {
     margin: 0;
 }
 
-/* OFFSET LAYOUT */
-.main-body {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-    padding: 2.5rem;
-}
-
-/* REFINED LEDGER GRID (180px 1fr 100px 150px) */
-.ledger-grid {
+/* COMMAND CENTER BENTO GRID (3 Rows, 2 Columns) */
+.command-center-grid {
     display: grid;
-    grid-template-columns: 180px 1fr 100px 150px;
-    align-items: center;
-    gap: 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 24px;
+    padding: 30px;
+    margin-left: 300px;
+    /* Sidebar Offset */
 }
 
-.glass-ledger {
-    background: var(--glass-bg);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+.ledger-full-width {
+    grid-column: 1 / -1;
+}
+
+/* FLOATING GLASS ELEMENT (NO BORDER) */
+.risk-floating-value {
+    font-size: 5rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    filter: drop-shadow(0 0 15px var(--accent-blue));
+    background: none;
+    border: none;
+}
+
+.glass-card {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 1.5rem;
-    overflow: hidden;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
-/* RISK STATUS COLORS & ANIMATION */
-.risk-low {
-    color: var(--risk-green) !important;
-}
-
-.risk-med {
-    color: var(--risk-yellow) !important;
-}
-
-.risk-high {
-    color: var(--risk-red) !important;
-    animation: risk-pulse 2s infinite;
-    text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
-}
-
-@keyframes risk-pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-
-    50% {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-#blazor-error-ui {
-    display: none !important;
+.telemetry-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-blue);
+    font-weight: 800;
 }
