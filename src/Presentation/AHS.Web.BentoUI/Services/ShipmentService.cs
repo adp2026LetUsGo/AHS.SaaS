@@ -35,7 +35,7 @@ internal static class ShipmentService
                     TempExcursion = parts[9] == "1"
                 });
             }
-            catch (Exception)
+            catch (Exception ex) when (ex is FormatException or IndexOutOfRangeException)
             {
                 // Silently skip malformed rows for stability
             }

@@ -4,7 +4,7 @@ using AHS.Common.Serialization;
 
 namespace AHS.Web.BentoUI.Services;
 
-public class GatewayClient(HttpClient http)
+internal sealed class GatewayClient(HttpClient http)
 {
     public async Task<PredictionResponse?> GetPharmaRiskAsync()
     {
@@ -13,11 +13,16 @@ public class GatewayClient(HttpClient http)
             // Explicit route matching the Controller [HttpGet("predict-risk")]
             return await http.GetFromJsonAsync<PredictionResponse>(
                 "api/pharma/traceability/predict-risk", 
-                AotJsonContext.Default.PredictionResponse);
+                AotJsonContext.Default.PredictionResponse).ConfigureAwait(false);
+        }
+        catch (HttpRequestException ex)
+        {
+            Console.WriteLine($"Network Error: {ex.Message}");
+            return null;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"API Error: {ex.Message}");
+            Console.WriteLine($"API Logic Error: {ex.Message}");
             return null;
         }
     }

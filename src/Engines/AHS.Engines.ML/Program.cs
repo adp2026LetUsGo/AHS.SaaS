@@ -6,7 +6,7 @@ using Microsoft.ML.OnnxRuntime.Tensors;
 
 namespace AHS.Engines.ML;
 
-class Program
+internal sealed class Program
 {
     static void Main(string[] args)
     {
@@ -59,6 +59,7 @@ class Program
         catch (Exception ex)
         {
             Console.WriteLine($"❌ Inference failed: {ex.Message}");
+            throw; // Rethrow to preserve stack trace and satisfy CA1031 in top-level Main
         }
     }
 }

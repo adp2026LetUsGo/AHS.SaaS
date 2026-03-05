@@ -1,5 +1,8 @@
 using AHS.Common.Serialization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode", Justification = "Controllers are registered via TypeInfoResolverChain and AotJsonContext.")]
 
 var builder = WebApplication.CreateSlimBuilder(args);
 

@@ -2,7 +2,7 @@ using System.Numerics;
 
 namespace AHS.Engines.ML.Optimization;
 
-public static class DataPerformanceProfiler
+internal static class DataPerformanceProfiler
 {
     public static void NormalizeTemperatures(Span<float> data, float min, float max)
     {

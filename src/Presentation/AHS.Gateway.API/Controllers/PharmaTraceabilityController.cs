@@ -5,7 +5,7 @@ namespace AHS.Gateway.Api.Controllers;
 
 [ApiController]
 [Route("api/pharma/traceability")]
-public class PharmaTraceabilityController : ControllerBase
+internal sealed class PharmaTraceabilityController : ControllerBase
 {
     [HttpGet("predict-risk")]
     public ActionResult<PredictionResponse> GetRisk()

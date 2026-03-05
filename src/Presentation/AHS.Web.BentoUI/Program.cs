@@ -5,4 +5,4 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5000") });
 builder.Services.AddScoped<GatewayClient>();
-await builder.Build().RunAsync();
+await builder.Build().RunAsync().ConfigureAwait(false);
