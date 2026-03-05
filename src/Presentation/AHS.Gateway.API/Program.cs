@@ -1,15 +1,9 @@
 using AHS.Common.Serialization;
-using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-// Native AOT JSON Configuration
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AotJsonContext.Default);
-});
-
-// CORS: Allow UI Port (5120) and any method/header for dev friction reduction
+// CORS Policy for Dashboard Connectivity
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -20,12 +14,17 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddControllers();
+// NATIVE AOT JSON CONFIGURATION
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Insert Source Generated Context into the resolver chain
+        options.JsonSerializerOptions.TypeInfoResolverChain.Insert(0, AotJsonContext.Default);
+    });
 
 var app = builder.Build();
 
-app.UseCors(); // Apply policy before mapping controllers
-
+app.UseCors();
 app.MapControllers();
 
 app.Run();

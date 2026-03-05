@@ -3,7 +3,9 @@
     --sidebar-width: 300px;
     --accent-blue: #38bdf8;
     --glass-bg: rgba(15, 23, 42, 0.95);
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --risk-green: #10b981;
+    --risk-yellow: #f59e0b;
+    --risk-red: #ef4444;
 }
 
 body {
@@ -19,93 +21,55 @@ body {
     margin-left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
     padding: 2.5rem;
-    min-height: 100vh;
 }
 
-/* LOGISTICS LEDGER GRID (200px 1fr 120px 180px) */
+/* REFINED LEDGER GRID (180px 1fr 100px 150px) */
 .ledger-grid {
     display: grid;
-    grid-template-columns: 200px 1fr 120px 180px;
+    grid-template-columns: 180px 1fr 100px 150px;
     align-items: center;
     gap: 1.5rem;
 }
 
 .glass-ledger {
     background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1.5rem;
     overflow: hidden;
 }
 
-.ledger-header {
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--accent-blue);
-    font-weight: 800;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
+/* RISK STATUS COLORS & ANIMATION */
+.risk-low {
+    color: var(--risk-green) !important;
 }
 
-.ledger-row {
-    padding: 1.25rem 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transition: background 0.2s ease;
-    font-size: 0.85rem;
+.risk-med {
+    color: var(--risk-yellow) !important;
 }
 
-/* SIDEBAR & ROADMAP */
-.sidebar {
-    width: var(--sidebar-width);
-    height: 100vh;
-    background: var(--glass-bg);
-    border-right: 1px solid var(--glass-border);
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding: 2rem 1rem;
-    z-index: 1000;
+.risk-high {
+    color: var(--risk-red) !important;
+    animation: risk-pulse 2s infinite;
+    text-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
 }
 
-.nav-active {
-    background: rgba(56, 189, 248, 0.1);
-    border-left: 4px solid var(--accent-blue);
-    color: var(--accent-blue) !important;
-    font-weight: 600;
-}
-
-.nav-roadmap {
-    opacity: 0.35;
-    filter: grayscale(1);
-    pointer-events: none;
-    font-size: 0.85rem;
-    margin-bottom: 0.5rem;
-}
-
-.pulse-blue {
-    animation: blue-glow 2s infinite;
-    color: var(--accent-blue);
-}
-
-@keyframes blue-glow {
+@keyframes risk-pulse {
     0% {
-        filter: drop-shadow(0 0 2px var(--accent-blue));
+        transform: scale(1);
+        opacity: 1;
     }
 
     50% {
-        filter: drop-shadow(0 0 10px var(--accent-blue));
+        transform: scale(1.05);
+        opacity: 0.8;
     }
 
     100% {
-        filter: drop-shadow(0 0 2px var(--accent-blue));
+        transform: scale(1);
+        opacity: 1;
     }
 }
 
-/* GLASS CARD RE-REFINEMENT */
-.glass-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 2rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(12px);
+#blazor-error-ui {
+    display: none !important;
 }
