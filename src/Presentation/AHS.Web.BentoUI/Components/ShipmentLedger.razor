@@ -1,28 +1,27 @@
 <div class="glass-ledger mt-5">
-    <div class="ledger-header">
+    <div class="ledger-header ledger-grid">
         <span>Shipment / Batch</span>
         <span>Route Segment</span>
-        <span>Temp.</span>
+        <span>Condition</span>
         <span class="text-end">GxP Status</span>
     </div>
 
-    @foreach (var shipment in _shipments)
+    @foreach (var s in _shipments)
     {
-        <div class="ledger-row">
+        <div class="ledger-row ledger-grid">
             <div>
-                <strong class="text-white" style="font-size: 1rem;">@shipment.Id</strong><br />
-                <small class="opacity-50 fw-bold">@shipment.BatchId</small>
+                <strong class="text-white">@s.Id</strong><br />
+                <small class="opacity-50">@s.Batch</small>
             </div>
-            <div class="small opacity-75 fw-medium">@shipment.Route</div>
+            <div class="small opacity-75">@s.Route</div>
             <div>
-                <span class="badge @(shipment.Temperature > 5.0 ? "bg-danger" : "bg-success") px-3 py-2" style="font-size: 0.75rem; border-radius: 6px;">
-                    @shipment.Temperature.ToString("F1") °C
+                <span class="badge @(s.Temp > 5.0 ? "bg-danger" : "bg-success")" style="font-size: 0.7rem;">
+                    @s.Temp.ToString("F1") °C
                 </span>
             </div>
             <div class="text-end">
-                <span class="fw-bold d-flex align-items-center justify-content-end gap-2" style="color: @(shipment.IsExcursion ? "var(--accent-blue)" : "#10b981"); font-size: 0.8rem;">
-                    <span style="height: 8px; width: 8px; border-radius: 50%; background-color: @(shipment.IsExcursion ? "var(--accent-blue)" : "#10b981"); display: inline-block;"></span>
-                    @(shipment.IsExcursion ? "EXCURSION DETECTED" : "VALID")
+                <span class="fw-bold" style="color: @(s.Status == "VALID" ? "#10b981" : "var(--accent-blue)"); font-size: 0.75rem;">
+                    ● @s.Status
                 </span>
             </div>
         </div>
@@ -30,13 +29,12 @@
 </div>
 
 @code {
-    private record ShipmentData(string Id, string BatchId, string Route, double Temperature, bool IsExcursion);
-
-    private List<ShipmentData> _shipments = new()
+    private record Shipment(string Id, string Batch, string Route, double Temp, string Status);
+    private List<Shipment> _shipments = new()
     {
-        new ShipmentData("GXP-8821", "BATCH-001", "Panama City ➔ David", 4.2, false),
-        new ShipmentData("GXP-8822", "BATCH-001", "David ➔ Panama City", 5.8, true),
-        new ShipmentData("GXP-8823", "BATCH-002", "Tocumen Intl ➔ MIA", 3.9, false),
-        new ShipmentData("GXP-8824", "BATCH-003", "Colon Free Zone ➔ PTY", 4.5, false)
+        new Shipment("GXP-L-9901", "B-992", "PTY -> DAV (Road)", 4.2, "VALID"),
+        new Shipment("GXP-L-9902", "B-992", "DAV -> PTY (Road)", 6.1, "EXCURSION"),
+        new Shipment("GXP-L-9903", "B-102", "MIA -> PTY (Air)", 3.8, "VALID"),
+        new Shipment("GXP-L-9904", "B-105", "PTY -> COL (Sea)", 4.5, "VALID")
     };
 }
