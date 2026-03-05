@@ -3,8 +3,11 @@ using Microsoft.ML.OnnxRuntime.Tensors;
 using System.Collections.Generic;
 using System.Linq;
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace AHS.Engines.ML;
 
+[SuppressMessage("Design", "CA1515:Consider making public types internal", Justification = "ExcursionInferenceService is the primary API for ML inference across the AHS.SaaS monorepo, consumed by the GxP Traceability BC.")]
 public sealed class ExcursionInferenceService : IDisposable
 {
     private readonly InferenceSession _session;
@@ -76,4 +79,5 @@ public sealed class ExcursionInferenceService : IDisposable
     }
 }
 
+[SuppressMessage("Design", "CA1515:Consider making public types internal", Justification = "InferenceResult is the primary DTO for ML inference across the AHS.SaaS monorepo.")]
 public record InferenceResult(bool IsExcursion, float Probability);

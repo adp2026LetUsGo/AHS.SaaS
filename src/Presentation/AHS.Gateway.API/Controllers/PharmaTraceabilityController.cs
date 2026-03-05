@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using AHS.Common.Models;
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace AHS.Gateway.Api.Controllers;
 
 [ApiController]
 [Route("api/pharma/traceability")]
+[SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "Controllers are instantiated by the ASP.NET Core framework.")]
 internal sealed class PharmaTraceabilityController : ControllerBase
 {
     [HttpGet("predict-risk")]
