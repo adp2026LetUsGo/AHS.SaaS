@@ -40,25 +40,24 @@
                     </div>
                 </div>
 
-                <!-- MITIGATION ACTIONS (Dynamic Panel) -->
-                <div class="area-drop bento-grid-item">
-                    <MitigationActions IsCritical="_metrics.IsCritical" />
-                </div>
-
                 <!-- GxP AUDIT LEDGER -->
                 <div class="area-audit">
                     <AuditLedger Events="_auditLog" />
-                    <div style="margin-top: 20px;">
-                        <DataDropZone OnDataParsed="HandleRealDataLoaded" />
-                    </div>
+                </div>
+
+                <!-- DATA DROP ZONE -->
+                <div class="area-drop bento-grid-item">
+                    <DataDropZone OnDataParsed="HandleRealDataLoaded" />
                 </div>
             </div>
         </main>
         
-        <!-- TELEMETRY HUD OVERLAY -->
+        <!-- FIXED OVERLAYS -->
+        <MitigationActions IsVisible="_metrics.IsCritical" />
         <TelemetryHud />
     </div>
 </div>
+
 
 <style>
     .dashboard-wrapper { display: flex; min-height: 100vh; background: #020617; transition: background 1s ease; font-family: 'Inter', sans-serif; }

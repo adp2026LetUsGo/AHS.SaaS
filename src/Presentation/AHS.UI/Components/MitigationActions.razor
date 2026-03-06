@@ -1,123 +1,25 @@
-<div class="mitigation-panel @(IsCritical ? "critical-active" : "")">
-    <div class="panel-header">
-        <span class="pulse-icon"></span> MITIGATION PROTOCOLS
+@using AHS.SaaS.Common.Models
+
+<div class="mitigation-panel @(IsVisible ? "visible" : "hidden")">
+    <div class="panel-header"><i class="bi bi-shield-lock-fill"></i> CRITICAL_MITIGATION_PROTOCOL</div>
+    <div class="action-grid">
+        <button class="action-btn"><i class="bi bi-snow"></i> ACTIVATE_BACKUP_COOLING</button>
+        <button class="action-btn"><i class="bi bi-signpost-split"></i> DIVERT_LOGISTICS_ROUTE</button>
+        <button class="action-btn alert"><i class="bi bi-megaphone"></i> BROADCAST_PILOT_ALERT</button>
     </div>
-    
-    <div class="actions-grid">
-        <button class="mitigation-btn primary-action" disabled="@(!IsCritical)">
-            <i class="bi bi-fan"></i> ACTIVATE_BACKUP_COOLING
-        </button>
-        <button class="mitigation-btn secondary-action" disabled="@(!IsCritical)">
-            <i class="bi bi-broadcast"></i> BROADCAST_PILOT_ALERT
-        </button>
-    </div>
-    
-    @if (IsCritical)
-    {
-        <div class="critical-warning">
-            IMMEDIATE ACTION REQUIRED. TIME TO FAILURE < 30 MIN.
-        </div>
-    }
 </div>
 
 <style>
-    .mitigation-panel { 
-        background: rgba(15,23,42,0.6); 
-        border: 1px solid rgba(255,255,255,0.05); 
-        border-radius: 16px; 
-        padding: 20px; 
-        transition: all 0.4s ease;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-    .mitigation-panel.critical-active {
-        background: rgba(239,68,68,0.1);
-        border-color: rgba(239,68,68,0.4);
-        box-shadow: 0 0 30px rgba(239,68,68,0.2) inset;
-    }
-    
-    .panel-header {
-        font-size: 0.65rem;
-        letter-spacing: 2px;
-        color: #94a3b8;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    
-    .pulse-icon {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: #64748b;
-        transition: all 0.4s ease;
-    }
-    .critical-active .pulse-icon {
-        background: #ef4444;
-        box-shadow: 0 0 10px #ef4444;
-        animation: pulse-red 1s infinite;
-    }
-    @keyframes pulse-red { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
-    
-    .actions-grid {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-    }
-    
-    .mitigation-btn {
-        background: rgba(2,6,23,0.5);
-        border: 1px solid rgba(255,255,255,0.1);
-        color: #cbd5e1;
-        padding: 12px 16px;
-        border-radius: 8px;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.75rem;
-        font-weight: 700;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: all 0.2s;
-        text-align: left;
-    }
-    .mitigation-btn i { font-size: 1.1rem; }
-    .mitigation-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    
-    .critical-active .primary-action:not(:disabled) {
-        background: rgba(239,68,68,0.2);
-        color: #fca5a5;
-        border-color: rgba(239,68,68,0.5);
-    }
-    .critical-active .primary-action:not(:disabled):hover {
-        background: rgba(239,68,68,0.3);
-        box-shadow: 0 0 15px rgba(239,68,68,0.4);
-    }
-    
-    .critical-active .secondary-action:not(:disabled) {
-        background: rgba(245,158,11,0.15);
-        color: #fcd34d;
-        border-color: rgba(245,158,11,0.4);
-    }
-    .critical-active .secondary-action:not(:disabled):hover {
-        background: rgba(245,158,11,0.25);
-        box-shadow: 0 0 15px rgba(245,158,11,0.3);
-    }
-    
-    .critical-warning {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.65rem;
-        color: #ef4444;
-        text-align: center;
-        letter-spacing: 1px;
-        margin-top: 4px;
-        animation: blink 1s infinite;
-    }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    .mitigation-panel { position: fixed; right: 20px; top: 100px; width: 320px; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(32px); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 20px; padding: 25px; z-index: 1000; transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .visible { transform: translateX(0); opacity: 1; box-shadow: 0 0 50px rgba(239, 68, 68, 0.2); }
+    .hidden { transform: translateX(400px); opacity: 0; pointer-events: none; }
+    .panel-header { font-size: 0.7rem; font-weight: 900; color: #ef4444; margin-bottom: 25px; letter-spacing: 2px; }
+    .action-grid { display: flex; flex-direction: column; gap: 15px; }
+    .action-btn { background: linear-gradient(135deg, #38bdf8 0%, #1e40af 100%); border: none; border-radius: 12px; color: white; padding: 18px; font-size: 0.7rem; font-weight: 800; text-align: left; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.3s; }
+    .action-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
+    .action-btn.alert { background: linear-gradient(135deg, #ef4444 0%, #991b1b 100%); }
 </style>
 
-@code {
-    [Parameter] public bool IsCritical { get; set; }
+@code { 
+    [Parameter] public bool IsVisible { get; set; } 
 }
