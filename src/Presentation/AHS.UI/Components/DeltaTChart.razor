@@ -1,0 +1,11 @@
+<svg viewBox="0 0 400 200" class="elite-chart">
+    <defs>
+        <linearGradient id="shadowGradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+            <stop offset="100%" stop-color="@(IsCritical ? "#ef4444" : "#38bdf8")" stop-opacity="0" />
+        </linearGradient>
+    </defs>
+    <polygon points="300,100 400,@(100 - (Slope * 100)) 400,@(120 - (Slope * 100)) 300,110" fill="url(#shadowGradient)" />
+    <path d="M0,150 L100,140 L200,130 L300,100" fill="none" stroke="#38bdf8" stroke-width="3" />
+</svg>
+@code { [Parameter] public float Slope { get; set; } [Parameter] public bool IsCritical { get; set; } }

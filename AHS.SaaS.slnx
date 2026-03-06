@@ -2,6 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/Engines/">
     <Project Path="src/Engines/Inference.Prediction.Engine/AHS.Engines.Inference.Prediction.Engine.csproj" />
+    <Project Path="src/Engines/AHS.Engines.HPC/AHS.Engines.HPC.csproj" />
     <Project Path="src/Engines/AHS.Engines.ML/AHS.Engines.ML.csproj" />
   </Folder>
   <Folder Name="/src/Suites/" />

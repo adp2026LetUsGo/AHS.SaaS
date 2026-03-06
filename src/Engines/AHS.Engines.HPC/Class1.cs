@@ -1,0 +1,6 @@
+﻿namespace AHS.Engines.HPC;
+
+public class Class1
+{
+
+}

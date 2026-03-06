@@ -1,0 +1,18 @@
+using System.Numerics;
+using AHS.SaaS.Common.Models;
+
+namespace AHS.SaaS.Engines.HPC;
+
+public static class ThermalAnalyticsEngine {
+    private const float LIMIT = 2.0f;
+    public static PredictiveShieldMetrics CalculateTimeToFailure(ReadOnlySpan<float> data, float currentDT) {
+        if (data.Length < 2) return new PredictiveShieldMetrics(currentDT, 0, currentDT, 999, false);
+        float sX=0, sY=0, sX2=0, sXY=0; int n=data.Length;
+        for (int i=0; i<n; i++) { sX+=i; sY+=data[i]; sX2+=i*i; sXY+=i*data[i]; }
+        float div = (n*sX2 - sX*sX);
+        float slope = (div==0) ? 0 : (n*sXY - sX*sY)/div;
+        float proj30 = currentDT + (slope * 30);
+        float ttf = (slope <= 0) ? 999 : (LIMIT - currentDT)/slope;
+        return new PredictiveShieldMetrics(currentDT, slope, proj30, Math.Max(0, ttf), (ttf < 30 || proj30 >= LIMIT));
+    }
+}

@@ -1,0 +1,2 @@
+namespace AHS.SaaS.Common.Models;
+public record PredictiveShieldMetrics(float CurrentDeltaT, float Slope, float ProjectedDeltaT30, float TimeToFailureMin, bool IsCritical);

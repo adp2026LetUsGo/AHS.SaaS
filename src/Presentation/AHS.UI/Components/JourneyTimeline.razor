@@ -1,0 +1,21 @@
+@using AHS.SaaS.Common.Models
+<div class="contingency-panel @(Metrics.IsCritical ? "critical-pulse" : "")">
+    <label>CONTINGENCY WINDOW (TTF)</label>
+    <div class="doom-clock">
+        @((Metrics.TimeToFailureMin >= 999) ? "STABLE" : $"{(int)Metrics.TimeToFailureMin}m {((int)((Metrics.TimeToFailureMin % 1) * 60)):00}s")
+    </div>
+    <div class="progress-container">
+        <div class="progress-fill" style="width: @(Math.Clamp((Metrics.TimeToFailureMin / 120f) * 100, 0, 100))%; background: @(Metrics.TimeToFailureMin < 30 ? "#ef4444" : "#38bdf8");"></div>
+    </div>
+</div>
+
+<style>
+    .contingency-panel { background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 20px; border-radius: 16px; font-family: 'JetBrains Mono', monospace; }
+    .doom-clock { font-size: 3rem; font-weight: 800; color: #fff; text-shadow: 0 0 15px rgba(56, 189, 248, 0.5); }
+    .progress-container { height: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 5px; overflow: hidden; margin-top: 15px; transform: scaleX(-1); }
+    .progress-fill { height: 100%; transition: width 0.8s ease; }
+    .critical-pulse { animation: neon-throb 2s infinite; }
+    @keyframes neon-throb { 0%, 100% { box-shadow: inset 0 0 20px rgba(239, 68, 68, 0.2); } 50% { box-shadow: inset 0 0 40px rgba(239, 68, 68, 0.4); } }
+</style>
+
+@code { [Parameter] public PredictiveShieldMetrics Metrics { get; set; } = new(0,0,0,999,false); }

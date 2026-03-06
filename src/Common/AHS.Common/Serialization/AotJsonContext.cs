@@ -10,6 +10,8 @@ namespace AHS.Common.Serialization;
 [JsonSerializable(typeof(PredictionResponse))]
 [JsonSerializable(typeof(Dictionary<string, float>))]
 [JsonSerializable(typeof(List<PredictionResponse>))]
+[JsonSerializable(typeof(AHS.SaaS.Common.Models.PredictiveShieldMetrics))]
+[JsonSerializable(typeof(List<AHS.SaaS.Common.Models.PredictiveShieldMetrics>))]
 public partial class AotJsonContext : JsonSerializerContext
 {
 }
