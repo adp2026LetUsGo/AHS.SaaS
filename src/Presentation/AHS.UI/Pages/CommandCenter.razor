@@ -14,10 +14,8 @@
             </div>
 
             <!-- ALPHA BOX (Doom Clock + Forecast Chart) -->
-            <div class="area-alpha bento-grid-item @(_alphaHover ? "alpha-glow" : "")" 
-                 @onmouseover="() => _alphaHover = true" 
-                 @onmouseout="() => _alphaHover = false">
-                <div class="alpha-doom">
+            <div class="area-alpha bento-grid-item @(_alphaHover ? "alpha-glow" : "")">
+                <div class="alpha-doom" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
                     <JourneyTimeline Metrics="_metrics" />
                 </div>
                 <div class="alpha-chart">
@@ -32,7 +30,10 @@
                             <span class="mode-badge simulated">&#8635; SIMULATED</span>
                         }
                     </div>
-                    <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+                    <!-- Hover here to glow the whole Alpha Box and highlight the clock -->
+                    <div class="chart-wrapper" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
+                        <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+                    </div>
                 </div>
             </div>
 
@@ -88,7 +89,8 @@
         background: rgba(15,23,42,0.5); 
         transform: translateY(-2px);
     }
-    .alpha-doom { flex-shrink: 0; }
+    .alpha-doom { flex-shrink: 0; transition: all 0.3s ease; }
+    .alpha-glow .alpha-doom { transform: scale(1.02); filter: brightness(1.1); }
     .alpha-chart { flex: 1; display: flex; flex-direction: column; gap: 16px; min-height: 0; justify-content: center; }
     
     .chart-header { display: flex; align-items: center; justify-content: space-between; }

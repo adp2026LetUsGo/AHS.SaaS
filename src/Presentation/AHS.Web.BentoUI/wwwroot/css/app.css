@@ -108,3 +108,10 @@ body {
 
 .bento-grid-item { transition: all 0.3s ease; }
 .bento-grid-item:hover { box-shadow: 0 8px 32px 0 rgba(56,189,248,0.15) !important; border-color: rgba(56,189,248,0.3) !important; }
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&display=swap');
+
+.ledger-timeline::-webkit-scrollbar { width: 4px; }
+.ledger-timeline::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+.ledger-timeline::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
