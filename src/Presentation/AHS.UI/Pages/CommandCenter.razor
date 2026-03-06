@@ -1,70 +1,92 @@
 @page "/command-center"
-@using AHS.SaaS.Engines.HPC
 @using AHS.SaaS.Common.Models
+@using AHS.SaaS.Engines.HPC
 @using AHS.UI.Components
 @implements IDisposable
 
-<div class="command-center-layout">
-    <header class="glass-header">
-        <h1 class="neon-text-blue">AHS.SaaS - UNIVERSAL CONTROL TOWER</h1>
-        <div class="system-status">HPC ENGINE: <span class="pulse-green">ACTIVE (SIMD)</span></div>
-    </header>
-
-    <div class="bento-grid">
-        <!-- ZONA CRÍTICA: EL DOOM CLOCK -->
-        <div class="bento-grid-item doom-section">
-            <JourneyTimeline Metrics="_metrics" />
-        </div>
-
-        <!-- ZONA ANALÍTICA: EL FORECAST SHADOW -->
-        <div class="bento-grid-item forecast-section">
-            <div class="section-title">THERMAL PROJECTION (T+30min)</div>
-            <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
-        </div>
-
-        <!-- ZONA TÁCTICA: MÉTRICAS EN TIEMPO REAL -->
-        <div class="bento-grid-item metrics-section">
-            <div class="metric-box">
-                <label>CURRENT DELTA T</label>
-                <div class="val @(_metrics.IsCritical ? "neon-text-red" : "neon-text-blue")">@_metrics.CurrentDeltaT.ToString("F2")°C</div>
+<div class="dashboard-wrapper @(_metrics.IsCritical ? "crisis-active" : "")">
+    <Sidebar CriticalCount="@_criticalCount" TransitCount="14" SecureCount="31" IsSystemHealthy="@(!_metrics.IsCritical)" />
+    <main class="main-content">
+        <div class="bento-grid-commercial">
+            <div class="area-doom bento-grid-item">
+                <JourneyTimeline Metrics="_metrics" />
             </div>
-            <div class="metric-box">
-                <label>PROJECTED T+30</label>
-                <div class="val">@_metrics.ProjectedDeltaT30.ToString("F2")°C</div>
+            <div class="area-chart bento-grid-item">
+                <div class="section-title">THERMAL PROJECTION (T+30min)</div>
+                <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+            </div>
+            <div class="area-audit">
+                <AuditLedger Events="_auditLog" />
             </div>
         </div>
-    </div>
+    </main>
 </div>
 
 <style>
-    .command-center-layout { padding: 40px; background: radial-gradient(circle at top, #0f172a 0%, #020617 100%); min-height: 100vh; color: white; font-family: 'Inter', sans-serif; }
-    .glass-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; margin-bottom: 40px; }
-    .bento-grid { display: grid; grid-template-columns: 2fr 1fr; grid-gap: 25px; }
-    .doom-section { grid-column: 1 / 3; display: flex; justify-content: center; align-items: center; padding: 40px; }
-    .forecast-section { background: rgba(15,23,42,0.3); padding: 30px; border-radius: 20px; }
-    .metrics-section { display: flex; flex-direction: column; gap: 20px; }
-    .metric-box { background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
-    .metric-box .val { font-size: 2.5rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-    .section-title { font-size: 0.7rem; letter-spacing: 2px; color: #94a3b8; margin-bottom: 20px; font-weight: 800; }
-    .pulse-green { color: #10b981; text-shadow: 0 0 10px rgba(16,185,129,0.5); }
+    .dashboard-wrapper { display: flex; min-height: 100vh; background: #020617; transition: background 1s ease; }
+    .crisis-active { background: radial-gradient(circle at center, #1e0a0a 0%, #020617 100%) !important; }
+    .main-content { flex: 1; padding: 30px; min-width: 0; }
+    .bento-grid-commercial { display: grid; grid-template-columns: 1fr 380px; grid-template-rows: 250px 1fr; gap: 20px; height: calc(100vh - 60px); grid-template-areas: "doom audit" "chart audit"; }
+    .area-doom { grid-area: doom; }
+    .area-chart { grid-area: chart; }
+    .area-audit { grid-area: audit; }
+    .section-title { font-size: 0.65rem; letter-spacing: 2px; color: #94a3b8; margin-bottom: 16px; font-weight: 800; }
 </style>
 
 @code {
-    private PredictiveShieldMetrics _metrics = new(0,0,0,999,false);
+    private PredictiveShieldMetrics _metrics = new(0, 0, 0, 999, false);
+    private List<AuditEvent> _auditLog = new();
+    private int _criticalCount = 0;
     private System.Timers.Timer? _timer;
     private List<float> _buffer = new();
     private Random _r = new();
+    private int _tick = 0;
 
-    protected override void OnInitialized() {
+    private static readonly string[] EventNames = {
+        "TEMP_EXCURSION_DETECTED", "DELTA_T_THRESHOLD_BREACH", "SENSOR_CALIBRATION_OK",
+        "COLD_CHAIN_INTEGRITY_CHECK", "UNIT_TRANSFER_INITIATED", "BATCH_SEAL_VERIFIED"
+    };
+    private static readonly string[] Actions = {
+        "ALERT ESCALATED → Fleet Manager", "COOLING UNIT ACTIVATED", "LOG ENTRY CONFIRMED",
+        "AUDIT TRAIL UPDATED", "SUPERVISOR NOTIFIED", "GxP COMPLIANCE LOGGED"
+    };
+
+    protected override void OnInitialized()
+    {
         _timer = new System.Timers.Timer(2000);
-        _timer.Elapsed += async (s, e) => {
+        _timer.Elapsed += async (s, e) =>
+        {
             float val = 0.8f + (float)_r.NextDouble() * 1.5f;
             _buffer.Add(val);
-            if(_buffer.Count > 15) _buffer.RemoveAt(0);
+            if (_buffer.Count > 15) _buffer.RemoveAt(0);
             _metrics = ThermalAnalyticsEngine.CalculateTimeToFailure(_buffer.ToArray(), val);
+
+            // Add audit event periodically
+            _tick++;
+            if (_tick % 3 == 0)
+                await AddAuditEntry(val);
+
             await InvokeAsync(StateHasChanged);
         };
         _timer.Start();
     }
+
+    private async Task AddAuditEntry(float deltaT)
+    {
+        var severity = deltaT >= 1.8f ? EventSeverity.Critical : (deltaT >= 1.4f ? EventSeverity.Warning : EventSeverity.Info);
+        if (severity == EventSeverity.Critical) _criticalCount++;
+        var sig = $"SHA256:{Guid.NewGuid().ToString("N")[..32]}";
+        var ev = new AuditEvent(
+            DateTime.UtcNow,
+            EventNames[_r.Next(EventNames.Length)],
+            Actions[_r.Next(Actions.Length)],
+            sig,
+            severity
+        );
+        _auditLog.Insert(0, ev);
+        if (_auditLog.Count > 50) _auditLog.RemoveAt(_auditLog.Count - 1);
+        await Task.CompletedTask;
+    }
+
     public void Dispose() => _timer?.Dispose();
 }

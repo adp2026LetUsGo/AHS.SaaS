@@ -1,0 +1,87 @@
+@using AHS.SaaS.Common.Models
+
+<nav class="elite-sidebar">
+    <div class="sidebar-brand">
+        <span class="brand-icon">⬡</span>
+        <div class="brand-text">
+            <div class="brand-name">AHS.SaaS</div>
+            <div class="brand-sub">COMMAND CENTER</div>
+        </div>
+    </div>
+
+    <div class="fleet-pulse-section">
+        <div class="section-label">FLEET PULSE</div>
+        <div class="fleet-counters">
+            <div class="counter-card critical">
+                <div class="counter-val">@CriticalCount</div>
+                <div class="counter-label">CRITICAL</div>
+            </div>
+            <div class="counter-card transit">
+                <div class="counter-val">@TransitCount</div>
+                <div class="counter-label">TRANSIT</div>
+            </div>
+            <div class="counter-card secure">
+                <div class="counter-val">@SecureCount</div>
+                <div class="counter-label">SECURE</div>
+            </div>
+        </div>
+        <div class="fleet-total">
+            <span>FLEET TOTAL</span>
+            <span class="total-val">@(CriticalCount + TransitCount + SecureCount)</span>
+        </div>
+    </div>
+
+    <div class="sidebar-nav">
+        <div class="section-label">NAVIGATION</div>
+        <a href="/command-center" class="nav-item active">
+            <span class="nav-icon">⬡</span> Command Center
+        </a>
+        <a href="/" class="nav-item">
+            <span class="nav-icon">◈</span> Home
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="system-status-dot @(IsSystemHealthy ? "dot-green" : "dot-red")"></div>
+        <span class="system-status-text">@(IsSystemHealthy ? "HPC NOMINAL" : "HPC ALERT")</span>
+    </div>
+</nav>
+
+<style>
+    .elite-sidebar { width: 240px; min-height: 100vh; background: rgba(2,6,23,0.95); border-right: 1px solid rgba(255,255,255,0.07); display: flex; flex-direction: column; padding: 24px 16px; gap: 32px; flex-shrink: 0; }
+    .sidebar-brand { display: flex; align-items: center; gap: 12px; padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .brand-icon { font-size: 1.8rem; color: #38bdf8; line-height: 1; }
+    .brand-name { font-weight: 800; font-size: 0.9rem; color: #f1f5f9; }
+    .brand-sub { font-size: 0.55rem; letter-spacing: 3px; color: #475569; font-weight: 700; }
+    .section-label { font-size: 0.55rem; letter-spacing: 3px; color: #475569; font-weight: 800; margin-bottom: 12px; }
+    .fleet-counters { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .counter-card { text-align: center; padding: 12px 4px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); }
+    .counter-card.critical { background: rgba(239,68,68,0.08); border-color: rgba(239,68,68,0.2); }
+    .counter-card.transit { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.2); }
+    .counter-card.secure { background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.2); }
+    .counter-val { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 800; line-height: 1; }
+    .counter-card.critical .counter-val { color: #ef4444; }
+    .counter-card.transit .counter-val { color: #f59e0b; }
+    .counter-card.secure .counter-val { color: #10b981; }
+    .counter-label { font-size: 0.5rem; letter-spacing: 1.5px; font-weight: 700; margin-top: 4px; color: #64748b; }
+    .fleet-total { display: flex; justify-content: space-between; padding: 8px 4px; color: #64748b; font-size: 0.65rem; }
+    .total-val { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-weight: 700; }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 8px; color: #64748b; text-decoration: none; font-size: 0.8rem; font-weight: 500; transition: all 0.2s; }
+    .nav-item:hover { background: rgba(255,255,255,0.04); color: #94a3b8; }
+    .nav-item.active { background: rgba(56,189,248,0.1); color: #38bdf8; border: 1px solid rgba(56,189,248,0.2); }
+    .nav-icon { font-size: 0.9rem; }
+    .sidebar-footer { display: flex; align-items: center; gap: 8px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.07); }
+    .system-status-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green { background: #10b981; box-shadow: 0 0 8px rgba(16,185,129,0.5); animation: pulse-glow 2s infinite; }
+    .dot-red { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.5); animation: pulse-glow 1s infinite; }
+    @keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    .system-status-text { font-size: 0.65rem; font-weight: 700; letter-spacing: 1px; color: #64748b; }
+</style>
+
+@code {
+    [Parameter] public int CriticalCount { get; set; } = 2;
+    [Parameter] public int TransitCount { get; set; } = 14;
+    [Parameter] public int SecureCount { get; set; } = 31;
+    [Parameter] public bool IsSystemHealthy { get; set; } = true;
+}

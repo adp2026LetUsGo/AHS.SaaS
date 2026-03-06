@@ -12,6 +12,8 @@ namespace AHS.Common.Serialization;
 [JsonSerializable(typeof(List<PredictionResponse>))]
 [JsonSerializable(typeof(AHS.SaaS.Common.Models.PredictiveShieldMetrics))]
 [JsonSerializable(typeof(List<AHS.SaaS.Common.Models.PredictiveShieldMetrics>))]
+[JsonSerializable(typeof(AHS.SaaS.Common.Models.AuditEvent))]
+[JsonSerializable(typeof(List<AHS.SaaS.Common.Models.AuditEvent>))]
 public partial class AotJsonContext : JsonSerializerContext
 {
 }
