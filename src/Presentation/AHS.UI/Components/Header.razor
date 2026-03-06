@@ -1,0 +1,173 @@
+<header class="global-header">
+    <div class="header-left">
+        <div class="brand">
+            <span class="brand-logo">⬡</span>
+            <div class="brand-text">AHS.SaaS</div>
+        </div>
+        <div class="tenant-selector">
+            <span class="tenant-label">TENANT:</span>
+            <select class="tenant-dropdown">
+                <option>GLOBAL_PHARMA_CORP_EU</option>
+                <option>GLOBAL_PHARMA_CORP_NA</option>
+                <option>NORDIC_BIOLOGICS</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="header-right">
+        <div class="app-status">
+            <span class="status-dot"></span>
+            <span class="status-text">GxP_LIVE</span>
+        </div>
+        <div class="user-profile">
+            <div class="avatar">CMD</div>
+            <div class="user-info">
+                <span class="user-name">FLEET_COMMANDER</span>
+                <span class="user-role">SUPER_ADMIN</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    .global-header {
+        height: 60px;
+        background: rgba(2,6,23,0.9);
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+    }
+    
+    .header-left, .header-right {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+    }
+    
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .brand-logo {
+        color: #38bdf8;
+        font-size: 1.4rem;
+        line-height: 1;
+    }
+    
+    .brand-text {
+        color: #f8fafc;
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: 1px;
+    }
+    
+    .tenant-selector {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: rgba(255,255,255,0.03);
+        padding: 6px 16px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    .tenant-label {
+        font-size: 0.6rem;
+        color: #64748b;
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
+    
+    .tenant-dropdown {
+        background: transparent;
+        border: none;
+        color: #e2e8f0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        font-weight: 700;
+        outline: none;
+        cursor: pointer;
+    }
+    
+    .tenant-dropdown option {
+        background: #0f172a;
+    }
+    
+    .app-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(16,185,129,0.1);
+        padding: 6px 12px;
+        border-radius: 20px;
+        border: 1px solid rgba(16,185,129,0.2);
+    }
+    
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: #10b981;
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(16,185,129,0.5);
+    }
+    
+    .status-text {
+        color: #10b981;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-left: 32px;
+        border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    
+    .avatar {
+        width: 32px;
+        height: 32px;
+        background: rgba(56,189,248,0.1);
+        color: #38bdf8;
+        border: 1px solid rgba(56,189,248,0.3);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 800;
+    }
+    
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    
+    .user-name {
+        color: #e2e8f0;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+    
+    .user-role {
+        color: #64748b;
+        font-size: 0.6rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+</style>
+
+@code {
+}

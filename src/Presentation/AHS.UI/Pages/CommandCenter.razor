@@ -6,54 +6,66 @@
 
 <div class="dashboard-wrapper @(_metrics.IsCritical ? "crisis-active" : "")">
     <Sidebar CriticalCount="@_criticalCount" TransitCount="14" SecureCount="31" IsSystemHealthy="@(!_metrics.IsCritical)" />
-    <main class="main-content">
-        <div class="bento-grid-v2">
-            <!-- SENSOR IDENTITY -->
-            <div class="area-identity bento-grid-item">
-                <SensorIdentity />
-            </div>
-
-            <!-- ALPHA BOX (Doom Clock + Forecast Chart) -->
-            <div class="area-alpha bento-grid-item @(_alphaHover ? "alpha-glow" : "")">
-                <div class="alpha-doom" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
-                    <JourneyTimeline Metrics="_metrics" />
+    
+    <div class="content-wrapper">
+        <Header />
+        
+        <main class="main-content">
+            <div class="bento-grid-v2">
+                <!-- SENSOR IDENTITY -->
+                <div class="area-identity bento-grid-item">
+                    <SensorIdentity />
                 </div>
-                <div class="alpha-chart">
-                    <div class="chart-header">
-                        <span class="section-title">THERMAL PROJECTION (T+30min)</span>
-                        @if (_isUsingRealData)
-                        {
-                            <span class="mode-badge real-data">&#9679; REAL DATA (@_buffer.Count pts)</span>
-                        }
-                        else
-                        {
-                            <span class="mode-badge simulated">&#8635; SIMULATED</span>
-                        }
+
+                <!-- ALPHA BOX (Doom Clock + Forecast Chart) -->
+                <div class="area-alpha bento-grid-item @(_alphaHover ? "alpha-glow" : "")">
+                    <div class="alpha-doom" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
+                        <JourneyTimeline Metrics="_metrics" />
                     </div>
-                    <!-- Hover here to glow the whole Alpha Box and highlight the clock -->
-                    <div class="chart-wrapper" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
-                        <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+                    <div class="alpha-chart">
+                        <div class="chart-header">
+                            <span class="section-title">THERMAL PROJECTION (T+30min)</span>
+                            @if (_isUsingRealData)
+                            {
+                                <span class="mode-badge real-data">&#9679; REAL DATA (@_buffer.Count pts)</span>
+                            }
+                            else
+                            {
+                                <span class="mode-badge simulated">&#8635; SIMULATED</span>
+                            }
+                        </div>
+                        <div class="chart-wrapper" @onmouseover="() => _alphaHover = true" @onmouseout="() => _alphaHover = false">
+                            <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MITIGATION ACTIONS (Dynamic Panel) -->
+                <div class="area-drop bento-grid-item">
+                    <MitigationActions IsCritical="_metrics.IsCritical" />
+                </div>
+
+                <!-- GxP AUDIT LEDGER -->
+                <div class="area-audit">
+                    <AuditLedger Events="_auditLog" />
+                    <div style="margin-top: 20px;">
+                        <DataDropZone OnDataParsed="HandleRealDataLoaded" />
                     </div>
                 </div>
             </div>
-
-            <!-- DATA DROP ZONE -->
-            <div class="area-drop bento-grid-item">
-                <DataDropZone OnDataParsed="HandleRealDataLoaded" />
-            </div>
-
-            <!-- GxP AUDIT LEDGER -->
-            <div class="area-audit">
-                <AuditLedger Events="_auditLog" />
-            </div>
-        </div>
-    </main>
+        </main>
+        
+        <!-- TELEMETRY HUD OVERLAY -->
+        <TelemetryHud />
+    </div>
 </div>
 
 <style>
     .dashboard-wrapper { display: flex; min-height: 100vh; background: #020617; transition: background 1s ease; font-family: 'Inter', sans-serif; }
     .crisis-active { background: radial-gradient(circle at center, #1e0a0a 0%, #020617 100%) !important; }
-    .main-content { flex: 1; padding: 24px 32px; min-width: 0; display: flex; flex-direction: column; }
+    
+    .content-wrapper { flex: 1; display: flex; flex-direction: column; position: relative; min-width: 0; }
+    .main-content { flex: 1; padding: 24px 32px; min-width: 0; display: flex; flex-direction: column; overflow-y: auto; }
     
     /* Bento V2 4-Column Layout */
     .bento-grid-v2 { 
@@ -61,7 +73,8 @@
         grid-template-columns: 280px minmax(300px, 1fr) minmax(300px, 1fr) 350px; 
         grid-template-rows: auto 1fr; 
         gap: 24px; 
-        height: calc(100vh - 48px);
+        height: 100%;
+        min-height: calc(100vh - 120px);
         grid-template-areas: 
             "identity alpha alpha audit"
             "drop alpha alpha audit"; 
@@ -69,7 +82,8 @@
     
     .area-identity { grid-area: identity; }
     .area-drop { grid-area: drop; }
-    .area-audit { grid-area: audit; }
+    .area-audit { grid-area: audit; display: flex; flex-direction: column; }
+    .area-audit .audit-ledger { flex: 1; }
     
     /* Alpha Box Integration */
     .area-alpha { 

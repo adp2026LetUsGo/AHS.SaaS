@@ -1,0 +1,78 @@
+<div class="telemetry-hud">
+    <div class="hud-item gpu-status">
+        <span class="hud-label">ENGINE</span>
+        <span class="hud-value neon-green">AVX-512_ACTIVE</span>
+    </div>
+    <div class="hud-separator"></div>
+    <div class="hud-item latency">
+        <span class="hud-label">INFERENCE LATENCY</span>
+        <span class="hud-value mono">0.42ms</span>
+    </div>
+    <div class="hud-separator"></div>
+    <div class="hud-item memory">
+        <span class="hud-label">VRAM ALLOC</span>
+        <span class="hud-value mono">128MB</span>
+    </div>
+    <div class="hud-item fps">
+        <span class="hud-label">TICK RATE</span>
+        <span class="hud-value mono">144 Hz</span>
+    </div>
+</div>
+
+<style>
+    .telemetry-hud {
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        background: rgba(2,6,23,0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(56,189,248,0.2);
+        border-radius: 8px;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-family: 'JetBrains Mono', monospace;
+        z-index: 1000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+    
+    .hud-item {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    
+    .hud-label {
+        font-size: 0.45rem;
+        color: #64748b;
+        letter-spacing: 1px;
+        font-weight: 800;
+        font-family: 'Inter', sans-serif;
+    }
+    
+    .hud-value {
+        font-size: 0.65rem;
+        color: #cbd5e1;
+    }
+    
+    .neon-green {
+        color: #10b981;
+        text-shadow: 0 0 8px rgba(16,185,129,0.5);
+        font-weight: 700;
+    }
+    
+    .mono {
+        color: #38bdf8;
+    }
+    
+    .hud-separator {
+        width: 1px;
+        height: 16px;
+        background: rgba(255,255,255,0.1);
+    }
+</style>
+
+@code {
+}

@@ -1,0 +1,123 @@
+<div class="mitigation-panel @(IsCritical ? "critical-active" : "")">
+    <div class="panel-header">
+        <span class="pulse-icon"></span> MITIGATION PROTOCOLS
+    </div>
+    
+    <div class="actions-grid">
+        <button class="mitigation-btn primary-action" disabled="@(!IsCritical)">
+            <i class="bi bi-fan"></i> ACTIVATE_BACKUP_COOLING
+        </button>
+        <button class="mitigation-btn secondary-action" disabled="@(!IsCritical)">
+            <i class="bi bi-broadcast"></i> BROADCAST_PILOT_ALERT
+        </button>
+    </div>
+    
+    @if (IsCritical)
+    {
+        <div class="critical-warning">
+            IMMEDIATE ACTION REQUIRED. TIME TO FAILURE < 30 MIN.
+        </div>
+    }
+</div>
+
+<style>
+    .mitigation-panel { 
+        background: rgba(15,23,42,0.6); 
+        border: 1px solid rgba(255,255,255,0.05); 
+        border-radius: 16px; 
+        padding: 20px; 
+        transition: all 0.4s ease;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+    .mitigation-panel.critical-active {
+        background: rgba(239,68,68,0.1);
+        border-color: rgba(239,68,68,0.4);
+        box-shadow: 0 0 30px rgba(239,68,68,0.2) inset;
+    }
+    
+    .panel-header {
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        color: #94a3b8;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .pulse-icon {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #64748b;
+        transition: all 0.4s ease;
+    }
+    .critical-active .pulse-icon {
+        background: #ef4444;
+        box-shadow: 0 0 10px #ef4444;
+        animation: pulse-red 1s infinite;
+    }
+    @keyframes pulse-red { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.5); } }
+    
+    .actions-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .mitigation-btn {
+        background: rgba(2,6,23,0.5);
+        border: 1px solid rgba(255,255,255,0.1);
+        color: #cbd5e1;
+        padding: 12px 16px;
+        border-radius: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+        text-align: left;
+    }
+    .mitigation-btn i { font-size: 1.1rem; }
+    .mitigation-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    
+    .critical-active .primary-action:not(:disabled) {
+        background: rgba(239,68,68,0.2);
+        color: #fca5a5;
+        border-color: rgba(239,68,68,0.5);
+    }
+    .critical-active .primary-action:not(:disabled):hover {
+        background: rgba(239,68,68,0.3);
+        box-shadow: 0 0 15px rgba(239,68,68,0.4);
+    }
+    
+    .critical-active .secondary-action:not(:disabled) {
+        background: rgba(245,158,11,0.15);
+        color: #fcd34d;
+        border-color: rgba(245,158,11,0.4);
+    }
+    .critical-active .secondary-action:not(:disabled):hover {
+        background: rgba(245,158,11,0.25);
+        box-shadow: 0 0 15px rgba(245,158,11,0.3);
+    }
+    
+    .critical-warning {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.65rem;
+        color: #ef4444;
+        text-align: center;
+        letter-spacing: 1px;
+        margin-top: 4px;
+        animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+</style>
+
+@code {
+    [Parameter] public bool IsCritical { get; set; }
+}
