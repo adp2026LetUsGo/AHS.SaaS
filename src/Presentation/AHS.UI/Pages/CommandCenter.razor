@@ -8,13 +8,31 @@
     <Sidebar CriticalCount="@_criticalCount" TransitCount="14" SecureCount="31" IsSystemHealthy="@(!_metrics.IsCritical)" />
     <main class="main-content">
         <div class="bento-grid-commercial">
+            <!-- DOOM CLOCK -->
             <div class="area-doom bento-grid-item">
                 <JourneyTimeline Metrics="_metrics" />
             </div>
+
+            <!-- THERMAL CHART + DATA DROP ZONE -->
             <div class="area-chart bento-grid-item">
-                <div class="section-title">THERMAL PROJECTION (T+30min)</div>
+                <div class="chart-header">
+                    <span class="section-title">THERMAL PROJECTION (T+30min)</span>
+                    @if (_isUsingRealData)
+                    {
+                        <span class="mode-badge real-data">&#9679; REAL DATA (@_buffer.Count pts)</span>
+                    }
+                    else
+                    {
+                        <span class="mode-badge simulated">&#8635; SIMULATED</span>
+                    }
+                </div>
                 <DeltaTChart Slope="_metrics.Slope" IsCritical="_metrics.IsCritical" />
+                <div class="drop-zone-wrapper">
+                    <DataDropZone OnDataParsed="HandleRealDataLoaded" />
+                </div>
             </div>
+
+            <!-- GxP AUDIT LEDGER -->
             <div class="area-audit">
                 <AuditLedger Events="_auditLog" />
             </div>
@@ -28,9 +46,14 @@
     .main-content { flex: 1; padding: 30px; min-width: 0; }
     .bento-grid-commercial { display: grid; grid-template-columns: 1fr 380px; grid-template-rows: 250px 1fr; gap: 20px; height: calc(100vh - 60px); grid-template-areas: "doom audit" "chart audit"; }
     .area-doom { grid-area: doom; }
-    .area-chart { grid-area: chart; }
+    .area-chart { grid-area: chart; display: flex; flex-direction: column; gap: 16px; }
     .area-audit { grid-area: audit; }
-    .section-title { font-size: 0.65rem; letter-spacing: 2px; color: #94a3b8; margin-bottom: 16px; font-weight: 800; }
+    .chart-header { display: flex; align-items: center; justify-content: space-between; }
+    .section-title { font-size: 0.65rem; letter-spacing: 2px; color: #94a3b8; font-weight: 800; }
+    .mode-badge { font-size: 0.6rem; letter-spacing: 1px; font-weight: 700; padding: 3px 8px; border-radius: 20px; }
+    .mode-badge.real-data { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+    .mode-badge.simulated { background: rgba(56,189,248,0.1); color: #38bdf8; border: 1px solid rgba(56,189,248,0.2); }
+    .drop-zone-wrapper { flex-shrink: 0; }
 </style>
 
 @code {
@@ -41,6 +64,7 @@
     private List<float> _buffer = new();
     private Random _r = new();
     private int _tick = 0;
+    private bool _isUsingRealData = false;
 
     private static readonly string[] EventNames = {
         "TEMP_EXCURSION_DETECTED", "DELTA_T_THRESHOLD_BREACH", "SENSOR_CALIBRATION_OK",
@@ -53,15 +77,22 @@
 
     protected override void OnInitialized()
     {
+        StartSimulation();
+    }
+
+    private void StartSimulation()
+    {
+        _timer?.Dispose();
         _timer = new System.Timers.Timer(2000);
         _timer.Elapsed += async (s, e) =>
         {
+            if (_isUsingRealData) return; // pause sim when real data loaded
+
             float val = 0.8f + (float)_r.NextDouble() * 1.5f;
             _buffer.Add(val);
             if (_buffer.Count > 15) _buffer.RemoveAt(0);
             _metrics = ThermalAnalyticsEngine.CalculateTimeToFailure(_buffer.ToArray(), val);
 
-            // Add audit event periodically
             _tick++;
             if (_tick % 3 == 0)
                 await AddAuditEntry(val);
@@ -71,15 +102,30 @@
         _timer.Start();
     }
 
-    private async Task AddAuditEntry(float deltaT)
+    private async Task HandleRealDataLoaded(float[] data)
+    {
+        _isUsingRealData = true;
+        _buffer = data.TakeLast(50).ToList();
+
+        // Run HPC on the full imported dataset
+        _metrics = ThermalAnalyticsEngine.CalculateTimeToFailure(
+            _buffer.ToArray().AsSpan(),
+            _buffer[^1]
+        );
+
+        await AddAuditEntry(_buffer[^1], overrideName: "REAL_DATA_INGESTED", overrideAction: $"CSV LOADED — {data.Length} pts processed by HPC");
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task AddAuditEntry(float deltaT, string? overrideName = null, string? overrideAction = null)
     {
         var severity = deltaT >= 1.8f ? EventSeverity.Critical : (deltaT >= 1.4f ? EventSeverity.Warning : EventSeverity.Info);
         if (severity == EventSeverity.Critical) _criticalCount++;
         var sig = $"SHA256:{Guid.NewGuid().ToString("N")[..32]}";
         var ev = new AuditEvent(
             DateTime.UtcNow,
-            EventNames[_r.Next(EventNames.Length)],
-            Actions[_r.Next(Actions.Length)],
+            overrideName ?? EventNames[_r.Next(EventNames.Length)],
+            overrideAction ?? Actions[_r.Next(Actions.Length)],
             sig,
             severity
         );
