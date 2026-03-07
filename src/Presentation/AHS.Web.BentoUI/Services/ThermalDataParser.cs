@@ -1,7 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace AHS.UI.Services;
+namespace AHS.Web.BentoUI.Services;
 
 public static class ThermalDataParser {
     public static async Task<float[]> ParseThermalLogAsync(IBrowserFile file) {

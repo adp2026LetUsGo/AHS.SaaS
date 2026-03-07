@@ -1,0 +1,43 @@
+<div class="xai-modal @(IsVisible ? "show" : "")">
+    <div class="modal-glass">
+        <div class="modal-header">
+            <h3><i class="bi bi-cpu"></i> HPC_ENGINE_DNA (v1.0.4)</h3>
+            <button @onclick="OnClose" class="close-btn">×</button>
+        </div>
+        <div class="dna-grid">
+            <div class="dna-item"><span>01</span> FastTree (Regression)</div>
+            <div class="dna-item"><span>02</span> SMOTE Over-sampling</div>
+            <div class="dna-item"><span>03</span> Cost Matrix (GxP)</div>
+            <div class="dna-item"><span>04</span> SIMD Vectorization</div>
+            <div class="dna-item"><span>05</span> AVX-512 Support</div>
+            <div class="dna-item"><span>06</span> L3 Cache Opt</div>
+            <div class="dna-item"><span>07</span> Native AOT Comp</div>
+            <div class="dna-item"><span>08</span> Zero-Alloc Parse</div>
+            <div class="dna-item"><span>09</span> Kalman Filter</div>
+            <div class="dna-item"><span>10</span> Delta-T Gradient</div>
+            <div class="dna-item"><span>11</span> Non-Repudiation</div>
+            <div class="dna-item"><span>12</span> SHA256 Chain</div>
+            <div class="dna-item"><span>13</span> Tenant Isolation</div>
+            <div class="dna-item"><span>14</span> Real-time Interpolation</div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .xai-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); 
+                 display: none; align-items: center; justify-content: center; z-index: 2000; }
+    .xai-modal.show { display: flex; }
+    .modal-glass { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.3); 
+                   padding: 40px; border-radius: 24px; width: 600px; box-shadow: 0 0 50px rgba(56, 189, 248, 0.2); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+    .modal-header h3 { font-family: 'JetBrains Mono'; font-size: 1.2rem; color: #f1f5f9; margin: 0; }
+    .dna-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 25px; }
+    .dna-item { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: #94a3b8; }
+    .dna-item span { color: #38bdf8; margin-right: 10px; font-weight: bold; }
+    .close-btn { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; line-height: 1; }
+</style>
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+}
