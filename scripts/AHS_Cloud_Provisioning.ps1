@@ -1,67 +1,59 @@
 # ============================================================================
-# AHS.SaaS: SILENT CLOUD PROVISIONING SCRIPT (F1 ZERO-COST)
-# Purpose: Auto-deploy Azure Resources and Link GitHub Secrets
+# AHS.SaaS - CLOUD PROVISIONING SCRIPT v1.1 (CLEAN VERSION)
 # ============================================================================
 
 $ErrorActionPreference = "Stop"
+$ProjectRoot = Get-Location
 
-# 1. AUTO-DETECTION: GITHUB REPOSITORY
-Write-Host "🔍 Detectando Repositorio GitHub..." -ForegroundColor Cyan
-$RepoUrl = git remote get-url origin
-if ($RepoUrl -match "github\.com[:/](.+)\.git") {
-    $RepoName = $Matches[1]
-    Write-Host "✅ Repositorio Detectado: $RepoName" -ForegroundColor Green
-} else {
-    Write-Host "❌ Error: No se pudo detectar el repositorio de GitHub." -ForegroundColor Red
-    exit 1
-}
+# Configuración de Nombres (Costo Cero)
+$RG_NAME = "RG-AHS-SAAS-FREE"
+$LOCATION = "eastus2" 
+$APP_SERVICE_PLAN = "ASP-AHS-SAAS-FREE"
+$RANDOM_ID = Get-Random -Minimum 1000 -Maximum 9999
+$API_NAME = "ahs-api-gateway-$RANDOM_ID"
+$SWA_NAME = "ahs-bento-ui-$RANDOM_ID"
 
-# 2. AZURE LOGIN CHECK
-Write-Host "🔐 Verificando Sesión de Azure..." -ForegroundColor Cyan
-$AzAccount = az account show --query name -o tsv
-if (-not $AzAccount) {
-    Write-Host "❌ No hay sesión activa. Por favor, ejecute 'az login'." -ForegroundColor Yellow
-    exit 1
-}
-Write-Host "✅ Azure Account: $AzAccount"
+Write-Host "--- INICIANDO PROVISION AHS.SaaS (PHASE 10.2) ---" -ForegroundColor Cyan
 
-# 3. RESOURCE GROUP (FREE ZONE)
-$RG = "AHS_SaaS_Cloud"
-$Location = "eastus"
-Write-Host "🏗️ Creando Grupo de Recursos ($RG)..." -ForegroundColor Cyan
-az group create --name $RG --location $Location
+# 1. Autenticación
+Write-Host "[1/6] Autenticando en Azure (Se abrira el navegador)..."
+az login
 
-# 4. API: APP SERVICE (F1 FREE TIER)
-$ApiName = "ahs-api-free"
-$PlanName = "AHS_Free_Plan"
-Write-Host "🚀 Provisionando API en App Service (SKU: F1)..." -ForegroundColor Cyan
-az appservice plan create --name $PlanName --resource-group $RG --sku F1 --is-linux
-az webapp create --name $ApiName --resource-group $RG --plan $PlanName --runtime "DOTNETCORE|10.0"
+# 2. Crear Grupo de Recursos
+Write-Host "[2/6] Creando Grupo de Recursos ($RG_NAME)..."
+az group create --name $RG_NAME --location $LOCATION
 
-# 5. FRONTEND: STATIC WEB APP (FREE PLAN)
-$SwaName = "ahs-web-bento"
-Write-Host "🎨 Provisionando Frontend en Static Web App (Plan: Free)..." -ForegroundColor Cyan
-$SwaOutput = az staticwebapp create --name $SwaName --resource-group $RG --location $Location --source "https://github.com/$RepoName" --branch "main" --app-location "src/Presentation/AHS.Web.BentoUI" --output-location "wwwroot" -o json | ConvertFrom-Json
-$SwaUrl = "https://$($SwaOutput.defaultHostname)"
-$DeploymentToken = az staticwebapp secrets list --name $SwaName --query properties.apiKey -o tsv
+# 3. Crear Plan de App Service (F1 FREE)
+Write-Host "[3/6] Creando Plan App Service (SKU F1 - FREE)..."
+az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RG_NAME --location $LOCATION --sku F1 --is-linux
 
-# 6. AUTO-LINKING: GITHUB SECRETS & CORS
-Write-Host "🔗 Enlazando Ecosistema (CORS & Secrets)..." -ForegroundColor Cyan
+# 4. Crear Web App para el API Gateway
+Write-Host "[4/6] Creando Web App para API Gateway..."
+az webapp create --name $API_NAME --resource-group $RG_NAME --plan $APP_SERVICE_PLAN --runtime "DOTNET|8.0"
 
-# Guardar Token de SWA en GitHub
-gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$DeploymentToken" --repo "$RepoName"
+# 5. Crear Azure Static Web App para el Dashboard
+Write-Host "[5/6] Creando Static Web App para el Frontend..."
+$REPO_URL = git remote get-url origin
+$SWA_DATA = az staticwebapp create --name $SWA_NAME --resource-group $RG_NAME --location $LOCATION --source $REPO_URL --branch "main" --app-location "src/Presentation/AHS.Web.BentoUI" --output-location "wwwroot" --login-with-github --query "{token:apiKey, url:defaultHostname}" -o json | ConvertFrom-Json
 
-# Configurar ALLOWED_ORIGINS en la API (Azure)
-az webapp config appsettings set --name $ApiName --resource-group $RG --settings ALLOWED_ORIGINS="$SwaUrl"
+$SWA_DEPLOY_TOKEN = $SWA_DATA.token
+$SWA_FULL_URL = "https://$($SWA_DATA.url)"
 
-# Obtener Perfil de Publicación de la API para GitHub
-$PublishProfile = az webapp deployment list-publishing-profiles --name $ApiName --resource-group $RG --xml
-gh secret set AZURE_WEBAPP_PUBLISH_PROFILE --body "$PublishProfile" --repo "$RepoName"
+# 6. Configurar CORS y Variables de Entorno
+Write-Host "[6/6] Configurando Enlace de Ecosistema (CORS)..."
+az webapp config appsettings set --name $API_NAME --resource-group $RG_NAME --settings ALLOWED_ORIGINS=$SWA_FULL_URL
 
-Write-Host "============================================================================" -ForegroundColor Green
-Write-Host "✅ INFRAESTRUCTURA LISTA (COSTO CERO)" -ForegroundColor Green
-Write-Host "🌐 Frontend URL: $SwaUrl" -ForegroundColor Cyan
-Write-Host "⚡ API URL: https://$ApiName.azurewebsites.net" -ForegroundColor Cyan
-Write-Host "🔐 Secretos de GitHub inyectados automáticamente." -ForegroundColor Cyan
-Write-Host "💻 Próximo Paso: Push a 'main' para activar el despliegue automático." -ForegroundColor Yellow
-Write-Host "============================================================================" -ForegroundColor Green
+# --- SINCRONIZACIÓN DE SECRETOS CON GITHUB ---
+Write-Host "--- SINCRONIZANDO SECRETOS CON GITHUB ---" -ForegroundColor Yellow
+
+# Extraer Perfil de Publicación del API
+$PUBLISH_PROFILE = az webapp deployment list-publishing-profiles --name $API_NAME --resource-group $RG_NAME --xml
+
+# Usar GitHub CLI para subir los secretos
+gh secret set AZURE_STATIC_WEB_APPS_API_TOKEN --body "$SWA_DEPLOY_TOKEN"
+gh secret set AZURE_APP_SERVICE_PUBLISH_PROFILE --body "$PUBLISH_PROFILE"
+
+Write-Host "PROVISION COMPLETADA EXITOSAMENTE" -ForegroundColor Green
+Write-Host "URL Frontend: $SWA_FULL_URL"
+Write-Host "URL API Gateway: https://$API_NAME.azurewebsites.net"
+Write-Host "Haga un 'git push' para iniciar el despliegue automatico."
