@@ -104,6 +104,7 @@
 
 @code {
     private bool _showDna = false;
+    private bool _isOffline = false;
     private PredictiveShieldMetrics _metrics = new(0, 0, 0, 999, false);
     private List<AuditEvent> _auditLog = new();
     private int _criticalCount = 0;
@@ -124,9 +125,20 @@
         "AUDIT TRAIL UPDATED", "SUPERVISOR NOTIFIED", "GxP COMPLIANCE LOGGED"
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        StartSimulation();
+        try 
+        {
+            // Intentar conexión inicial o validación de API aquí si fuera necesario
+            StartSimulation();
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            _isOffline = true;
+            await AddAuditEntry(0.1f, overrideName: "SYSTEM_OFFLINE", overrideAction: "API connection failed. Local simulation enabled.");
+            StartSimulation(); // Fallback to local simulation
+        }
     }
 
     private void StartSimulation()
