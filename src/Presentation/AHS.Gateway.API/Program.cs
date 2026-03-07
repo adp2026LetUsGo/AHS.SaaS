@@ -6,12 +6,14 @@ using System.Diagnostics.CodeAnalysis;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-// CORS Policy for Dashboard Connectivity
+// PRODUCTION_READY_CORS: Dynamic Origins from Environment
+var allowedOrigins = Environment.GetEnvironmentVariable("ALLOWED_ORIGINS")?.Split(',') ?? new[] { "http://localhost:5120" };
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://localhost:5120")
+        policy.WithOrigins(allowedOrigins)
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
@@ -21,7 +23,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
-        // Insert Source Generated Context into the resolver chain
         options.JsonSerializerOptions.TypeInfoResolverChain.Insert(0, AotJsonContext.Default);
     });
 
