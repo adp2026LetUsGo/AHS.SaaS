@@ -1,5 +1,4 @@
-@page "/"
-@page "/command-center"
+@page "/bento-legacy"
 @using AHS.SaaS.Common.Models
 @using global::AHS.SaaS.Engines.HPC
 @using AHS.Web.BentoUI.Components
@@ -81,7 +80,7 @@
     .gamma-box .audit-ledger { flex: 1; }
     .delta-box { grid-area: delta; }
     
-    .bento-item { background: rgba(15, 23, 42, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 20px; transition: all 0.3s ease; overflow: hidden; }
+    .bento-item { background: rgba(15, 23, 42, 0.2); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px !important; transition: all 0.3s ease; overflow: hidden; }
     .bento-item:hover { border-color: rgba(56, 189, 248, 0.3); background: rgba(15, 23, 42, 0.4); }
 
     /* Alpha Content Specialization */
@@ -127,9 +126,13 @@
 
     protected override async Task OnInitializedAsync()
     {
+        // STATIC BOOTSTRAP (DIAGNOSTIC)
+        _buffer = new List<float> { 1.2f, 1.1f, 1.4f, 1.3f, 1.5f };
+        _metrics = ThermalAnalyticsEngine.CalculateTimeToFailure(_buffer.ToArray(), 1.5f);
+        await AddAuditEntry(1.1f, overrideName: "SYSTEM_BOOTSTRAP", overrideAction: "HPC Engine initialized with static baseline.");
+
         try 
         {
-            // Intentar conexión inicial o validación de API aquí si fuera necesario
             StartSimulation();
             await Task.CompletedTask;
         }
