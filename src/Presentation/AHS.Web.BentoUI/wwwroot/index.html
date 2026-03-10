@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AHS.SaaS | Stitch Console</title>
     <base href="/" />
+    <!-- Elite Fonts & Tailwind CDN -->
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/stitch-elite.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
     <link href="AHS.Web.BentoUI.styles.css" rel="stylesheet" />
 </head>
-
-<body class="stitch-body">
+<body class="stitch-body bg-[#020617]">
     <div id="app">
-        <!-- SpaceX-grade loader -->
-        <div
-            style="display:flex;justify-content:center;align-items:center;height:100vh;background:#020617;color:#ec5b13;font-family:sans-serif;">
-            <div style="letter-spacing:5px;font-weight:900;font-family: 'JetBrains Mono', monospace;">
-                AHS.SaaS_BOOTING_CORE_SYSTEMS...</div>
+        <div class="flex flex-col items-center justify-center h-screen bg-[#020617]">
+            <div class="text-[#ec5b13] font-black tracking-[1em] animate-pulse">AHS.SaaS_STITCH_INIT</div>
         </div>
-    </div>
-
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js" autostart="true"></script>
 </body>
-
 </html>
