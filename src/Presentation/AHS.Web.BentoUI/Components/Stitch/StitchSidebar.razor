@@ -1,0 +1,50 @@
+@using AHS.SaaS.Common.Models
+
+<aside class="stitch-sidebar">
+    <div class="brand">AHS<span class="orange-glow">.</span></div>
+    
+    <nav class="stitch-nav">
+        <div class="nav-link active"><i class="bi bi-cpu"></i> CONSOLE</div>
+        <div class="nav-link"><i class="bi bi-truck"></i> FLEET_PULSE</div>
+    </nav>
+
+    <div class="fleet-metrics">
+        <label>SYSTEM_STATUS</label>
+        <div class="metric-row">
+            <div class="metric">
+                <span class="m-val">142</span>
+                <span class="m-lbl">VEHICLES</span>
+            </div>
+            <div class="metric">
+                <span class="m-val orange-glow">99.8%</span>
+                <span class="m-lbl">INTEGRITY</span>
+            </div>
+        </div>
+        
+        <!-- Fleet Pulse Sparklines -->
+        <div class="mt-6 flex flex-col gap-2">
+            <label>FLEET_PULSE</label>
+            <svg viewBox="0 0 100 20" class="w-full h-8 opacity-50">
+                <path d="M0 10 Q 5 2, 10 10 T 20 10 T 30 10 T 40 10 T 50 10 T 60 10 T 70 10 T 80 10 T 90 10 T 100 10" 
+                      fill="none" stroke="#ec5b13" stroke-width="0.5" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="hud-box stitch-mono">
+        <div class="hud-title">HPC_SIMD_ENGINE</div>
+        <div>LATENCY: 0.42ms</div>
+        <div class="engine-pulse"></div>
+    </div>
+</aside>
+
+<style>
+    /* Inline styles for components if needed, or rely on stitch-elite.css */
+    .stitch-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .mt-6 { margin-top: 1.5rem; }
+</style>

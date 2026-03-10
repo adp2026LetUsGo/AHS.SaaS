@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+
+:root {
+    --slate-950: #020617;
+    --ind-orange: #ec5b13;
+    --glass-border: rgba(255, 255, 255, 0.05);
+}
+
+.stitch-body {
+    background-color: var(--slate-950) !important;
+    font-family: 'Public Sans', sans-serif;
+    color: #f8fafc;
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.stitch-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.stitch-card {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(40px);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 4px;
+    padding: 25px;
+}
+
+.orange-glow {
+    color: var(--ind-orange);
+    text-shadow: 0 0 15px rgba(236, 91, 19, 0.4);
+}
+
+.stitch-sidebar {
+    width: 300px;
+    height: 100vh;
+    background: #01040a;
+    border-right: 0.5px solid var(--glass-border);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+}
+
+.nav-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    padding: 12px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-link.active {
+    color: #fff;
+    border-left: 2px solid #ec5b13;
+    padding-left: 15px;
+}
+
+.fleet-metrics {
+    margin-top: auto;
+}
+
+.fleet-metrics label {
+    font-size: 0.6rem;
+    color: #475569;
+    letter-spacing: 0.1em;
+    font-weight: 900;
+}
+
+.metric-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.metric {
+    display: flex;
+    flex-direction: column;
+}
+
+.m-val {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.m-lbl {
+    font-size: 0.6rem;
+    color: #64748b;
+}
+
+.hud-box {
+    background: rgba(255, 255, 255, 0.02);
+    border: 0.5px solid var(--glass-border);
+    padding: 15px;
+    font-size: 0.7rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hud-title {
+    color: #475569;
+    margin-bottom: 5px;
+}
+
+.engine-pulse {
+    height: 2px;
+    background: #ec5b13;
+    margin-top: 10px;
+    animation: engine-pulse-anim 2s infinite;
+}
+
+@keyframes engine-pulse-anim {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scaleX(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scaleX(0.95);
+    }
+}
+
+.doom-clock {
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+}

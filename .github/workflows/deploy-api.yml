@@ -1,9 +1,6 @@
 name: Deploy API to Azure App Service (AOT)
 
 on:
-    push:
-        branches:
-            - main
     workflow_dispatch:
 
 jobs:
