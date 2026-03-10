@@ -4,32 +4,68 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AHS.Web.BentoUI</title>
+    <title>AHS.SaaS | Stitch Console</title>
     <base href="/" />
-    <link rel="preload" id="webassembly" />
-    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="stylesheet" href="css/stitch-elite.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="AHS.Web.BentoUI.styles.css" rel="stylesheet" />
-    <script type="importmap"></script>
+    <style>
+        .boot-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #020617;
+            color: #ec5b13;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+
+        .boot-loader {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(236, 91, 19, 0.1);
+            border-top: 2px solid #ec5b13;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(236, 91, 19, 0.2);
+        }
+
+        .boot-text {
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="stitch-body">
     <div id="app">
-        <svg class="loading-progress">
-            <circle r="40%" cx="50%" cy="50%" />
-            <circle r="40%" cx="50%" cy="50%" />
-        </svg>
-        <div class="loading-progress-text"></div>
+        <div class="boot-container">
+            <div class="boot-loader"></div>
+            <div class="boot-text">AHS.SaaS_BOOTING_CORE_SYSTEMS...</div>
+        </div>
     </div>
 
     <div id="blazor-error-ui">
         An unhandled error has occurred.
-        <a href="." class="reload">Reload</a>
-        <span class="dismiss">🗙</span>
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
     </div>
-    <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
 </html>
