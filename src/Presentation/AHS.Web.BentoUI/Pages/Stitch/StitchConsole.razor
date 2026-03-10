@@ -4,83 +4,91 @@
 @using AHS.Web.BentoUI.Components.Stitch
 @using AHS.SaaS.Common.Models
 
-<div class="stitch-container">
-    <StitchSidebar />
-    
-    <main class="stitch-viewport">
-        <header class="v-header">
-            <div class="v-title">SYSTEM_CONSOLE <span class="v-tag">STITCH_V1</span></div>
-            <div class="v-user mono">USER_ADMIN_HQ</div>
+<div class="flex h-screen w-full stitch-body bg-background-light dark:bg-background-dark font-display overflow-hidden">
+    <!-- Sidebar: Fixed 300px -->
+    <StitchSidebar Metrics="_metrics" />
+
+    <!-- Main Content Area Placeholder -->
+    <main class="flex-1 bg-background-light dark:bg-slate-900 relative overflow-hidden">
+        <!-- Decorative Background Elements -->
+        <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+            <span class="material-symbols-outlined text-[300px]">hive</span>
+        </div>
+        
+        <!-- Top Header -->
+        <header class="h-16 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-8 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md relative z-10">
+            <div class="flex items-center gap-4">
+                <h2 class="text-slate-900 dark:text-slate-100 font-bold text-lg">System Dashboard Overview</h2>
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-primary/10 text-primary border border-primary/20 uppercase tracking-tighter">Live Session</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span class="text-xs text-slate-500 font-mono tracking-tight">NODES_STABLE: 942</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700"></div>
+                    <span class="text-sm font-medium text-slate-700 dark:text-slate-300">ADMIN_01</span>
+                </div>
+            </div>
         </header>
-
-        <div class="stitch-grid-v2">
-            <!-- ALPHA BOX: THE DOOM CLOCK -->
-            <div class="stitch-glass area-alpha">
-                <div class="card-tag">THERMAL_CONTINGENCY_WINDOW</div>
-                <div class="doom-clock mono">00:42:15</div>
-                <div class="status-row">
-                    <span class="status-pill">STABLE</span>
-                    <span class="status-msg">TTF_ABOVE_THRESHOLD</span>
+        
+        <!-- Content Grid Placeholder -->
+        <div class="p-8 grid grid-cols-12 gap-6 relative z-10 h-[calc(100vh-64px)] overflow-y-auto">
+            <!-- Large Map Placeholder -->
+            <div class="col-span-8 h-[500px] rounded-2xl bg-slate-200 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-800 overflow-hidden relative group">
+                <div class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Digital grid map showing global asset logistics" data-location="Global Fleet Network" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBc8IoJ53TB2qfvDv3DzXXMvsm2cqT2LDVC32uQ2sq99uvm_9UllRT8t-0yLFnfJ0XO8M4QJiff-ZlVjDaxAgUblygtqLY6-8JIEBQLNwBBCufF4zDWxLHCk1prOR7zmdFLtpaGFNVIZC26P8g61Yhd8wD1a0kGp4UFfhTtKxcOJj1aAcaTYPiTSDxZrtRO0Z4hcTy9Gxn8xazrad6XZHelERibLQ34P1U_U93SHjO9FCp9Gx3cUC9M9dUck9mD7FMyedsjdf13BYE')">
+                </div>
+                <div class="absolute top-4 left-4 glass-card rounded-lg px-4 py-2 text-white text-xs font-mono">
+                    SCANNING_SECTOR_04 // ACTIVE
                 </div>
             </div>
-
-            <!-- BETA BOX: FORECAST CHART MOCK -->
-            <div class="stitch-glass area-beta">
-                <div class="card-tag">PREDICTIVE_FORECAST_T30</div>
-                <div class="chart-mock">
-                    <svg viewBox="0 0 400 150" class="w-full h-full">
-                        <defs>
-                            <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="0%" stop-color="#ec5b13" stop-opacity="0.3" />
-                                <stop offset="100%" stop-color="#ec5b13" stop-opacity="0" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M0 120 Q 100 110, 200 80 T 400 20" fill="none" stroke="#ec5b13" stroke-width="3" stroke-linecap="round" />
-                        <path d="M0 120 Q 100 110, 200 80 T 400 20 V 150 H 0 Z" fill="url(#glow)" />
-                        <circle cx="400" cy="20" r="4" fill="#ec5b13" />
-                    </svg>
+            
+            <!-- Secondary Panels -->
+            <div class="col-span-4 space-y-6">
+                <div class="h-[240px] rounded-2xl border border-slate-200 dark:border-slate-800 p-6 bg-white dark:bg-slate-800/30">
+                    <h4 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Neural Processing</h4>
+                    <div class="space-y-4">
+                        <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded-full w-3/4"></div>
+                        <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded-full w-full"></div>
+                        <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded-full w-2/3"></div>
+                        <div class="h-4 bg-slate-100 dark:bg-slate-700 rounded-full w-5/6"></div>
+                    </div>
                 </div>
-            </div>
-
-            <!-- GAMMA BOX: AUDIT LEDGER -->
-            <div class="stitch-glass area-gamma">
-                <div class="card-tag">GxP_IMMUTABLE_LEDGER</div>
-                <div class="ledger-mock">
-                    <div class="entry"><span>12:04:22</span> SESSION_INITIALIZED [AHS_STITCH]</div>
-                    <div class="entry"><span>12:04:25</span> SIMD_ENGINE_SYNCHRONIZED</div>
-                    <div class="entry"><span>12:04:30</span> GxP_AUDIT_TRAIL_ACTIVE</div>
+                <div class="h-[240px] rounded-2xl bg-primary/5 border border-primary/20 p-6">
+                    <div class="flex justify-between items-start mb-6">
+                        <h4 class="text-xs font-bold uppercase tracking-widest text-primary">Quantum Encryption</h4>
+                        <span class="material-symbols-outlined text-primary">security</span>
+                    </div>
+                    <div class="flex flex-col items-center justify-center h-24">
+                        <div class="text-4xl font-mono font-bold text-slate-900 dark:text-slate-100">010110</div>
+                        <p class="text-[10px] text-slate-400 font-mono mt-2">PARITY_CHECK_OK</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 </div>
 
-<style>
-    .stitch-container { display: flex; width: 100vw; height: 100vh; background: #020617; font-family: 'Public Sans', sans-serif; }
-    .stitch-viewport { flex: 1; padding: 50px; display: flex; flex-direction: column; gap: 30px; }
-    .v-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 25px; }
-    .v-title { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
-    .v-tag { font-size: 0.6rem; background: #ec5b13; color: #fff; padding: 3px 8px; border-radius: 2px; vertical-align: middle; margin-left: 15px; }
-    .v-user { font-size: 0.7rem; color: #475569; }
+@code {
+    private PredictiveShieldMetrics _metrics = new(0, 0, 0, 999, false);
+    private System.Timers.Timer? _timer;
+    private List<float> _buffer = new();
 
-    .stitch-grid-v2 { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 450px 1fr; gap: 30px; flex: 1; }
-    .area-alpha { grid-column: span 1; padding: 60px; display: flex; flex-direction: column; justify-content: center; }
-    .area-beta { padding: 30px; }
-    .area-gamma { grid-column: span 2; padding: 30px; }
-
-    .stitch-glass {
-        background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(30px);
-        border: 1px solid rgba(236, 91, 19, 0.2); border-radius: 4px;
-        box-shadow: inset 0 0 30px rgba(236, 91, 19, 0.05);
-        position: relative; overflow: hidden;
+    protected override void OnInitialized()
+    {
+        _timer = new System.Timers.Timer(2000);
+        _timer.Elapsed += async (s, e) =>
+        {
+            float val = 0.8f + (float)new Random().NextDouble() * 1.5f;
+            _buffer.Add(val);
+            if (_buffer.Count > 15) _buffer.RemoveAt(0);
+            
+            _metrics = AHS.SaaS.Engines.HPC.ThermalAnalyticsEngine.CalculateTimeToFailure(_buffer.ToArray(), val);
+            await InvokeAsync(StateHasChanged);
+        };
+        _timer.Start();
     }
-    .card-tag { font-size: 0.7rem; font-weight: 900; color: #475569; letter-spacing: 3px; margin-bottom: 20px; }
-    .doom-clock { font-size: 6rem; font-weight: 700; color: #ec5b13; text-shadow: 0 0 40px rgba(236, 91, 19, 0.4); }
-    .status-row { margin-top: 20px; display: flex; align-items: center; gap: 15px; }
-    .status-pill { background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid #22c55e; padding: 4px 12px; font-size: 0.7rem; font-weight: 900; border-radius: 20px; }
-    .status-msg { font-size: 0.7rem; color: #475569; font-weight: 700; }
-    
-    .chart-mock { height: 100%; width: 100%; padding-top: 20px; }
-    .ledger-mock { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: #64748b; display: flex; flex-direction: column; gap: 10px; }
-    .ledger-mock .entry span { color: #ec5b13; margin-right: 15px; }
-</style>
+
+    public void Dispose() => _timer?.Dispose();
+}
