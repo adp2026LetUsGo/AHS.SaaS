@@ -138,3 +138,7 @@
     font-weight: 700;
     line-height: 1;
 }
+.stitch-body { position: fixed !important; inset: 0 !important; z-index: 1000 !important; background-color: #020617 !important; display: block !important; margin: 0 !important; padding: 0 !important; }
+.stitch-layout { display: flex !important; width: 100vw !important; height: 100vh !important; background: radial-gradient(at 0% 0%, #0f172a 0%, #020617 100%); }
+.sidebar-glass, .viewport-master, .bento-grid-item { display: none !important; }
+.stitch-sidebar { display: flex !important; }

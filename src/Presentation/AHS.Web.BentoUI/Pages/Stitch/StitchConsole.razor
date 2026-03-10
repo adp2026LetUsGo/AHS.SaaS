@@ -1,76 +1,32 @@
 @page "/"
 @page "/stitch"
+@layout AHS.Web.BentoUI.Shared.EmptyLayout
 @using AHS.Web.BentoUI.Components.Stitch
 @using AHS.SaaS.Common.Models
-@using AHS.SaaS.Engines.HPC
-@implements IDisposable
 
 <div class="stitch-body">
-    <div class="flex h-screen">
+    <div class="stitch-layout">
         <StitchSidebar />
-        
-        <main class="flex-1 p-10 flex flex-col gap-8 overflow-y-auto">
-            <header class="flex justify-between items-center border-b border-white/5 pb-5">
-                <div class="text-2xl font-black tracking-widest">COMMAND_CENTER <span class="bg-orange-600 text-[10px] px-2 py-1 rounded ml-4">GxP_LIVE</span></div>
-                <button class="bg-orange-600 px-6 py-2 font-bold text-xs shadow-[0_0_20px_rgba(236,91,19,0.3)]">MITIGATION_PROTOCOL</button>
-            </header>
-
-            <section class="grid grid-cols-3 gap-6 flex-1">
-                <!-- Alpha Box Dominante -->
-                <div class="stitch-card col-span-2 flex flex-col justify-center relative overflow-hidden">
-                    <label class="text-[10px] text-slate-500 tracking-widest mb-4">THERMAL_CONTINGENCY_WINDOW</label>
-                    <div class="doom-clock stitch-mono @(_metrics.IsCritical ? "text-red-500" : "text-white")">
-                        @((_metrics.TimeToFailureMin >= 999) ? "STABLE" : $"{(int)_metrics.TimeToFailureMin}m")
-                    </div>
-                    
-                    <!-- Decorative background grid -->
-                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+        <main class="stitch-viewport">
+            <header class="stitch-header">
+                <div class="v-title">COMMAND_CENTER <span class="v-status">GxP_LIVE</span></div>
+                <div class="v-actions">
+                    <button class="stitch-btn-orange">MITIGATION_PROTOCOL</button>
+                    <div class="v-user">ADMIN_01</div>
                 </div>
-
-                <div class="flex flex-col gap-6">
-                    <div class="stitch-card flex-1">
-                        <label class="text-[10px] text-slate-500 tracking-widest mb-4">ENGINE_TELEMETRY</label>
-                        <div class="stitch-mono text-xs text-orange-500 mb-2">SIMD_ACTIVE: TRUE</div>
-                        <div class="stitch-mono text-[10px] text-slate-400">
-                            DELTA_T: @(_metrics.CurrentDeltaT.ToString("F2"))°C<br/>
-                            SLOPE: @(_metrics.Slope.ToString("F4"))<br/>
-                            PROJ_30: @(_metrics.ProjectedDeltaT30.ToString("F2"))°C
-                        </div>
-                    </div>
-                    
-                    <div class="stitch-card flex-1">
-                        <label class="text-[10px] text-slate-500 tracking-widest mb-4">SYSTEM_LOG</label>
-                        <div class="stitch-mono text-[8px] text-slate-500 space-y-1">
-                            <div>[04:32:11] INITIALIZING_HPC_CORE...</div>
-                            <div>[04:32:12] SYNC_LEVEL_0_REACHED.</div>
-                            <div>[04:32:15] GxP_VALIDATION_COMPLETE.</div>
-                        </div>
-                    </div>
+            </header>
+            <section class="stitch-grid">
+                <div class="stitch-card area-alpha">
+                    <div class="card-label">THERMAL_CONTINGENCY_WINDOW</div>
+                    <div class="clock-large stitch-mono">00:42:15</div>
+                </div>
+                <div class="stitch-card area-beta">
+                    <div class="card-label">FORECAST_PROJECTION_T30</div>
+                </div>
+                <div class="stitch-card area-gamma">
+                    <div class="card-label">IMMUTABLE_AUDIT_LEDGER</div>
                 </div>
             </section>
         </main>
     </div>
 </div>
-
-@code {
-    private PredictiveShieldMetrics _metrics = new(0, 0, 0, 999, false);
-    private System.Timers.Timer? _timer;
-    private List<float> _buffer = new();
-
-    protected override void OnInitialized()
-    {
-        _timer = new System.Timers.Timer(2000);
-        _timer.Elapsed += async (s, e) =>
-        {
-            float val = 0.8f + (float)new Random().NextDouble() * 1.5f;
-            _buffer.Add(val);
-            if (_buffer.Count > 15) _buffer.RemoveAt(0);
-            
-            _metrics = ThermalAnalyticsEngine.CalculateTimeToFailure(_buffer.ToArray(), val);
-            await InvokeAsync(StateHasChanged);
-        };
-        _timer.Start();
-    }
-
-    public void Dispose() => _timer?.Dispose();
-}
