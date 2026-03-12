@@ -1,0 +1,23 @@
+<div class="fixed bottom-[2rem] left-[2rem] z-[100] flex flex-col gap-[0.5rem]">
+    <div class="bg-black/80 border border-white/10 backdrop-blur-xl px-[1.25rem] py-[0.75rem] rounded-[0.75rem] flex items-center gap-[1.25rem]">
+        <div class="flex items-center gap-[0.5rem]">
+            <span class="w-[0.5rem] h-[0.5rem] rounded-full @(IsHealthy ? "bg-emerald-500 animate-pulse" : "bg-red-500 animate-ping")"></span>
+            <span class="text-white/40 text-[0.625rem] font-mono uppercase tracking-widest">System_Health</span>
+        </div>
+        <div class="h-[1.5rem] w-[1px] bg-white/10"></div>
+        <div class="flex items-center gap-[0.5rem]">
+            <span class="material-symbols-outlined text-primary text-[1rem]">speed</span>
+            <span class="text-white font-mono text-[0.75rem]">@LatencyUs.ToString("F0")μs</span>
+        </div>
+        <div class="h-[1.5rem] w-[1px] bg-white/10"></div>
+        <div class="flex items-center gap-[0.5rem]">
+            <span class="material-symbols-outlined text-[1rem] @(IsHealthy ? "text-emerald-500" : "text-red-500")">link</span>
+            <span class="text-white/70 text-[0.625rem] font-bold">UPLINK_LIVE</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public double LatencyUs { get; set; }
+    [Parameter] public bool IsHealthy { get; set; }
+}

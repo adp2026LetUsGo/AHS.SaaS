@@ -1,0 +1,53 @@
+@namespace AHS.Web.UI.Components
+
+<div class="delta-t-chart h-full w-full relative">
+    <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 200 100">
+        <!-- Grid Lines -->
+        @for (int i = 0; i <= 4; i++)
+        {
+            var y = 10 + i * 20;
+            <line x1="0" y1="@y" x2="200" y2="@y" stroke="rgba(255,255,255,0.05)" stroke-width="0.5" />
+        }
+        
+        <!-- Data Path -->
+        <path d="@GeneratePath()" fill="url(#chartGradient)" stroke="@(IsCritical ? "#ef4444" : "#ec5b13")" stroke-width="2" class="chart-line" />
+        
+        <defs>
+            <linearGradient id="chartGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="@(IsCritical ? "rgba(239, 68, 68, 0.3)" : "rgba(236, 91, 19, 0.3)")" />
+                <stop offset="100%" stop-color="transparent" />
+            </linearGradient>
+        </defs>
+    </svg>
+</div>
+
+<style>
+    .chart-line {
+        stroke-dasharray: 1000;
+        stroke-dashoffset: 1000;
+        animation: chart-draw 2s forwards ease-out;
+    }
+    @@keyframes chart-draw {
+        to { stroke-dashoffset: 0; }
+    }
+</style>
+
+@code {
+    [Parameter] public float Slope { get; set; }
+    [Parameter] public bool IsCritical { get; set; }
+
+    private string GeneratePath()
+    {
+        // Simple mock path generation based on slope
+        var startY = 80;
+        var points = new System.Text.StringBuilder($"M 0 {startY}");
+        for (int i = 1; i <= 10; i++)
+        {
+            var x = i * 20;
+            var y = startY - (i * Slope * 5) + (Math.Sin(i) * 5);
+            points.Append($" L {x} {y}");
+        }
+        points.Append(" V 100 H 0 Z");
+        return points.ToString();
+    }
+}

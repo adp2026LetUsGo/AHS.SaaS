@@ -4,43 +4,4 @@ using AHS.Common;
 using AHS.Common.Models;
 using AHS.Common.Serialization;
 using System.Collections.Generic;
-
-namespace AHS.Gateway.API.Handlers;
-
-/// <summary>
-/// Orchestrates the prediction logic by bridging the API request to the ONNX Engine.
-/// </summary>
-[SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Instantiated by the Dependency Injection container.")]
-internal sealed class PredictExcursionRiskHandler
-{
-    private readonly ExcursionInferenceService _inferenceService;
-
-    public PredictExcursionRiskHandler(ExcursionInferenceService inferenceService)
-    {
-        _inferenceService = inferenceService;
-    }
-
-    public PredictionResponse Handle(PredictRiskRequest request)
-    {
-        ArgumentNullException.ThrowIfNull(request);
-
-        // 1. Map categorical strings to floats (Pilot mapping)
-        float route = (float)(request.RouteId.GetHashCode(StringComparison.OrdinalIgnoreCase) % 10);
-        float carrier = (float)(request.Carrier.GetHashCode(StringComparison.OrdinalIgnoreCase) % 5);
-        float packaging = (float)(request.Packaging.GetHashCode(StringComparison.OrdinalIgnoreCase) % 3);
-        float weather = (float)(request.Weather.GetHashCode(StringComparison.OrdinalIgnoreCase) % 4);
-
-        // 2. Call the Real ONNX Engine (No more placeholders)
-        var result = _inferenceService.PredictExcursion(route, carrier, packaging, weather);
-
-        // 3. Determine Risk Level based on model probability
-        string risk = result.Probability switch
-        {
-            > 0.7f => "High",
-            > 0.3f => "Medium",
-            _ => "Low"
-        };
-
-        return new PredictionResponse(Guid.NewGuid().ToString(), result.Probability, risk, 15, DateTime.UtcNow, 0.95f, 0.92f, 0.93f, "Verified GxP Feed", new Dictionary<string, float>());
-    }
-}
+namespace AHS.Gateway.API.Handlers;/// <summary>/// Orchestrates the prediction logic by bridging the API request to the ONNX Engine./// </summary>[SuppressMessage("Performance", "CA1812: Avoid uninstantiated internal classes", Justification = "Instantiated by the Dependency Injection container.")]internal sealed class PredictExcursionRiskHandler{    private readonly ExcursionInferenceService _inferenceService;    public PredictExcursionRiskHandler(ExcursionInferenceService inferenceService)    {        _inferenceService = inferenceService;    }    public PredictionResponse Handle(PredictRiskRequest request)    {        ArgumentNullException.ThrowIfNull(request);        // 1. Map categorical strings to floats (Pilot mapping)        float route = (float)(request.RouteId.GetHashCode(StringComparison.OrdinalIgnoreCase) % 10);        float carrier = (float)(request.Carrier.GetHashCode(StringComparison.OrdinalIgnoreCase) % 5);        float packaging = (float)(request.Packaging.GetHashCode(StringComparison.OrdinalIgnoreCase) % 3);        float weather = (float)(request.Weather.GetHashCode(StringComparison.OrdinalIgnoreCase) % 4);        // 2. Call the Real ONNX Engine (No more placeholders)        var result = _inferenceService.PredictExcursion(route, carrier, packaging, weather);        // 3. Determine Risk Level based on model probability        string risk = result.Probability switch        {            > 0.7f => "High",            > 0.3f => "Medium",            _ => "Low"        };        return new PredictionResponse(Guid.NewGuid().ToString(), result.Probability, risk, 15, DateTime.UtcNow, 0.95f, 0.92f, 0.93f, "Verified GxP Feed", new Dictionary<string, float>());    }}

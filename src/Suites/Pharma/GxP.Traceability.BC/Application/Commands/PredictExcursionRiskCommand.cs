@@ -2,6 +2,7 @@ using AHS.Common.Models;
 using System.Collections.Generic;
 using AHS.Common;
 using AHS.SharedKernel;
+using System;
 
 namespace AHS.Suites.Pharma.GxP.Traceability.BC.Application.Commands;
 
@@ -11,7 +12,8 @@ public record PredictExcursionRiskCommand(
     int TransitTimeHrs,
     double ExternalTempAvg,
     string PackagingType,
-    bool DelayFlag) : IRequest<Result<PredictionResponse>>;
+    bool DelayFlag
+) : AHS.Common.IRequest<Result<PredictionResponse>>;
 
 public static class ExcursionPredictionPolicy
 {

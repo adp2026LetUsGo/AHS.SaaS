@@ -1,4 +1,6 @@
-﻿namespace AHS.SharedKernel;
+using System;
+
+namespace AHS.SharedKernel;
 
 public abstract class Entity
 {

@@ -1,6 +1,1 @@
-﻿namespace AHS.Engines.HPC;
-
-public class Class1
-{
-
-}
+namespace AHS.Engines.HPC; public class Class1 { }

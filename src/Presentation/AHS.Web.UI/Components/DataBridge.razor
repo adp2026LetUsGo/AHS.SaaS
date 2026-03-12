@@ -1,0 +1,95 @@
+@using Microsoft.AspNetCore.Components.Forms
+
+@using AHS.Web.UI.Services
+
+
+
+<div class="stitch-data-bridge flex items-center h-full w-full">
+
+    
+<div class="bridge-box w-full border-[0.125rem] border-dashed border-primary/20 rounded-[1rem] transition-all duration-300 bg-slate-900/30 relative overflow-hidden @(_isDragging ? "dragging" : "")" 
+         @ondragenter="() =>
+ _isDragging = true" 
+         @ondragleave="() => _isDragging = false">
+        <InputFile OnChange="HandleFile" class="hidden" id="stitchFileIn" />
+        <label for="stitchFileIn" class="flex flex-col items-center p-[1.875rem] cursor-pointer w-full">
+            <span class="material-symbols-outlined text-[2.5rem] text-primary drop-shadow-[0_0_0.9375rem_rgba(236,91,19,0.5)]">cloud_sync</span>
+            <span class="text-white font-extrabold text-[0.8125rem] mt-[0.625rem]">INGEST_GxP_DATA_STREAM</span>
+            <small class="text-slate-500 text-[0.625rem]">Drag & Drop or Multi-Source Input</small>
+            
+            @if (_isLoading)
+            {
+                
+<div class="w-full h-[0.125rem] bg-white/5 rounded-[0.0625rem] mt-[0.5rem] overflow-hidden">
+
+                    
+<div class="h-full bg-primary animate-load-sweep">
+
+</div>
+
+                
+</div>
+
+            }
+            
+            @if (!string.IsNullOrEmpty(_statusMsg))
+            {
+                
+<div class="mt-[0.375rem] text-[0.6875rem] font-bold tracking-[0.0625rem] @(_statusClass == "status-ok" ? "text-emerald-500" : "text-red-500")">
+
+                    @_statusMsg
+                
+</div>
+
+            }
+        </label>
+    
+</div>
+
+
+</div>
+
+
+<style>
+    .bridge-box:hover, .bridge-box.dragging { border-color: #ec5b13; background: rgba(236, 91, 19, 0.05); }
+    
+    .animate-load-sweep { animation: load-sweep 1s linear infinite; }
+    @@keyframes load-sweep { 
+        0% { width: 0%; margin-left: 0; } 
+        50% { width: 60%; margin-left: 20%; } 
+        100% { width: 0%; margin-left: 100%; } 
+    }
+</style>
+
+
+@code {
+
+    [Parameter] public EventCallback<float[]> OnDataParsed { get; set; }
+    private bool _isDragging = false;
+    private bool _isLoading = false;
+    private string _statusMsg = string.Empty;
+    private string _statusClass = string.Empty;
+
+    private async Task HandleFile(InputFileChangeEventArgs e) {
+        _isDragging = false;
+        _isLoading = true;
+        _statusMsg = string.Empty;
+        StateHasChanged();
+        try {
+            var data = await ThermalDataParser.ParseThermalLogAsync(e.File);
+            _isLoading = false;
+            if (data.Length > 0) {
+                _statusMsg = $"✓ {data.Length} DATAPOINTS SYNCED";
+                _statusClass = "status-ok";
+                await OnDataParsed.InvokeAsync(data);
+            } else {
+                _statusMsg = "✗ DATA_STREAM_NULL";
+                _statusClass = "status-err";
+            }
+        } catch {
+            _isLoading = false;
+            _statusMsg = "✗ CRC_FAILURE — RETRY";
+            _statusClass = "status-err";
+        }
+    }
+}

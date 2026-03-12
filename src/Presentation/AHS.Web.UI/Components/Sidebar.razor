@@ -1,0 +1,258 @@
+@using AHS.SaaS.Common.Models
+
+@using AHS.SaaS.Engines.HPC
+
+
+<aside class="glass-sidebar w-[18.75rem] h-full flex flex-col flex-shrink-0 z-50 overflow-y-auto overflow-x-hidden scrollbar-hide">
+    <!-- 1. Brand Identity -->
+    
+<div class="p-[1.5rem] border-b border-white/5">
+
+        
+<div class="flex items-center gap-[0.75rem]">
+
+            
+<div class="w-[2.5rem] h-[2.5rem] rounded-lg bg-primary flex items-center justify-center shadow-[0_0_1.25rem_rgba(236,91,19,0.4)]">
+
+                <span class="material-symbols-outlined text-white">deployed_code</span>
+            
+</div>
+
+            
+<div class="flex flex-col">
+
+                <h1 class="text-white text-[1.25rem] font-bold tracking-tight">AHS.SaaS</h1>
+                <p class="text-white/40 text-[0.625rem] ultra-thin uppercase">Universal Control Tower v2.1</p>
+            
+</div>
+
+        
+</div>
+
+    
+</div>
+
+    <!-- 2. Context Selector -->
+    
+<div class="px-[1.5rem] py-[1rem]">
+
+        <label class="block text-[0.625rem] ultra-thin text-white/50 mb-[0.25rem] uppercase px-[0.25rem]">Organization</label>
+        
+<div class="relative group">
+
+            <select class="w-full bg-white/5 border border-white/10 rounded-lg py-[0.5rem] px-[0.75rem] text-[0.875rem] text-white focus:ring-1 focus:ring-primary focus:border-primary appearance-none cursor-pointer">
+                <option>PHARMA_GLOBAL_CORP</option>
+                <option>BIO_TECH_LOGISTICS</option>
+                <option>HEALTH_SYNC_INC</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-[0.5rem] top-1/2 -translate-y-1/2 text-white/30 pointer-events-none text-[0.875rem]">unfold_more</span>
+        
+</div>
+
+    
+</div>
+
+    <!-- 3. The Fleet Pulse (Desktop Density) -->
+    
+<div class="px-[1.5rem] py-[1rem] space-y-[0.75rem]">
+
+        <h3 class="text-[0.625rem] ultra-thin text-white/50 uppercase px-[0.25rem] mb-[0.5rem]">The Fleet Pulse</h3>
+        <!-- CRITICAL Card -->
+        
+<div class="glass-card rounded-xl p-[0.75rem] relative overflow-hidden group hover:bg-white/5 transition-colors cursor-pointer">
+
+            
+<div class="flex justify-between items-start">
+
+                
+<div>
+
+                    <p class="text-[0.625rem] ultra-thin text-red-400 uppercase">Critical Alerts</p>
+                    <p class="text-[1.875rem] font-mono font-bold text-red-500 drop-shadow-[0_0_0.5rem_rgba(239,68,68,0.5)] leading-tight">@Metrics.CriticalCount</p>
+                
+</div>
+
+                
+<div class="text-right">
+
+                    <p class="text-[0.5625rem] font-mono text-red-400/60 uppercase">Doom Clock</p>
+                    <p class="text-[0.75rem] font-mono text-white leading-none mt-[0.25rem]">@((Metrics.TimeToFailureMin >= 999) ? "STABLE" : $"{(int)Metrics.TimeToFailureMin}m")</p>
+                
+</div>
+
+            
+</div>
+
+            
+<div class="mt-[0.5rem] h-[2rem] w-full">
+
+                <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+                    <path d="M0 15 L10 18 L20 5 L30 12 L40 3 L50 15 L60 8 L70 17 L80 10 L90 19 L100 2" fill="none" stroke="#ef4444" stroke-width="1.5"></path>
+                    <circle cx="100" cy="2" fill="#ef4444" r="1.5">
+                        <animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="1;0;1"></animate>
+                    </circle>
+                </svg>
+            
+</div>
+
+        
+</div>
+
+        <!-- TRANSIT Card -->
+        
+<div class="glass-card rounded-xl p-[0.75rem] group hover:bg-white/5 transition-colors cursor-pointer">
+
+            
+<div class="flex justify-between items-start">
+
+                
+<div>
+
+                    <p class="text-[0.625rem] ultra-thin text-blue-400 uppercase">Transit Nodes</p>
+                    <p class="text-[1.875rem] font-mono font-bold text-blue-400 leading-tight">1,240</p>
+                
+</div>
+
+                <span class="material-symbols-outlined text-blue-400 text-[0.875rem]">rocket_launch</span>
+            
+</div>
+
+            
+<div class="mt-[0.5rem] h-[2rem] w-full">
+
+                <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 20">
+                    <path d="M0 10 Q 12.5 0, 25 10 T 50 10 T 75 10 T 100 10" fill="none" stroke="#60a5fa" stroke-width="1.5"></path>
+                </svg>
+            
+</div>
+
+        
+</div>
+
+        <!-- SECURE Card -->
+        
+<div class="glass-card rounded-xl p-[0.75rem] group hover:bg-white/5 transition-colors cursor-pointer">
+
+            
+<div class="flex justify-between items-start">
+
+                
+<div>
+
+                    <p class="text-[0.625rem] ultra-thin text-emerald-400 uppercase">Stability Index</p>
+                    <p class="text-[1.875rem] font-mono font-bold text-emerald-400 leading-tight">99.8%</p>
+                
+</div>
+
+                <span class="material-symbols-outlined text-emerald-400 text-[0.875rem]">verified_user</span>
+            
+</div>
+
+        
+</div>
+
+    
+</div>
+
+    <!-- 4. Navigation Suite -->
+    <nav class="flex-1 px-[0.75rem] py-[1.5rem] space-y-[0.25rem]">
+        <h3 class="text-[0.625rem] ultra-thin text-white/50 uppercase px-[1rem] mb-[1rem]">Operations</h3>
+        <a class="glass-link flex items-center gap-[0.75rem] px-[1rem] py-[0.5rem] text-white/70 hover:text-white transition-all group" href="#">
+            <span class="material-symbols-outlined text-[1.125rem] opacity-50 group-hover:opacity-100 group-hover:text-primary transition-opacity">dashboard</span>
+            <span class="text-[0.875rem] font-medium">Dashboard</span>
+        </a>
+        <a class="glass-link flex items-center gap-[0.75rem] px-[1rem] py-[0.5rem] text-white/70 hover:text-white transition-all group" href="#">
+            <span class="material-symbols-outlined text-[1.125rem] opacity-50 group-hover:opacity-100 group-hover:text-primary transition-opacity">map</span>
+            <span class="text-[0.875rem] font-medium">Live Map</span>
+        </a>
+        <a class="glass-link flex items-center gap-[0.75rem] px-[1rem] py-[0.5rem] text-white/70 hover:text-white transition-all group" href="#">
+            <span class="material-symbols-outlined text-[1.125rem] opacity-50 group-hover:opacity-100 group-hover:text-primary transition-opacity">policy</span>
+            <span class="text-[0.875rem] font-medium">GxP Audit Trail</span>
+        </a>
+        <a class="glass-link flex items-center gap-[0.75rem] px-[1rem] py-[0.5rem] text-white/70 hover:text-white transition-all group" href="#">
+            <span class="material-symbols-outlined text-[1.125rem] opacity-50 group-hover:opacity-100 group-hover:text-primary transition-opacity">biotech</span>
+            <span class="text-[0.875rem] font-medium">Predictive Science</span>
+        </a>
+        <a class="glass-link flex items-center gap-[0.75rem] px-[1rem] py-[0.5rem] text-white/70 hover:text-white transition-all group" href="#">
+            <span class="material-symbols-outlined text-[1.125rem] opacity-50 group-hover:opacity-100 group-hover:text-primary transition-opacity">terminal</span>
+            <span class="text-[0.875rem] font-medium">System Logs</span>
+        </a>
+    </nav>
+    <!-- 5. HPC HUD (Bottom) -->
+    
+<div class="mt-auto p-[1rem] border-t border-white/5 bg-black/20">
+
+        
+<div class="space-y-[0.5rem]">
+
+            
+<div class="flex justify-between items-center">
+
+                <span class="text-[0.5rem] font-mono text-white/30 uppercase tracking-widest">SIMD Activity</span>
+                
+<div class="flex gap-[0.125rem]">
+
+                    
+<div class="w-[0.25rem] h-[0.75rem] bg-primary/80">
+
+</div>
+
+                    
+<div class="w-[0.25rem] h-[0.75rem] bg-primary/60">
+
+</div>
+
+                    
+<div class="w-[0.25rem] h-[0.75rem] bg-primary/40">
+
+</div>
+
+                    
+<div class="w-[0.25rem] h-[0.75rem] bg-white/10">
+
+</div>
+
+                    
+<div class="w-[0.25rem] h-[0.75rem] bg-white/10">
+
+</div>
+
+                
+</div>
+
+            
+</div>
+
+            
+<div class="flex justify-between items-center">
+
+                <span class="text-[0.5rem] font-mono text-white/30 uppercase tracking-widest">CPU Cycles</span>
+                <span class="text-[0.625rem] font-mono text-primary font-bold">3.2GHz</span>
+            
+</div>
+
+            
+<div class="h-[0.25rem] bg-white/5 rounded-full overflow-hidden">
+
+                
+<div class="h-full bg-primary w-[78%]">
+
+</div>
+
+            
+</div>
+
+        
+</div>
+
+    
+</div>
+
+</aside>
+
+
+@code {
+
+    [Parameter]
+    public PredictiveShieldMetrics Metrics { get; set; } = new(0, 0, 0, 999, false);
+}

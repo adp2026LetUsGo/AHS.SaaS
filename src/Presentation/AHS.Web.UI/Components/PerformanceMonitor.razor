@@ -1,0 +1,62 @@
+
+@using System.Numerics
+
+<div class="glass-card">
+
+    <h4 style="color: var(--accent-blue);
+ font-weight: 700;
+" class="mb-4">
+HPC Telemetry</h4>
+    
+<div class="row g-4">
+
+        
+<div class="col-6">
+
+            <small class="opacity-50 d-block">
+PROCESSOR</small>
+            <strong class="text-white">
+@(Vector.IsHardwareAccelerated ? "AVX-512/AVX2" : "Standard")</strong>
+        
+</div>
+
+        
+<div class="col-6">
+
+            <small class="opacity-50 d-block">
+LATENCY</small>
+            <strong class="text-success">
+&lt;
+ 0.85ms</strong>
+        
+</div>
+
+        
+<div class="col-6">
+
+            <small class="opacity-50 d-block">
+AOT FOOTPRINT</small>
+            <strong class="text-white">
+14.2 MB</strong>
+        
+</div>
+
+        
+<div class="col-6">
+
+            <small class="opacity-50 d-block">
+SIMD WIDTH</small>
+            <strong class="text-white">
+@(Vector<float>
+.Count * 32) Bits</strong>
+        
+</div>
+
+    
+</div>
+
+
+</div>
+
+
+

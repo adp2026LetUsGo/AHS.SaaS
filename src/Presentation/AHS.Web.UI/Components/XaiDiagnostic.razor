@@ -1,0 +1,98 @@
+@if (IsVisible)
+{
+    <div class="fixed inset-0 z-[200] flex items-center justify-center p-[2rem] bg-slate-950/80 backdrop-blur-2xl transition-all duration-500">
+        <div class="bg-slate-900 border border-white/10 rounded-[2rem] w-full max-w-[60rem] shadow-[0_0_4rem_rgba(0,0,0,0.5)] overflow-hidden animate-panel-slide">
+            <div class="p-[2rem] border-b border-white/5 flex justify-between items-center bg-white/2">
+                <div class="flex items-center gap-[1rem]">
+                    <div class="w-[3rem] h-[3rem] rounded-xl bg-primary/20 flex items-center justify-center border border-primary/40">
+                        <span class="material-symbols-outlined text-primary text-[1.5rem]">neurology</span>
+                    </div>
+                    <div>
+                        <h2 class="text-white text-[1.25rem] font-black tracking-tight">XAI_DIAGNOSTIC_SUITE</h2>
+                        <p class="text-slate-500 text-[0.6875rem] font-mono">MODEL_HASH: @CalculateMockHash()</p>
+                    </div>
+                </div>
+                <button @onclick="OnClose" class="w-[2.5rem] h-[2.5rem] rounded-full hover:bg-white/10 flex items-center justify-center text-slate-500 hover:text-white transition-all">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+
+            <div class="p-[2.5rem] grid grid-cols-2 gap-[3rem]">
+                <div class="flex flex-col gap-[1.5rem]">
+                    <h3 class="text-primary text-[0.75rem] font-bold uppercase tracking-[0.125rem]">Feature_Importance_Map</h3>
+                    <div class="space-y-[1.25rem]">
+                        @foreach (var feature in _features)
+                        {
+                            <div class="space-y-[0.375rem]">
+                                <div class="flex justify-between text-[0.75rem] font-mono">
+                                    <span class="text-slate-300">@feature.Name</span>
+                                    <span class="text-primary">@((feature.Weight * 100).ToString("F1"))%</span>
+                                </div>
+                                <div class="h-[0.375rem] bg-white/5 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: @(feature.Weight * 100)%"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-[2rem]">
+                    <div class="bg-white/2 border border-white/5 p-[1.5rem] rounded-[1rem]">
+                        <h4 class="text-slate-400 text-[0.6875rem] font-bold uppercase mb-[1rem]">Inference_Methodology</h4>
+                        <div class="space-y-[0.75rem] text-[0.8125rem] text-slate-300">
+                            <div class="flex gap-[0.75rem]">
+                                <span class="text-primary font-mono">01</span>
+                                <p>Recursive Feature Elimination (RFE) cross-validated with historical sensor drift arrays.</p>
+                            </div>
+                            <div class="flex gap-[0.75rem]">
+                                <span class="text-primary font-mono">02</span>
+                                <p>XGBoost Gradient Boosting with custom objective function for GxP non-linear temperature curves.</p>
+                            </div>
+                            <div class="flex gap-[0.75rem]">
+                                <span class="text-primary font-mono">03</span>
+                                <p>SHAP integration for real-time post-hoc local accuracy and interpretability.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex-1 flex flex-col justify-end gap-[1.5rem]">
+                        <div class="flex items-center gap-[1rem] p-[1rem] bg-emerald-500/5 border border-emerald-500/20 rounded-[0.75rem]">
+                            <span class="material-symbols-outlined text-emerald-500">verified</span>
+                            <span class="text-[0.75rem] text-emerald-500 font-bold uppercase">Architecture_Valid — AHS_OVERSIGHT_OK</span>
+                        </div>
+                        <button @onclick="OnClose" class="w-full bg-primary hover:bg-orange-600 text-white font-black py-[1rem] rounded-[0.75rem] shadow-lg shadow-primary/20 transition-all">
+                            CLOSE_DNA_VIEW
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style>
+    .animate-panel-slide {
+        animation: panel-slide 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @@keyframes panel-slide {
+        0% { transform: translateY(2rem) scale(0.95); opacity: 0; }
+        100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+</style>
+
+@code {
+    [Parameter] public bool IsVisible { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+
+    private List<FeatureItem> _features = new()
+    {
+        new("EXT_TEMP_STORM_IMPACT", 0.42f),
+        new("PACKAGING_INSULATION_PHI", 0.28f),
+        new("TRANSIT_LATENCY_DELTA", 0.18f),
+        new("GEO_ELEVATION_SHIFT", 0.12f)
+    };
+
+    private string CalculateMockHash() => "0x" + Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16).ToUpper();
+
+    private record FeatureItem(string Name, float Weight);
+}

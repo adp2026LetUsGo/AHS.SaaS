@@ -1,9 +1,11 @@
+using System.Threading.Tasks;
+
 namespace AHS.Common;
 
-/// <summary>Marker interface for CQRS requests. The <see cref="RequestMarker"/> property satisfies CA1040.</summary>
+/// <summary>Marker interface for CQRS requests.</summary>
 public interface IRequest<out TResponse>
 {
-    /// <summary>Gets a value indicating whether this is a valid request marker. Always returns <see langword="true"/>.</summary>
+    /// <summary>Gets a value indicating whether this is a valid request marker. Always returns true.</summary>
     static virtual bool RequestMarker => true;
 }
 
