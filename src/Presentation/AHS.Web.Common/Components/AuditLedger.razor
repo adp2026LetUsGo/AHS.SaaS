@@ -1,0 +1,42 @@
+@namespace AHS.Web.Common.Components
+@using AHS.Common.Models
+
+<div class="audit-ledger h-full flex flex-col bg-slate-900/40 border border-white/5 rounded-[1.25rem] overflow-hidden backdrop-blur-md">
+    <div class="px-[1.25rem] py-[1rem] border-b border-white/5 flex justify-between items-center bg-slate-900/20">
+        <div class="flex items-center gap-[0.5rem]">
+            <span class="material-symbols-outlined text-primary text-[1.125rem]">verified_user</span>
+            <h3 class="text-white font-bold text-[0.875rem] tracking-tight">GxP_AUDIT_LEDGER</h3>
+        </div>
+        <span class="text-[0.625rem] font-mono text-slate-500 uppercase">Hash_Verified: SHA256</span>
+    </div>
+
+    <div class="flex-1 overflow-y-auto scrollbar-hide p-[0.75rem] space-y-[0.5rem]">
+        @foreach (var ev in Events)
+        {
+            <div class="group relative p-[0.875rem] rounded-[0.75rem] border border-white/5 bg-white/2 hover:bg-white/5 transition-all">
+                <div class="flex justify-between items-start mb-[0.25rem]">
+                    <span class="text-[0.625rem] font-mono text-slate-500">@ev.Timestamp.ToString("HH:mm:ss.fff")</span>
+                    <span class="px-[0.375rem] py-[0.125rem] rounded-[0.25rem] text-[0.5rem] font-bold uppercase @(ev.Severity == EventSeverity.Critical ? "bg-red-500/10 text-red-500 border border-red-500/20" : (ev.Severity == EventSeverity.Warning ? "bg-amber-500/10 text-amber-500 border border-amber-500/20" : "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20"))">
+                        @ev.Severity
+                    </span>
+                </div>
+                <div class="text-[0.8125rem] font-bold text-slate-200 mb-[0.125rem]">@ev.EventName</div>
+                <div class="text-[0.6875rem] text-slate-400 mb-[0.5rem]">@ev.ActionTaken</div>
+                <div class="flex items-center gap-[0.375rem] opacity-30 group-hover:opacity-100 transition-opacity">
+                    <span class="material-symbols-outlined text-[0.75rem] text-emerald-500">fingerprint</span>
+                    <span class="text-[0.5rem] font-mono text-slate-500 truncate">@ev.DigitalSignature</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="p-[0.75rem] border-t border-white/5 bg-slate-950/30 flex justify-between items-center">
+        <span class="text-[0.625rem] text-slate-500">LEDGER_NODES: @Events.Count</span>
+        <div class="w-[0.5rem] h-[0.5rem] rounded-full bg-emerald-500 shadow-[0_0_0.5rem_rgba(16,185,129,0.5)]"></div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public List<AuditEvent> Events { get; set; } = new();
+}

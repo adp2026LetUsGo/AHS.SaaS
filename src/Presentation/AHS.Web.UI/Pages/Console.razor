@@ -1,11 +1,4 @@
-@namespace AHS.Web.UI.Pages
-
-@* ============================================================
-   AHS.SaaS — Dashboard.razor
-   Página principal con Bento Grid, Alpha Box y Audit Ledger
-   ============================================================ *@
-
-@page "/"
+@using AHS.Engines.HPC
 
 <div class="bento-grid">
 
@@ -118,54 +111,29 @@
                     <line x1="12" y1="9" x2="12" y2="13"></line>
                     <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
-                Excursiones
+                Logistics Oracle
             </span>
-            <div class="status-dot warn"></div>
+            <div class="status-dot @(OracleResult?.RiskLevel == "CRITICAL" ? "alert" : OracleResult?.RiskLevel == "ELEVATED" ? "warn" : "ok")"></div>
         </div>
         <div style="display:flex; align-items:baseline; gap:0.375rem;">
-            <span class="metric-value" style="color:var(--color-warn);">2</span>
-            <span class="metric-unit">activas</span>
+            <span class="metric-value">@OracleResult?.CompositeRiskScore.ToString("F1")%</span>
+            <span class="metric-unit">RISK</span>
         </div>
         <div style="margin-top:0.5rem; display:flex; flex-direction:column; gap:0.25rem;">
             <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:var(--text-2xs);">
-                <span style="color:var(--color-warn);">V-023 · Zona 3</span>
-                <span style="color:var(--color-muted);">00:47:12</span>
+                <span style="color:var(--color-muted);">LEVEL:</span>
+                <span style="color:@(OracleResult?.RiskLevel == "CRITICAL" ? "var(--color-alert)" : "var(--color-warn)"); font-weight:bold;">@OracleResult?.RiskLevel</span>
             </div>
-            <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:var(--text-2xs);">
-                <span style="color:var(--color-alert);">V-011 · Zona 1</span>
-                <span style="color:var(--color-muted);">02:14:05</span>
+             <div style="display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:var(--text-2xs);">
+                <span style="color:var(--color-muted);">PESSIMISTIC_TTF:</span>
+                <span style="color:var(--color-warn);">@((int)(OracleResult?.PessimisticTTF ?? 0))m</span>
             </div>
         </div>
     </div>
 
-    @* ── AUDIT LEDGER (span 2 cols) ────────────────────────── *@
-    <div class="ahs-panel bento-2col">
-        <div class="panel-header">
-            <span class="panel-title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                     fill="none" stroke="currentColor" stroke-width="2.5"
-                     stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-                Audit Ledger
-            </span>
-            <span class="panel-badge">LIVE</span>
-        </div>
-
-        <div class="audit-ledger">
-            @foreach (var entry in AuditEntries)
-            {
-                <div class="ledger-entry">
-                    <div class="ledger-severity @entry.Severity"></div>
-                    <div class="ledger-body">
-                        <span class="ledger-event">@entry.Event</span>
-                        <span class="ledger-meta">@entry.Unit · @entry.Source</span>
-                    </div>
-                    <span class="ledger-time">@entry.Time</span>
-                </div>
-            }
-        </div>
+    @* ── MANIFIESTO DE CARGA ───────────────────────────────── *@
+    <div class="bento-2col">
+        <SensorIdentity Profile="@LogisticsProfile" />
     </div>
 
     @* ── KPI: Carga Farmacéutica ───────────────────────────── *@
@@ -235,9 +203,23 @@
 @code {
     // ── Alpha Box / Doom Clock ───────────────────────────────
     private int DoomMinutes { get; set; } = 47;
+    
+    private ShipmentRiskProfile LogisticsProfile { get; set; } = new(
+        "GLOBAL_CARGO_X", 
+        0.65f, 
+        "ROUTE_ALPHA_9", 
+        0.85f, 
+        InsulationType.Passive, 
+        34.5f
+    );
+
+    private LogisticsOracleResult? OracleResult => 
+        LogisticsInferenceEngine.PredictLogisticsRisk(LogisticsProfile, 47f);
+
+    private int PessimisticDoomMinutes => (int)(OracleResult?.PessimisticTTF ?? DoomMinutes);
 
     private string DoomDisplay =>
-        $"{DoomMinutes / 60:D2}:{DoomMinutes % 60:D2}:{DateTime.Now.Second:D2}";
+        $"{PessimisticDoomMinutes / 60:D2}:{PessimisticDoomMinutes % 60:D2}:{DateTime.Now.Second:D2}";
 
     // ── Audit Ledger Data ────────────────────────────────────
     private List<AuditEntry> AuditEntries = new()

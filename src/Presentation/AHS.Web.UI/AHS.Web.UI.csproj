@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\SharedKernel\AHS.SharedKernel.csproj" />
     <ProjectReference Include="..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
     <ProjectReference Include="..\..\Engines\AHS.Engines.HPC\AHS.Engines.HPC.csproj" />
+    <ProjectReference Include="..\AHS.Web.Common\AHS.Web.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,1 +1,5 @@
-namespace AHS.SaaS.Common.Models; public enum EventSeverity { Info, Warning, Critical } public record AuditEvent(DateTime Timestamp, string EventName, string ActionTaken, string DigitalSignature, EventSeverity Severity);
+namespace AHS.Common.Models;
+
+public enum EventSeverity { Info, Warning, Critical }
+
+public record AuditEvent(DateTime Timestamp, string EventName, string ActionTaken, string DigitalSignature, EventSeverity Severity);

@@ -1,0 +1,31 @@
+@namespace AHS.Web.Common.Components
+@using AHS.Common.Models
+
+<div class="ahs-panel" style="border-left: 2px solid var(--color-orange); background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(10px);">
+    <div class="panel-header" style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span class="panel-title" style="font-weight: 800; font-size: 0.75rem; color: #fff; letter-spacing: 0.05em;">MANIFEST_GxP</span>
+    </div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+        <div>
+            <label style="font-size: 0.625rem; color: #64748b; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 0.25rem;">CARRIER</label>
+             <div style="font-size: 0.875rem; font-weight: 700; color: #e2e8f0;">@Profile.CarrierName</div>
+        </div>
+        <div>
+            <label style="font-size: 0.625rem; color: #64748b; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 0.25rem;">ROUTE</label>
+             <div style="font-size: 0.875rem; font-weight: 700; color: #e2e8f0;">@Profile.RouteId</div>
+        </div>
+        <div>
+            <label style="font-size: 0.625rem; color: #64748b; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 0.25rem;">INSULATION</label>
+             <div style="color: #ec5b13; font-size: 0.625rem; font-weight: 900; text-transform: uppercase;">@Profile.Insulation.ToString().ToUpper()</div>
+        </div>
+        <div>
+            <label style="font-size: 0.625rem; color: #64748b; text-transform: uppercase; font-weight: 800; display: block; margin-bottom: 0.25rem;">EXT_TEMP</label>
+             <div style="font-size: 0.875rem; font-weight: 700; color: #e2e8f0;">@Profile.ExternalTempForecast°C</div>
+        </div>
+    </div>
+</div>
+
+@code { 
+    [Parameter] 
+    public ShipmentRiskProfile Profile { get; set; } = new("UNKNOWN", 0, "NA", 0, InsulationType.Passive, 0); 
+}
