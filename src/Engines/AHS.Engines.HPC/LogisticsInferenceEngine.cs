@@ -23,6 +23,24 @@ public static class LogisticsInferenceEngine {
         string riskLevel = finalScore > 75 ? "CRITICAL" : 
                            finalScore > 40 ? "ELEVATED" : "NOMINAL";
 
-        return new LogisticsOracleResult(finalScore, pessimisticTtf, riskLevel);
+        // XAI Logic: Identificar el mayor contribuyente
+        float routeContrib = p.RouteThreatLevel * 0.4f;
+        float carrierContrib = (1 - p.CarrierReliability) * 0.3f;
+        float tempContrib = (Math.Clamp(p.ExternalTempForecast / 40f, 0, 1) * 0.3f);
+        float insulationContrib = (p.Insulation == InsulationType.Passive ? 0.15f : 0);
+
+        string insight = "NOMINAL_STABILITY";
+        if (finalScore > 20) {
+            if (insulationContrib > 0 && insulationContrib >= routeContrib && insulationContrib >= carrierContrib)
+                insight = "INSULATION_TYPE";
+            else if (routeContrib >= carrierContrib && routeContrib >= tempContrib)
+                insight = "ROUTE_THREAT";
+            else if (carrierContrib >= tempContrib)
+                insight = "CARRIER_HISTORY";
+            else
+                insight = "THERMAL_EXPOSURE";
+        }
+
+        return new LogisticsOracleResult(finalScore, pessimisticTtf, riskLevel, insight);
     }
 }

@@ -14,5 +14,6 @@ public record ShipmentRiskProfile(
 public record LogisticsOracleResult(
     float CompositeRiskScore, // 0-100%
     float PessimisticTTF,      // Adjusted minutes
-    string RiskLevel
+    string RiskLevel,
+    string PrimaryInsight = "NOMINAL_STABILITY"
 );
