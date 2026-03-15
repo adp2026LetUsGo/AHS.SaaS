@@ -1,0 +1,97 @@
+@using AHS.Common.Models
+@using AHS.Engines.HPC
+
+<div class="ahs-panel" style="height: 100%;">
+    <div class="panel-header">
+        <span class="panel-title">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            WHAT_IF_SIMULATOR
+        </span>
+        <span class="panel-badge">PRE-FLIGHT_ANALYSIS</span>
+    </div>
+
+    <div class="simulator-form" style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+        <div class="input-group">
+            <label>ROUTE_ID</label>
+            <select @bind="Profile.RouteId">
+                <option value="ROUTE_PTY_DAV">ROUTE_PTY_DAV (High Threat)</option>
+                <option value="ROUTE_COL_BOG">ROUTE_COL_BOG (Nominal)</option>
+                <option value="ROUTE_MX_GDL">ROUTE_MX_GDL (Elevated)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>CARRIER_SERVICE</label>
+            <select @bind="Profile.CarrierName">
+                <option value="GLOBAL_CARGO_X">GLOBAL_CARGO_X (Reliable)</option>
+                <option value="FAST_LOGISTICS">FAST_LOGISTICS (Standard)</option>
+                <option value="PREMIUM_COLD">PREMIUM_COLD (Elite)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>INSULATION_TYPE</label>
+            <select @bind="Profile.Insulation">
+                <option value="@InsulationType.Passive">PASSIVE (Eco-Box)</option>
+                <option value="@InsulationType.Active">ACTIVE (Compressor)</option>
+            </select>
+        </div>
+
+        <button class="ahs-button primary" @onclick="AnalyzeRisk" style="width: 100%; margin-top: 0.5rem; text-transform: uppercase; font-weight: 800;">
+            ANALIZAR RIESGO ANTES DEL DESPACHO
+        </button>
+
+        @if (Result != null)
+        {
+            <div class="result-box" style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(255,255,255,0.03); border-radius: 4px; border-left: 2px solid @(Result.RiskLevel == "CRITICAL" ? "var(--color-alert)" : "var(--color-warn)");">
+                <div style="font-family: var(--font-mono); font-size: 0.6rem; color: var(--color-muted);">RESULTADO_DE_PREDICCIÓN:</div>
+                <div style="display: flex; justify-content: space-between; align-items: baseline; margin-top:0.25rem;">
+                    <span style="font-size: 1.25rem; font-weight: 900; color: @(Result.RiskLevel == "CRITICAL" ? "var(--color-alert)" : "var(--color-warn)")">
+                        @Result.CompositeRiskScore.ToString("F1")%
+                    </span>
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: white;">@Result.RiskLevel</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .input-group { display: flex; flex-direction: column; gap: 0.25rem; }
+    .input-group label { font-family: var(--font-mono); font-size: var(--text-2xs); color: var(--color-muted); }
+    .input-group select { 
+        background: #0f172a; 
+        border: 1px solid var(--color-border); 
+        color: white; 
+        padding: 0.4rem; 
+        border-radius: 4px; 
+        font-size: var(--text-xs);
+        appearance: none;
+    }
+    .input-group select:focus { border-color: var(--color-primary); outline: none; }
+</style>
+
+@code {
+    private ShipmentRiskProfile Profile { get; set; } = new(
+        "GLOBAL_CARGO_X", 0.95f, "ROUTE_PTY_DAV", 0.85f, InsulationType.Passive, 38.5f);
+
+    private LogisticsOracleResult? Result { get; set; }
+
+    [Parameter] public EventCallback<LogisticsOracleResult> OnRiskCalculated { get; set; }
+
+    private async Task AnalyzeRisk()
+    {
+        // Ponderación de amenaza según ruta real (mock por simplicidad)
+        float threat = Profile.RouteId.Contains("PTY") ? 0.85f : 0.35f;
+        float reliability = Profile.CarrierName.Contains("PREMIUM") ? 0.98f : 0.85f;
+        
+        var profile = Profile with { RouteThreatLevel = threat, CarrierReliability = reliability };
+        
+        Result = LogisticsInferenceEngine.PredictLogisticsRisk(profile, 47f);
+        await OnRiskCalculated.InvokeAsync(Result);
+    }
+}

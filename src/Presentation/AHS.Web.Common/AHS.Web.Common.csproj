@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\AHS.Common.csproj" />
+    <ProjectReference Include="..\..\Engines\AHS.Engines.HPC\AHS.Engines.HPC.csproj" />
   </ItemGroup>
 
   <ItemGroup>

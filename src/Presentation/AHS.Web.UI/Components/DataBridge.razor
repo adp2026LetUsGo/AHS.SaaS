@@ -1,58 +1,47 @@
 @using Microsoft.AspNetCore.Components.Forms
-
 @using AHS.Web.UI.Services
 
-
-
 <div class="stitch-data-bridge flex items-center h-full w-full">
-
-    
-<div class="bridge-box w-full border-[0.125rem] border-dashed border-primary/20 rounded-[1rem] transition-all duration-300 bg-slate-900/30 relative overflow-hidden @(_isDragging ? "dragging" : "")" 
-         @ondragenter="() =>
- _isDragging = true" 
+    <div class="bridge-box w-full border-[0.125rem] border-dashed border-primary/20 rounded-[1rem] transition-all duration-300 bg-slate-900/30 relative overflow-hidden @(_isDragging ? "dragging" : "")" 
+         @ondragenter="() => _isDragging = true" 
          @ondragleave="() => _isDragging = false">
         <InputFile OnChange="HandleFile" class="hidden" id="stitchFileIn" />
         <label for="stitchFileIn" class="flex flex-col items-center p-[1.875rem] cursor-pointer w-full">
-            <span class="material-symbols-outlined text-[2.5rem] text-primary drop-shadow-[0_0_0.9375rem_rgba(236,91,19,0.5)]">cloud_sync</span>
-            <span class="text-white font-extrabold text-[0.8125rem] mt-[0.625rem]">INGEST_GxP_DATA_STREAM</span>
-            <small class="text-slate-500 text-[0.625rem]">Drag & Drop or Multi-Source Input</small>
+            <span class="material-symbols-outlined text-[2.5rem] text-primary drop-shadow-[0_0_0.9375rem_rgba(236,91,19,0.5)]">
+                @(State == ProcessingState.Ready ? "verified" : "cloud_sync")
+            </span>
+            <span class="text-white font-extrabold text-[0.8125rem] mt-[0.625rem]">
+                @if (State == ProcessingState.Idle) { <text>INGEST_GxP_DATA_STREAM</text> }
+                else if (State == ProcessingState.Reading) { <text>[LOAD] READING_GxP_DATA...</text> }
+                else if (State == ProcessingState.Optimizing) { <text>[MATH] OPTIMIZING_SIMD_MODEL...</text> }
+                else { <text>[DONE] INFERENCE_READY</text> }
+            </span>
+            <small class="text-slate-500 text-[0.625rem]">
+                @if (State == ProcessingState.Idle) { <text>Drag & Drop or Multi-Source Input</text> }
+                else if (State == ProcessingState.Reading) { <text>Total Entries: @_entriesFound</text> }
+                else if (State == ProcessingState.Optimizing) { <text>Parallel Compute Active</text> }
+                else { <text>Neural Oracle Synchronized</text> }
+            </small>
             
-            @if (_isLoading)
+            @if (State != ProcessingState.Idle && State != ProcessingState.Ready)
             {
-                
-<div class="w-full h-[0.125rem] bg-white/5 rounded-[0.0625rem] mt-[0.5rem] overflow-hidden">
-
-                    
-<div class="h-full bg-primary animate-load-sweep">
-
-</div>
-
-                
-</div>
-
+                <div class="w-full h-[0.125rem] bg-white/5 rounded-[0.0625rem] mt-[0.5rem] overflow-hidden">
+                    <div class="h-full bg-primary animate-load-sweep"></div>
+                </div>
             }
             
             @if (!string.IsNullOrEmpty(_statusMsg))
             {
-                
-<div class="mt-[0.375rem] text-[0.6875rem] font-bold tracking-[0.0625rem] @(_statusClass == "status-ok" ? "text-emerald-500" : "text-red-500")">
-
+                <div class="mt-[0.375rem] text-[0.6875rem] font-bold tracking-[0.0625rem] @(_statusClass == "status-ok" ? "text-emerald-500" : "text-red-500")">
                     @_statusMsg
-                
-</div>
-
+                </div>
             }
         </label>
-    
+    </div>
 </div>
-
-
-</div>
-
 
 <style>
     .bridge-box:hover, .bridge-box.dragging { border-color: #ec5b13; background: rgba(236, 91, 19, 0.05); }
-    
     .animate-load-sweep { animation: load-sweep 1s linear infinite; }
     @@keyframes load-sweep { 
         0% { width: 0%; margin-left: 0; } 
@@ -61,35 +50,52 @@
     }
 </style>
 
-
 @code {
-
+    public enum ProcessingState { Idle, Reading, Optimizing, Ready }
+    [Parameter] public ProcessingState State { get; set; } = ProcessingState.Idle;
     [Parameter] public EventCallback<float[]> OnDataParsed { get; set; }
     private bool _isDragging = false;
-    private bool _isLoading = false;
+    private int _entriesFound = 0;
     private string _statusMsg = string.Empty;
     private string _statusClass = string.Empty;
 
     private async Task HandleFile(InputFileChangeEventArgs e) {
         _isDragging = false;
-        _isLoading = true;
         _statusMsg = string.Empty;
+        
+        // STEP 1: READING
+        State = ProcessingState.Reading;
         StateHasChanged();
+        await Task.Delay(800); 
+
         try {
             var data = await ThermalDataParser.ParseThermalLogAsync(e.File);
-            _isLoading = false;
-            if (data.Length > 0) {
-                _statusMsg = $"✓ {data.Length} DATAPOINTS SYNCED";
+            _entriesFound = data.Length;
+            
+            if (_entriesFound > 0) {
+                // STEP 2: OPTIMIZING
+                State = ProcessingState.Optimizing;
+                StateHasChanged();
+                await Task.Delay(2300); // Requested 2.3s
+
+                // STEP 3: READY
+                State = ProcessingState.Ready;
+                _statusMsg = $"✓ {_entriesFound} DATAPOINTS SYNCED";
                 _statusClass = "status-ok";
+                StateHasChanged();
+                
                 await OnDataParsed.InvokeAsync(data);
             } else {
+                State = ProcessingState.Idle;
                 _statusMsg = "✗ DATA_STREAM_NULL";
                 _statusClass = "status-err";
+                StateHasChanged();
             }
         } catch {
-            _isLoading = false;
+            State = ProcessingState.Idle;
             _statusMsg = "✗ CRC_FAILURE — RETRY";
             _statusClass = "status-err";
+            StateHasChanged();
         }
     }
 }
