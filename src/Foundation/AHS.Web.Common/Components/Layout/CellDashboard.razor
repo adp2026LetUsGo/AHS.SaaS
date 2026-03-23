@@ -1,0 +1,23 @@
+@* src/Foundation/AHS.Web.Common/Components/Layout/CellDashboard.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="cell-dashboard">
+    <SovereignNav>
+        <NavItems>@NavItems</NavItems>
+        <Actions>@Actions</Actions>
+    </SovereignNav>
+    <main class="cell-dashboard__content">
+        @ChildContent
+    </main>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? NavItems     { get; set; }
+    [Parameter] public RenderFragment? Actions      { get; set; }
+}
+
+<style>
+.cell-dashboard { min-height: 100vh; background: var(--sovereign-bg); }
+.cell-dashboard__content { padding: 5rem 1.5rem 1.5rem; }
+</style>

@@ -1,0 +1,23 @@
+@* src/Foundation/AHS.Web.Common/Components/Surfaces/GlassPanel.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="glass-panel glass-panel--@Intensity.ToLower() @Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public string          Intensity    { get; set; } = "Medium";  // Light | Medium | Heavy
+    [Parameter] public string          Class        { get; set; } = "";
+}
+
+<style>
+.glass-panel--light  { background: var(--glass-sm); }
+.glass-panel--medium { background: var(--glass-md); }
+.glass-panel--heavy  { background: var(--glass-lg); }
+.glass-panel {
+    backdrop-filter: blur(var(--blur-md));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+</style>

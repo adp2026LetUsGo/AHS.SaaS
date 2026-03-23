@@ -1,0 +1,18 @@
+<!-- src/Cells/ColdChain/AHS.Cell.ColdChain.Application/AHS.Cell.ColdChain.Application.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AHS.Cell.ColdChain.Application</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Domain\AHS.Cell.ColdChain.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+  </ItemGroup>
+</Project>

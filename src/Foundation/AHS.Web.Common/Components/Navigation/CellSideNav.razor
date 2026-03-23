@@ -1,0 +1,26 @@
+@* src/Foundation/AHS.Web.Common/Components/Navigation/CellSideNav.razor *@
+@namespace AHS.Web.Common.Components
+
+<aside class="cell-sidenav">
+    <div class="cell-sidenav__links">
+        @Links
+    </div>
+</aside>
+
+@code {
+    [Parameter] public RenderFragment? Links { get; set; }
+}
+
+<style>
+.cell-sidenav {
+    width: 260px;
+    height: 100vh;
+    background: var(--glass-md);
+    backdrop-filter: blur(var(--blur-md));
+    border-right: 1px solid var(--glass-border);
+    padding: 2rem 1rem;
+    position: fixed;
+    top: 64px;
+    left: 0;
+}
+</style>

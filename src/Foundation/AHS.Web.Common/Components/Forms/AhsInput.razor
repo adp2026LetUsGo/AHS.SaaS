@@ -1,0 +1,30 @@
+@* src/Foundation/AHS.Web.Common/Components/Forms/AhsInput.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="ahs-input-group @Class">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="ahs-label">@Label</label>
+    }
+    <input type="@Type" class="glass-input" value="@Value" @oninput="HandleInput" placeholder="@Placeholder" />
+</div>
+
+@code {
+    [Parameter] public string Label       { get; set; } = "";
+    [Parameter] public string Value       { get; set; } = "";
+    [Parameter] public string Placeholder { get; set; } = "";
+    [Parameter] public string Type        { get; set; } = "text";
+    [Parameter] public string Class       { get; set; } = "";
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task HandleInput(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(Value);
+    }
+}
+
+<style>
+.ahs-input-group { margin-bottom: 1rem; }
+.ahs-label { display: block; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; font-size: 0.85rem; }
+</style>

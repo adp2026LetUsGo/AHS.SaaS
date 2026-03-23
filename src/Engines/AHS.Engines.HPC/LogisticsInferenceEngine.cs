@@ -1,4 +1,4 @@
-using AHS.Common.Models;
+using AHS.Common.Domain;
 
 namespace AHS.Engines.HPC;
 

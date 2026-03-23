@@ -1,0 +1,82 @@
+@* src/Foundation/AHS.Web.Common/Components/GxP/ReasonForChangeModal.razor *@
+@namespace AHS.Web.Common.Components
+
+<GlassModal IsOpen="@IsOpen" OnClose="HandleCancel">
+    <div class="reason-modal">
+        <h3 class="reason-modal__title">Reason for Change</h3>
+        <p class="reason-modal__subtitle">
+            Required per GxP Integrity (FDA 21 CFR Part 11 §11.10(e))
+        </p>
+
+        <div class="reason-modal__field">
+            <label>Select a reason</label>
+            <select @bind="_selectedTemplate" class="glass-select">
+                <option value="">-- Select or type below --</option>
+                @foreach (var t in ReasonTemplates)
+                {
+                    <option value="@t">@t</option>
+                }
+            </select>
+        </div>
+
+        <div class="reason-modal__field">
+            <label>Reason <span class="required">*</span></label>
+            <textarea @bind="_reason" placeholder="Describe the reason for this change..."
+                      rows="3" class="glass-textarea"></textarea>
+            @if (_showError)
+            {
+                <span class="reason-modal__error">Reason is required.</span>
+            }
+        </div>
+
+        <div class="reason-modal__actions">
+            <button class="btn-ghost" @onclick="HandleCancel">Cancel</button>
+            <button class="btn-primary" @onclick="HandleConfirm">Confirm</button>
+        </div>
+    </div>
+</GlassModal>
+
+@code {
+    [Parameter] public bool                     IsOpen          { get; set; }
+    [Parameter] public EventCallback            OnCancel        { get; set; }
+    [Parameter] public EventCallback<string>    OnConfirm       { get; set; }
+    [Parameter] public IReadOnlyList<string>    ReasonTemplates { get; set; } =
+    [
+        "Standard operation per SOP",
+        "Emergency reroute — weather alert",
+        "Quality review — deviation detected",
+        "Scheduled maintenance per calendar",
+        "Regulatory requirement",
+    ];
+
+    private string _reason          = "";
+    private string _selectedTemplate = "";
+    private bool   _showError       = false;
+
+    private async Task HandleConfirm()
+    {
+        var finalReason = string.IsNullOrWhiteSpace(_reason) ? _selectedTemplate : _reason;
+        if (string.IsNullOrWhiteSpace(finalReason)) { _showError = true; return; }
+        _showError = false;
+        await OnConfirm.InvokeAsync(finalReason);
+        Reset();
+    }
+
+    private async Task HandleCancel()
+    {
+        Reset();
+        await OnCancel.InvokeAsync();
+    }
+
+    private void Reset() { _reason = ""; _selectedTemplate = ""; _showError = false; }
+}
+
+<style>
+.reason-modal__title { color: white; margin-bottom: 0.5rem; }
+.reason-modal__subtitle { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin-bottom: 2rem; }
+.reason-modal__field { margin-bottom: 1.5rem; }
+.reason-modal__field label { display: block; color: rgba(255,255,255,0.7); margin-bottom: 0.5rem; font-size: 0.9rem; }
+.reason-modal__error { color: #ef4444; font-size: 0.8rem; margin-top: 0.25rem; }
+.reason-modal__actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; }
+.required { color: #ef4444; }
+</style>

@@ -1,0 +1,152 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using System.Text
+@using AHS.Common.Domain
+@using AHS.Engines.HPC
+
+<div class="data-bridge-container" style="position: relative; overflow: hidden; height: 100%; border: 1px dashed rgba(56, 189, 248, 0.3);">
+    <InputFile OnChange="HandleSelection" id="telemetry-upload" 
+               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 100; border: none; padding: 0;" />
+    
+    <div class="usb-port" style="pointer-events: none; position: relative; z-index: 1; height: 100%; justify-content: center;">
+        <div class="usb-icon" style="transform: scale(0.85);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v10m0 0l-3-3m3 3l3-3M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+            </svg>
+        </div>
+        <div class="usb-label" style="font-size: 0.55rem; margin-top: 0.25rem;">
+            <span>INGEST_CSV</span>
+        </div>
+        @if (IsProcessing)
+        {
+            <div class="status-token">[@(CurrentStatus)]</div>
+        }
+    </div>
+</div>
+
+<style>
+    .data-bridge-container {
+        padding: 0.5rem;
+        background: rgba(15, 23, 42, 0.4);
+        border-radius: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .data-bridge-container:hover {
+        background: rgba(56, 189, 248, 0.08);
+        border-color: #38bdf8;
+    }
+
+    .usb-port {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .usb-icon {
+        color: #38bdf8;
+        filter: drop-shadow(0 0 0.25rem #38bdf8);
+    }
+
+    .usb-label {
+        font-family: 'JetBrains Mono', monospace;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+    }
+
+    .status-token {
+        font-family: var(--font-mono);
+        font-size: 0.6rem;
+        color: var(--color-warn);
+        margin-top: 0.25rem;
+        animation: blink 1s infinite;
+    }
+
+    @@keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0.3; }
+        100% { opacity: 1; }
+    }
+</style>
+
+@code {
+    [Parameter] public EventCallback<List<ShipmentRiskGrid.ShipmentRiskEntry>> OnDataIngested { get; set; }
+    
+    private bool IsProcessing = false;
+    private string CurrentStatus = "IDLE";
+
+    private async Task HandleSelection(InputFileChangeEventArgs e)
+    {
+        IsProcessing = true;
+        CurrentStatus = "READING_BUFFER...";
+        StateHasChanged();
+
+        var file = e.File;
+        var entries = new List<ShipmentRiskGrid.ShipmentRiskEntry>();
+
+        try 
+        {
+            using var stream = file.OpenReadStream(1024 * 1024 * 10);
+            using var reader = new StreamReader(stream);
+            
+            // Skip header
+            await reader.ReadLineAsync();
+
+            int idCounter = 1;
+            while (await reader.ReadLineAsync() is { } line)
+            {
+                var parts = line.Split(',');
+                if (parts.Length < 6) continue;
+
+                if (float.TryParse(parts[1], out float ambientTemp))
+                {
+                    string routeId = parts[3];
+                    string carrier = parts[4];
+                    var insulation = parts[5].Contains("Active", StringComparison.OrdinalIgnoreCase) 
+                        ? InsulationType.Active : InsulationType.Passive;
+
+                    var profile = new ShipmentRiskProfile(
+                        carrier,
+                        0.85f, 
+                        routeId,
+                        0.2f + (idCounter * 0.015f), 
+                        insulation,
+                        ambientTemp
+                    );
+
+                    var result = LogisticsInferenceEngine.PredictLogisticsRisk(profile, 47f);
+                    
+                    entries.Add(new ShipmentRiskGrid.ShipmentRiskEntry(
+                        idCounter++, 
+                        profile.CarrierName, 
+                        profile.Insulation, 
+                        result.CompositeRiskScore, 
+                        result.RiskLevel,
+                        result.PrimaryInsight
+                    ));
+                }
+            }
+
+            CurrentStatus = "INFERENCE_COMPLETE";
+            StateHasChanged();
+            
+            Console.WriteLine($"[DATA_INGEST] File: {file.Name} | Status: SUCCESS");
+            await OnDataIngested.InvokeAsync(entries);
+        }
+        catch (Exception ex)
+        {
+            CurrentStatus = "ERROR_INGESTION";
+            Console.WriteLine($"[DATA_INGEST] File: {file.Name} | Status: FAILED | Error: {ex.Message}");
+        }
+        finally
+        {
+            IsProcessing = false;
+            CurrentStatus = "IDLE";
+            StateHasChanged();
+        }
+    }
+}

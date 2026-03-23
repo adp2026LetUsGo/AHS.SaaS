@@ -1,0 +1,29 @@
+@* src/Foundation/AHS.Web.Common/Components/Surfaces/GlassCard.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="glass-card @Class">
+    @ChildContent
+</div>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent  { get; set; }
+    [Parameter] public string          Class         { get; set; } = "";
+}
+
+<style>
+.glass-card {
+    background:    var(--glass-md);
+    backdrop-filter: blur(var(--blur-md));
+    -webkit-backdrop-filter: blur(var(--blur-md));
+    border:        1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow:    var(--shadow-glass);
+    padding:       1.5rem;
+    transition:    all 0.3s ease-out;
+}
+.glass-card:hover {
+    background:    var(--glass-lg);
+    border-color:  var(--glass-border-hover);
+    box-shadow:    var(--shadow-glass-lg);
+}
+</style>

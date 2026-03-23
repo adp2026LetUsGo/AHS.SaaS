@@ -1,0 +1,19 @@
+<!-- src/Foundation/AHS.Web.Common/AHS.Web.Common.csproj -->
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Common\AHS.Common.csproj" />
+    <ProjectReference Include="..\..\Engines\AHS.Engines.HPC\AHS.Engines.HPC.csproj" />
+  </ItemGroup>
+</Project>

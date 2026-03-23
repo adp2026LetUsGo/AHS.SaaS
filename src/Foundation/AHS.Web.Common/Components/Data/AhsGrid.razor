@@ -1,0 +1,33 @@
+@* src/Foundation/AHS.Web.Common/Components/Data/AhsGrid.razor *@
+@namespace AHS.Web.Common.Components
+@using Microsoft.AspNetCore.Components.QuickGrid
+@typeparam TItem
+
+<div class="ahs-grid-wrapper">
+    <QuickGrid Items="@Items"
+               ItemsProvider="@ItemsProvider"
+               Virtualize="@Virtualize"
+               RowClass="@RowClass"
+               @attributes="AdditionalAttributes">
+        @ChildContent
+    </QuickGrid>
+</div>
+
+@code {
+    [Parameter] public IQueryable<TItem>?          Items               { get; set; }
+    [Parameter] public GridItemsProvider<TItem>?   ItemsProvider       { get; set; }
+    [Parameter] public bool                        Virtualize          { get; set; } = true;
+    [Parameter] public Func<TItem, string>?        RowClass            { get; set; }
+    [Parameter] public RenderFragment?             ChildContent        { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object>?             AdditionalAttributes { get; set; }
+}
+
+<style>
+.ahs-grid-wrapper {
+    background: var(--glass-md);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+</style>

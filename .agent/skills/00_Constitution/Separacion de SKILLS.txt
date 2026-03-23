@@ -1,0 +1,29 @@
+System Instruction C1:
+  Skills de PROCESO y DOMINIO
+  → brainstorming, multi-agent-brainstorming
+  → ddd-strategic-design, regulatory-compliance-matrix
+  → ahs-product-cell-canvas, c4-documentation-standard
+  → c1-architect-pm (rol)
+
+System Instruction C2:
+  Skills de DISEÑO TÉCNICO y ORQUESTACIÓN
+  → cqrs-clean-architecture-patterns
+  → cell-integration-patterns
+  → prompt-engineering-ag
+  → c2-lead-engineer (rol)
+
+AG en disco (.agent\skills\):
+  Skills de IMPLEMENTACIÓN y REFERENCIA TÉCNICA
+  → native-aot              ← cómo escribir código AOT
+  → simd-vectorization      ← cómo vectorizar
+  → sha256-sealing          ← cómo sellar
+  → gxp-ledger-eventsourcing ← cómo implementar el ledger
+  → multitenancy            ← cómo implementar RLS
+  → ahs-cell-template       ← scaffold exacto de una Cell
+  → blazor-razor-expert     ← cómo escribir componentes
+  → tailwind-glassmorphism  ← cómo aplicar Sovereign Elite
+  → ahs-testing-quality     ← cómo escribir los tests
+  → azure-devops-coldchain  ← cómo configurar CI/CD
+  → industrial-cold-chain-logic ← dominio ColdChain específico
+  → logistics-oracle-xai    ← Oracle REQ-001 implementación
+  → ahs-cellular-architecture ← Blueprint como referencia de ejecución

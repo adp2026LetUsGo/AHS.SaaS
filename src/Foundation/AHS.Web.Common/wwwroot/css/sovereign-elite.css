@@ -1,0 +1,55 @@
+/* src/Foundation/AHS.Web.Common/wwwroot/css/sovereign-elite.css */
+:root {
+  --glass-sm:           rgba(255, 255, 255, 0.05);
+  --glass-md:           rgba(255, 255, 255, 0.10);
+  --glass-lg:           rgba(255, 255, 255, 0.18);
+  --glass-xl:           rgba(255, 255, 255, 0.28);
+  --glass-border:       rgba(255, 255, 255, 0.18);
+  --glass-border-hover: rgba(255, 255, 255, 0.35);
+  --blur-sm:            4px;
+  --blur-md:            12px;
+  --blur-lg:            24px;
+  --blur-xl:            48px;
+  --shadow-glass:       0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+  --shadow-glass-lg:    0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+  --sovereign-bg:       #0a0a0f;
+  --sovereign-surface:  #12121a;
+  
+  /* Form specifics */
+  --glass-input-bg:     rgba(255, 255, 255, 0.03);
+  --glass-input-border: rgba(255, 255, 255, 0.1);
+  --glass-input-focus:  rgba(255, 255, 255, 0.2);
+}
+
+.glass-select, .glass-textarea, .glass-input {
+    background: var(--glass-input-bg);
+    border: 1px solid var(--glass-input-border);
+    backdrop-filter: blur(var(--blur-sm));
+    color: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    width: 100%;
+}
+
+.glass-select:focus, .glass-textarea:focus, .glass-input:focus {
+    outline: none;
+    border-color: var(--glass-input-focus);
+}
+
+.btn-primary {
+    background: var(--glass-xl);
+    border: 1px solid var(--glass-border-hover);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid transparent;
+    color: rgba(255,255,255,0.7);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}

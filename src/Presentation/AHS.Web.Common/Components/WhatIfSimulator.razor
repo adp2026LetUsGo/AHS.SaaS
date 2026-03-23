@@ -1,0 +1,46 @@
+@using AHS.Common.Models
+
+<div class="ahs-panel">
+    <div class="flex flex-col gap-4">
+        <div class="input-field">
+            <label class="text-[10px] text-slate-500">CARRIER_PROTOCOL</label>
+            <input @bind="_newProfile.CarrierName" class="bg-black border border-white/10 p-2 text-white w-full" placeholder="ENTER_ID..." />
+        </div>
+        
+        <div class="input-field">
+            <label class="text-[10px] text-slate-500">ROUTE_ID</label>
+            <select @bind="_newProfile.RouteId" class="bg-black border border-white/10 p-2 text-white w-full">
+                <option value="ROUTE_PTY_DAV">PTY -> DAVID (CRITICAL)</option>
+                <option value="ROUTE_COL_BOG">COL -> BOGOTA (NOMINAL)</option>
+                <option value="ROUTE_MX_GDL">MEX -> GDL (ELEVATED)</option>
+            </select>
+        </div>
+
+        <div class="input-field">
+            <label class="text-[10px] text-slate-500">INSULATION_TYPE</label>
+            <select @bind="_newProfile.Insulation" class="bg-black border border-white/10 p-2 text-white w-full">
+                <option value="@InsulationType.Passive">PASSIVE_CHAMBER</option>
+                <option value="@InsulationType.Active">ACTIVE_REEFER</option>
+            </select>
+        </div>
+
+        <div class="input-field">
+            <label class="text-[10px] text-slate-500">EXTERNAL_TEMP (°C)</label>
+            <input type="number" step="0.1" @bind="_newProfile.ExternalTempForecast" class="bg-black border border-white/10 p-2 text-white w-full" />
+        </div>
+
+        <button @onclick="OnInyectar" class="bg-orange-600 p-3 font-bold text-white hover:bg-orange-500 mt-2">
+            INYECTAR_SIMULACIÓN
+        </button>
+    </div>
+</div>
+
+<style>
+    .input-field { display: flex; flex-direction: column; gap: 0.25rem; }
+</style>
+
+@code {
+    private ShipmentRiskProfile _newProfile = new("", 0.7f, "ROUTE_COL_BOG", 0.5f, InsulationType.Passive, 30.0f);
+    [Parameter] public EventCallback<ShipmentRiskProfile> OnInyectarSimulacion { get; set; }
+    private async Task OnInyectar() => await OnInyectarSimulacion.InvokeAsync(_newProfile);
+}

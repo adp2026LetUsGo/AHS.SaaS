@@ -1,0 +1,23 @@
+<!-- src/Cells/ColdChain/AHS.Cell.ColdChain.API/AHS.Cell.ColdChain.API.csproj -->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>AHS.Cell.ColdChain.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Application\AHS.Cell.ColdChain.Application.csproj" />
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Web.Common\AHS.Web.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.Identity.Web" />
+  </ItemGroup>
+</Project>

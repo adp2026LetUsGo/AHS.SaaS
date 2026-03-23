@@ -1,0 +1,39 @@
+@* src/Foundation/AHS.Web.Common/Components/Navigation/SovereignNav.razor *@
+@namespace AHS.Web.Common.Components
+
+<nav class="sovereign-nav">
+    <div class="sovereign-nav__brand">
+        @if (BrandContent is not null) { @BrandContent }
+        else { <span class="sovereign-nav__logo">AHS</span> }
+    </div>
+    <div class="sovereign-nav__items">@NavItems</div>
+    <div class="sovereign-nav__actions">@Actions</div>
+</nav>
+
+@code {
+    [Parameter] public RenderFragment? BrandContent { get; set; }
+    [Parameter] public RenderFragment? NavItems     { get; set; }
+    [Parameter] public RenderFragment? Actions      { get; set; }
+}
+
+<style>
+.sovereign-nav {
+    position:        fixed;
+    top: 0; left: 0; right: 0;
+    z-index:         50;
+    background:      rgba(10, 10, 15, 0.85);
+    backdrop-filter: blur(var(--blur-lg));
+    border-bottom:   1px solid var(--glass-border);
+    height:          64px;
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    padding:         0 1.5rem;
+}
+.sovereign-nav__logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 0.1rem;
+    color: white;
+}
+</style>

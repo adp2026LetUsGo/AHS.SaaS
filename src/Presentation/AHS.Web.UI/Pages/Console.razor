@@ -2,13 +2,13 @@
 @namespace AHS.Web.UI.Pages
 @using System.Diagnostics
 @using AHS.Engines.HPC
-@using AHS.Common.Models
+@using AHS.Common.Domain
 @inject IJSRuntime JSRuntime
 
-<div class="sovereign-console-layout" style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem; background: #020617; min-height: 100vh;">
+<div class="sovereign-console-layout" style="display: flex; flex-direction: column; gap: 1rem; padding: 2rem; background: #020617; min-height: 100vh; width: 100vw; max-width: none !important;">
 
     @* ── TOP ROW: CABIN SYMMETRY (1:1:1:1) ────────────────── *@
-    <div class="top-row-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+    <div class="top-row-grid" style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 1rem;">
         
         @* 1. DOOM CLOCK / ALPHA BOX *@
         <div class="ahs-panel alpha-box @(_isSimulatedPrediction ? "sim-active" : "")" style="position: relative; padding: 1rem;">
@@ -82,7 +82,7 @@
 
         @* RIGHT: MANUAL SIMULATOR (25%) *@
         <div class="simulator-workspace">
-            <FutureShipmentSimulator OnResultGenerated="HandleSimulatorResult" />
+            <WhatIfSimulator OnInyectarSimulacion="HandleManualInyection" />
         </div>
     </div>
 
@@ -306,6 +306,39 @@
         _showGxpModal = false;
         _pendingEntries.Clear();
         _hpcStatus = "OPERACIÓN_CANCELADA";
+        StateHasChanged();
+    }
+
+    private void HandleManualInyection(ShipmentRiskProfile profile)
+    {
+        _isSimulatedPrediction = true;
+        
+        // Ponderación de amenaza según ruta real (mantenemos lógica del simulador previo)
+        float threat = profile.RouteId?.Contains("PTY") == true ? 0.85f : 0.35f;
+        float reliability = profile.CarrierName?.Contains("PREMIUM") == true ? 0.98f : 0.85f;
+        
+        var updatedProfile = profile with { 
+            RouteThreatLevel = threat, 
+            CarrierReliability = reliability 
+        };
+        
+        var prediction = LogisticsInferenceEngine.PredictLogisticsRisk(updatedProfile, (float)DoomMinutes);
+        
+        var entry = new ShipmentRiskGrid.ShipmentRiskEntry(
+            _results.Count + 1,
+            profile.CarrierName ?? "N/A",
+            profile.Insulation,
+            prediction.CompositeRiskScore,
+            prediction.RiskLevel,
+            prediction.PrimaryInsight
+        );
+
+        _results.Insert(0, entry);
+        OracleResult = prediction;
+        ActiveRiskScore = prediction.CompositeRiskScore;
+        
+        _activeLabel = "MANUAL_INJECTION_ACTIVE";
+        UpdateGlobalState();
         StateHasChanged();
     }
 

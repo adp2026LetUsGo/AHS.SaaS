@@ -1,0 +1,41 @@
+@* src/Foundation/AHS.Web.Common/Components/Surfaces/GlassModal.razor *@
+@namespace AHS.Web.Common.Components
+
+@if (IsOpen)
+{
+    <div class="modal-backdrop" @onclick="HandleBackdropClick">
+        <div class="modal-panel">
+            @ChildContent
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public bool             IsOpen             { get; set; }
+    [Parameter] public EventCallback    OnClose            { get; set; }
+    [Parameter] public bool             CloseOnBackdrop    { get; set; } = true;
+    [Parameter] public RenderFragment?  ChildContent       { get; set; }
+
+    private async Task HandleBackdropClick()
+    {
+        if (CloseOnBackdrop) await OnClose.InvokeAsync();
+    }
+}
+
+<style>
+.modal-backdrop {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(var(--blur-sm));
+    z-index: 1000;
+    display: flex; align-items: center; justify-content: center;
+}
+.modal-panel {
+    max-width: 500px; width: 90%;
+    background: var(--sovereign-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass-lg);
+    padding: 2rem;
+}
+</style>

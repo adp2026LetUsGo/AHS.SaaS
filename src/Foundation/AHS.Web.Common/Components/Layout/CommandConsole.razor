@@ -1,0 +1,30 @@
+@* src/Foundation/AHS.Web.Common/Components/Layout/CommandConsole.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="command-console">
+    <div class="command-console__header">
+        @Header
+    </div>
+    <div class="command-console__body">
+        <div class="command-console__main">
+            @ChildContent
+        </div>
+        <div class="command-console__sidebar">
+            <GlassCard>
+                @Sidebar
+            </GlassCard>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public RenderFragment? Header       { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Sidebar      { get; set; }
+}
+
+<style>
+.command-console { display: flex; flex-direction: column; gap: 1.5rem; }
+.command-console__header { display: flex; justify-content: space-between; align-items: center; }
+.command-console__body { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; }
+</style>

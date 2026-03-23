@@ -1,0 +1,22 @@
+<!-- src/Cells/ColdChain/AHS.Cell.ColdChain.Infrastructure/AHS.Cell.ColdChain.Infrastructure.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AHS.Cell.ColdChain.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Application\AHS.Cell.ColdChain.Application.csproj" />
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Domain\AHS.Cell.ColdChain.Domain.csproj" />
+    <ProjectReference Include="..\AHS.Cell.ColdChain.Contracts\AHS.Cell.ColdChain.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+  </ItemGroup>
+</Project>

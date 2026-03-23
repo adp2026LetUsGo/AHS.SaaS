@@ -1,0 +1,26 @@
+@* src/Foundation/AHS.Web.Common/Components/Forms/AhsSelect.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="ahs-select-group @Class">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="ahs-label">@Label</label>
+    }
+    <select class="glass-select" value="@Value" @onchange="HandleChange">
+        @ChildContent
+    </select>
+</div>
+
+@code {
+    [Parameter] public string         Label        { get; set; } = "";
+    [Parameter] public string         Value        { get; set; } = "";
+    [Parameter] public string         Class        { get; set; } = "";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public EventCallback<string> ValueChanged { get; set; }
+
+    private async Task HandleChange(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString() ?? "";
+        await ValueChanged.InvokeAsync(Value);
+    }
+}

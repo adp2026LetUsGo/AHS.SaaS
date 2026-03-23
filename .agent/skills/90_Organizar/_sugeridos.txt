@@ -1,0 +1,75 @@
+--> Para C1 (Cuenta Arquitecto):
+En las System Instructions de C1, pega habilidades de nivel "C-Level" o "Product":
+@brainstorming
+@saas-expert
+@product-manager
+Resultado: C1 dejará de darte solo ideas y empezará a darte especificaciones técnicas de negocio brutales.
+
+--> Para C2 (Cuenta Ingeniero):
+En las System Instructions de C2, pega habilidades de nivel "Tech Lead":
+@software-architect
+@prompt-engineer (busca si hay una de meta-prompting)
+@api-design-expert
+Resultado: C2 tomará el plan de C1 y lo convertirá en un "Prompt Maestro" para Antigravity que incluya arquitectura de archivos, nombres de variables y manejo de errores.
+
+--> Para Antigravity (Ejecutor):
+Aquí es donde instalas las habilidades de implementación en tu carpeta .agent/skills/:
+@typescript-expert, @react-expert, @prisma-expert, etc.
+Resultado: AG simplemente obedece órdenes de nivel experto con las herramientas locales.
+
+...........................................................................................
+@brainstorming le dice cómo pensar.
+@saas-expert le da el contexto de negocio.
+@product-manager le da la estructura de tareas.
+@database-design le da el rigor técnico.
+............................................................................................ 
+
+1. Organización de Carpetas (Tu Super-Repo)
+
+Para que tu script de PowerShell funcione sin mezclar conceptos, organiza tus fuentes así en tu PC:
+...\C1_Skills\UI_UX\ (Aquí pones las que ya tienes: brainstorming, saas, etc.)
+...\C1_Skills\ML_HPC\ (Aquí pondrás las nuevas que buscaremos ahora).
+
+2. Selección de Skills "Elite" para ML + HPC (C1)
+Busca estos archivos específicos en el repositorio de 1,700 habilidades y muévelos a la carpeta ML_HPC:
+csharp-performance.md: Vital para cumplir con el punto 4 de tu Blueprint (Native AOT).
+math-expert.md: Para que C1 pueda razonar sobre las ecuaciones de física térmica (Slope y TTF).
+onnx-runtime.md o ml-expert.md: Para la integración del Logistics Oracle.
+software-architect.md: Para mantener la jerarquía de namespaces (AHS.Engines.HPC).
+clean-code-dotnet.md: Para asegurar que el código C# 14 sea impecable.
+
+3. Ajuste de la "Master Instruction" para ML/HPC
+Cuando cambies al perfil de Inteligencia en C1, usa esta variante de la instrucción maestra (pégala en tu script o directamente):
+"Role: Senior HPC Architect & AI Specialist.
+Context: You are designing the 'Logistics Oracle' and the 'HPC Engine' for the AHS Ecosystem. You must strictly adhere to .NET 10, Native AOT, and SIMD (AVX-512) constraints.
+Objective: Synthesize thermal physics with predictive ML models. Your output must provide the mathematical logic and architectural specs for my Engineer (C2), ensuring GxP data integrity and zero-latency performance."
+............................................................................................ 
+
+.agent/
+└── skills/
+    ├── 01_Core/            <-- Brainstorming, Product Manager
+    ├── 02_Architecture/    <-- Clean, DDD, CQRS, Architect
+    ├── 03_Backend/         <-- C#, Dotnet, Database-Design
+    └── 04_UI_UX/           <-- Tailwind, Sovereign-Elite (si creas uno propio)
+
+............................................................................................ 
+
+00_Constitution/
+Copia aquí tu Blueprint.md. (Para que AG nunca olvide el AVX-512 y la inmutabilidad).
+01_Strategy/
+brainstorming.md
+product-manager.md
+saas-expert.md
+02_Architecture/
+architect.md
+clean-code-dotnet.md (o similares del repo de sickn33).
+Tip: Si encuentras algo de CQRS o DDD, va aquí.
+03_Technical/
+csharp.md / dotnet.md
+database-design.md
+unit-testing-expert.md (Fundamental para validar tu lógica de física térmica).
+04_UI_UX/
+frontend-expert.md
+tailwind.md (Si lo usas para la estética Sovereign Elite).
+
+

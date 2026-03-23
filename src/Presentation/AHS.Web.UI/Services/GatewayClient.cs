@@ -1,5 +1,5 @@
 using System.Net.Http.Json;
-using AHS.Common.Models;
+using AHS.Common.Domain;
 using AHS.Common.Serialization;
 using System.Diagnostics.CodeAnalysis;
 

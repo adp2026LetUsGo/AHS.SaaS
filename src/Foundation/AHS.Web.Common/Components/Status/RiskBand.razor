@@ -1,0 +1,18 @@
+@* src/Foundation/AHS.Web.Common/Components/Status/RiskBand.razor *@
+@namespace AHS.Web.Common.Components
+
+<span class="risk-band risk-band--@Level.ToLower()">@Level</span>
+
+@code {
+    [Parameter] public string Level { get; set; } = "Green";
+    // Green | Amber | Red | Critical
+}
+
+<style>
+.risk-band { padding: .25rem .75rem; border-radius: 9999px; font-size: .75rem; font-weight: 600; }
+.risk-band--green    { background: rgba(16,185,129,.15); color: #10b981; border: 1px solid rgba(16,185,129,.3); }
+.risk-band--amber    { background: rgba(245,158,11,.15); color: #f59e0b; border: 1px solid rgba(245,158,11,.3); }
+.risk-band--red      { background: rgba(239,68,68,.15);  color: #ef4444; border: 1px solid rgba(239,68,68,.3); }
+.risk-band--critical { background: rgba(139,0,0,.25);    color: #ff4444; border: 1px solid rgba(139,0,0,.5); animation: pulse 1s infinite; }
+@@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+</style>

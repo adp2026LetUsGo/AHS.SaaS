@@ -1,0 +1,25 @@
+@* src/Foundation/AHS.Web.Common/Components/Status/ComplianceStatus.razor *@
+@namespace AHS.Web.Common.Components
+
+<span class="compliance-status compliance-status--@Status.ToLower()">
+    @Status
+</span>
+
+@code {
+    [Parameter] public string Status { get; set; } = "Compliant";
+    // Compliant | NonCompliant | UnderReview | Pending
+}
+
+<style>
+.compliance-status {
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.compliance-status--compliant { background: #10b981; color: white; }
+.compliance-status--noncompliant { background: #ef4444; color: white; }
+.compliance-status--underreview { background: #f59e0b; color: white; }
+.compliance-status--pending { background: #6b7280; color: white; }
+</style>

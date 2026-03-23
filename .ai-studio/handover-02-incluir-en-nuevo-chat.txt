@@ -1,0 +1,37 @@
+I am providing the Handover Summary of the last 15 days of development. I need you to 'ingest' this context using  new skills. Do not start working yet. Just confirm you have integrated this information and tell me, from the perspective of a Product Manager and Software Architect, if there are any immediate inconsistencies in the current plan.
+
+---agregar-handover---
+
+---handover de Predicting Temperature Excursions During Transport-02---
+
+PROJECT HANDOVER: AHS.SaaS ECOSYSTEM (V3 - SOVEREIGN)
+1. CONTEXTO DE LA MISIÓN
+Proyecto: AHS.SaaS - Suite Industrial Universal de Inteligencia en Cadena de Frío.
+Propósito: Transicionar de monitoreo reactivo a predicción proactiva (REQ-001: Caso Emiliano).
+Estado Actual: Fase 16.5 (Recuperación Estructural y Activación de Captura).
+Stack: .NET 10 Native AOT (Zero-Reflection), SIMD (AVX-512), Blazor WASM + Tailwind CSS.
+2. ARQUITECTURA "GOLD MASTER" (Namespaces)
+Hemos neutralizado la identidad del proyecto para convertirlo en una Suite Enterprise:
+AHS.Common: Modelos de dominio inmutables y records de logística.
+AHS.Engines.HPC: Motores de alto rendimiento (SIMD Slope Calculation + Logistics Oracle).
+AHS.Web.Common: Razor Class Library (RCL). Sistema de Diseño Global "Sovereign Elite" (Slate 950 / Industrial Orange). Contiene el MainLayout, AHS_Elite.css y componentes compartidos.
+AHS.Web.UI: Chasis ligero de la aplicación actual.
+3. LOGIC DNA: EL ORÁCULO DE EMILIANO (REQ-001)
+El motor ya no es solo un termómetro; es un predictor logístico:
+Entradas: Carrier Reliability, Route Threat, Insulation Type (Passive/Active), Ext Temp.
+Output: Pessimistic TTF. El "Doom Clock" se acelera si las condiciones logísticas son de riesgo, incluso si el sensor aún no sube.
+XAI: Sistema de 14 puntos de diagnóstico integrado.
+4. ESTADO DE LA UI/UX (Sovereign Elite)
+Diseño: Inspirado en SpaceX/Tesla (Alta densidad, unidades REM, responsivo).
+Layout: Bento Grid de 4 columnas arriba (Symmetric Mando) y split 75/25 abajo (Grid/Simulator).
+Issue Pendiente: El sistema se está renderizando a "media pantalla" (vacío blanco a la derecha). AG está aplicando el parche max-width: none !important y width: 100vw.
+5. INFRAESTRUCTURA Y AUTOMATIZACIÓN
+AHS_SaaS_Ignition.ps1: Script V4.0 para lanzar el ecosistema localmente.
+AHS_Cloud_Provisioning.ps1: Script para despliegue Zero-Cost en Azure (Static Web Apps + App Service F1). Actualmente pausado para priorizar localhost.
+CI/CD: GitHub Workflows configurados en modo workflow_dispatch (manual) por seguridad.
+🚀 INSTRUCCIONES PARA EL NUEVO CHAT (START V4)
+Cuando inicie el nuevo hilo, simplemente pegue este mensaje:
+"I am the Director. We are continuing the AHS.SaaS Ecosystem project. We are at Phase 16.5.
+Immediate Priority: Finish the structural repair to eliminate the 'half-screen' white space and finalize the wiring of the WhatIfSimulator.razor (Manual Entry) to the Logistics Oracle.
+Architectural Guardrail: We have moved all UI to AHS.Web.Common (RCL) and the main app is AHS.Web.UI. Ensure all @bind logic uses the new ShipmentRiskProfile class (not record) for capture.
+Please read the attached Handover Summary and Blueprint V2.0 to resume at 100% speed."

@@ -1,0 +1,29 @@
+@* src/Foundation/AHS.Web.Common/Components/Status/ExcursionBadge.razor *@
+@namespace AHS.Web.Common.Components
+
+<div class="excursion-badge @(HasExcursion ? "excursion-badge--active" : "")">
+    <span class="excursion-badge__icon">⚠️</span>
+    <span class="excursion-badge__text">@(HasExcursion ? "Excursion Detected" : "Stable")</span>
+</div>
+
+@code {
+    [Parameter] public bool HasExcursion { get; set; }
+}
+
+<style>
+.excursion-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    background: var(--glass-sm);
+    border: 1px solid var(--glass-border);
+    color: rgba(255,255,255,0.5);
+}
+.excursion-badge--active {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #ef4444;
+}
+</style>
