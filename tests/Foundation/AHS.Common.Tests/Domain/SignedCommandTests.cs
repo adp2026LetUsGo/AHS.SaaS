@@ -8,7 +8,7 @@ namespace AHS.Common.Tests.Domain;
 public class SignedCommandTests
 {
     [Fact]
-    public void Empty_reason_throws_ElectronicSignatureRequiredException()
+    public void EmptyReasonThrowsElectronicSignatureRequiredException()
     {
         var act = () => new TestCommand
         {
@@ -22,7 +22,7 @@ public class SignedCommandTests
     }
 
     [Fact]
-    public void Valid_reason_constructs_successfully()
+    public void ValidReasonConstructsSuccessfully()
     {
         var cmd = new TestCommand
         {
@@ -33,5 +33,5 @@ public class SignedCommandTests
         cmd.ReasonForChange.Should().NotBeEmpty();
     }
 
-    private record TestCommand : SignedCommand;
+    private sealed record TestCommand : SignedCommand;
 }

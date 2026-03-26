@@ -1,0 +1,22 @@
+﻿<!-- src/Cells/Xinfer/AHS.Cell.Xinfer.Infrastructure/AHS.Cell.Xinfer.Infrastructure.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>AHS.Cell.Xinfer.Infrastructure</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Application\AHS.Cell.Xinfer.Application.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Domain\AHS.Cell.Xinfer.Domain.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Contracts\AHS.Cell.Xinfer.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+  </ItemGroup>
+</Project>

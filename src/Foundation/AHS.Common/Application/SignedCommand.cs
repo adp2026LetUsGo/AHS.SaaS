@@ -16,7 +16,7 @@ public abstract record SignedCommand
     }
 
     public Guid   SignedById      { get; init; }
-    public string SignedByName    { get; init; }
+    public string SignedByName    { get; init; } = string.Empty;
     public DateTimeOffset  SignedAt        { get; init; } = DateTimeOffset.UtcNow;
 
     protected SignedCommand(Guid signedById, string signedByName, string reasonForChange)
@@ -29,5 +29,9 @@ public abstract record SignedCommand
     protected SignedCommand() { }
 }
 
-public sealed class ElectronicSignatureRequiredException(string message)
-    : Exception(message);
+public sealed class ElectronicSignatureRequiredException : Exception
+{
+    public ElectronicSignatureRequiredException() { }
+    public ElectronicSignatureRequiredException(string message) : base(message) { }
+    public ElectronicSignatureRequiredException(string message, Exception innerException) : base(message, innerException) { }
+}

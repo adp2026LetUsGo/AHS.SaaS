@@ -1,0 +1,108 @@
+@page "/xinfer/dashboard"
+@layout AhsCommandLayout
+@using AHS.Web.Common.Components
+@using AHS.Web.UI.Services
+@using AHS.Web.UI.Shared
+
+<div class="bento-grid">
+    <div class="bento-1col bento-2row ahs-panel">
+        <AlphaBox TtfMinutes="@_fleetMetrics.TimeToFailureMin" IsCritical="@_fleetMetrics.IsCritical" />
+    </div>
+    
+    <div class="ahs-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">FLEET_ACTIVO</h3>
+        </div>
+        <div class="metric-value">@_activeShipments / @_totalShipments</div>
+        <div class="ahs-progress-track mt-2">
+            <div class="ahs-progress-fill" style="width: @(_fleetPercent)%"></div>
+        </div>
+        <div class="mt-2 text-xs font-mono">
+            <span class="status-dot @(_fleetPercent > 80 ? "ok" : _fleetPercent > 60 ? "warn" : "err") inline-block mr-2"></span>
+            ACTIVE FLEET CAPACITY
+        </div>
+    </div>
+    
+    <div class="ahs-panel">
+        <div class="panel-header">
+            <h3 class="panel-title">LOGISTICS_ORACLE</h3>
+        </div>
+        <div class="metric-value @(_highestRisk > 75 ? "text-alert" : _highestRisk > 50 ? "text-warn" : "text-ok")">
+            @_highestRisk.ToString("0.0")%
+        </div>
+        <div class="panel-badge @(_highestRisk > 75 ? "alert" : _highestRisk > 50 ? "warn" : "ok") mt-2 inline-block">
+            @(_highestRisk > 75 ? "CRITICAL" : _highestRisk > 50 ? "ELEVATED" : "NOMINAL")
+        </div>
+    </div>
+    
+    <div class="ahs-panel flex flex-col justify-between">
+        <div class="panel-header">
+            <h3 class="panel-title">DATABRIDGE_INGEST</h3>
+        </div>
+        <div>
+            <div class="text-[0.625rem] text-slate-400 font-mono mt-1">RECORDS: @_totalShipments</div>
+            <div class="text-[0.625rem] text-slate-400 font-mono">LAST: @_lastLoadTime</div>
+        </div>
+        <button class="w-full py-1 mt-auto bg-primary/10 text-primary border border-primary/40 text-[0.625rem] font-mono hover:bg-primary/30 transition-colors" @onclick="ReloadData">INGEST_CSV</button>
+    </div>
+
+    <!-- ROW 2 -->
+    <div class="bento-3col ahs-panel flex flex-col h-[500px]">
+        <div class="panel-header flex justify-between items-center mb-4">
+            <h3 class="panel-title">ORACLE_RISK_LENS_PRO</h3>
+            <span class="panel-badge ok">HPC_MODE_ACTIVE</span>
+        </div>
+        <div class="grid grid-cols-4 gap-4 mb-4 pb-4 border-b border-white/5 text-[0.625rem] font-mono text-slate-400 uppercase tracking-widest">
+            <div>STATUS <span class="text-ok">ONLINE</span></div>
+            <div>RECORDS <span class="text-white">@_totalShipments</span></div>
+            <div>TRAINING_TIME <span class="text-white">14.2s</span></div>
+            <div>HPC_ACCURACY <span class="text-white">99.8%</span></div>
+        </div>
+        <div class="overflow-y-auto flex-grow pr-2" style="max-height: 380px; overflow-y: auto; overflow-x: hidden;" @key="@("stable-grid")">
+            <table class="w-full text-left font-mono text-xs">
+                <thead class="text-slate-500 sticky top-0 bg-[#0a1628] z-10 text-[0.625rem]">
+                    <tr>
+                        <th class="py-2 border-b border-white/5">ID</th>
+                        <th class="py-2 border-b border-white/5">CARRIER</th>
+                        <th class="py-2 border-b border-white/5">INSULATION</th>
+                        <th class="py-2 border-b border-white/5">INSIGHT</th>
+                        <th class="py-2 border-b border-white/5">RISK_%</th>
+                        <th class="py-2 border-b border-white/5">STATUS</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-300">
+                    @foreach (var shipment in _shipments.Take(20))
+                    {
+                        var statusBorder = shipment.Status == "CRITICAL" ? "border-alert text-alert" : 
+                                           shipment.Status == "ELEVATED" ? "border-warn text-warn" : "border-ok text-ok";
+                        <tr class="border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer" @onmouseover="() => SelectShipment(shipment)">
+                            <td class="py-2">@shipment.Id</td>
+                            <td class="py-2">@shipment.CarrierName</td>
+                            <td class="py-2">@shipment.Insulation</td>
+                            <td class="py-2">@shipment.Insight</td>
+                            <td class="py-2">@shipment.RiskPercent.ToString("0.0")%</td>
+                            <td class="py-2">
+                                <span class="px-2 py-0.5 border rounded-full text-[0.5rem] tracking-wider @statusBorder">@shipment.Status</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-4 bento-1col h-[500px]">
+        <div class="ahs-panel">
+            <WhatIfSimulator Profile="@_profile" OnAnalyze="HandleWhatIfAnalysis" />
+        </div>
+        <div class="ahs-panel flex-grow relative overflow-visible">
+            <XaiRiskMonitor RiskPercent="@((int)_currentRiskPercent)" IsCritical="@_isCritical" />
+            <div class="absolute inset-0 border border-primary/20 pointer-events-none rounded-[1.25rem]"></div>
+        </div>
+    </div>
+
+    <!-- ROW 3 -->
+    <div class="bento-4col ahs-panel" style="height: 200px; overflow-y: auto;">
+        <AuditLedger Events="@_auditEvents.ToList()" />
+    </div>
+</div>

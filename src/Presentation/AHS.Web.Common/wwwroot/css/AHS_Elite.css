@@ -329,7 +329,6 @@ html, body {
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(140px, auto);
     gap: 12px;
-    height: 100%;
 }
 
 /* Span helpers */

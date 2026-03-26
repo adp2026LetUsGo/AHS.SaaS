@@ -1,0 +1,11 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Infrastructure\Tenancy\TenantSessionInterceptor.cs(57,2): error CS1513: } expected [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+
+Build FAILED.
+
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Infrastructure\Tenancy\TenantSessionInterceptor.cs(57,2): error CS1513: } expected [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:05.01

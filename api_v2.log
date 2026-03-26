@@ -1,0 +1,28 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  AHS.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\bin\Debug\net10.0\AHS.Common.dll
+  AHS.Cell.ColdChain.Contracts -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Contracts\bin\Debug\net10.0\AHS.Cell.ColdChain.Contracts.dll
+  AHS.Cell.ColdChain.Domain -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Domain\bin\Debug\net10.0\AHS.Cell.ColdChain.Domain.dll
+  AHS.Engines.HPC -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Engines\AHS.Engines.HPC\bin\Debug\net10.0\AHS.Engines.HPC.dll
+  AHS.Cell.ColdChain.Application -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Application\bin\Debug\net10.0\AHS.Cell.ColdChain.Application.dll
+  AHS.Cell.ColdChain.Infrastructure -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\bin\Debug\net10.0\AHS.Cell.ColdChain.Infrastructure.dll
+  AHS.Web.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Web.Common\bin\Debug\net10.0\AHS.Web.Common.dll
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(7,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(8,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(9,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(10,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(11,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(12,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+
+Build FAILED.
+
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(7,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(8,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(9,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(10,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(11,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(12,1): error CS1529: A using clause must precede all other elements defined in the namespace except extern alias declarations [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+    0 Warning(s)
+    6 Error(s)
+
+Time Elapsed 00:00:11.74

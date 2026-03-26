@@ -1,0 +1,43 @@
+@inherits LayoutComponentBase
+@using AHS.Web.Common.Components
+
+<div class="ahs-scanlines"></div>
+<div id="app">
+    <aside class="ahs-sidebar @(_collapsed ? "is-collapsed" : "")">
+        <div class="p-4 border-b border-primary/20">
+            <h2 class="text-primary font-bold tracking-widest text-sm">AHS.COMMAND</h2>
+        </div>
+        <nav class="flex flex-col gap-2 p-4">
+            <a href="/xinfer/dashboard" class="text-slate-300 hover:text-primary transition-colors cursor-pointer uppercase text-xs font-mono">FLEET</a>
+            <a href="#" class="text-slate-400 hover:text-primary transition-colors cursor-pointer uppercase text-xs font-mono">ORACLE</a>
+            <a href="#" class="text-slate-400 hover:text-primary transition-colors cursor-pointer uppercase text-xs font-mono">LEDGER</a>
+            <a href="#" class="text-slate-400 hover:text-primary transition-colors cursor-pointer uppercase text-xs font-mono">SIMULATOR</a>
+        </nav>
+        <div class="mt-auto p-4 border-t border-primary/20">
+            <button class="text-xs text-primary/70 hover:text-primary w-full text-left" @onclick="ToggleSidebar">COLLAPSE</button>
+        </div>
+    </aside>
+    <div class="ahs-content-wrapper">
+        <header class="ahs-topbar p-4 border-b border-primary/20 bg-slate-900/50 backdrop-blur-md flex justify-between items-center">
+            <h1 class="text-white font-mono text-lg tracking-wider">COMMAND_CONSOLE // <span class="text-primary">ACTIVE</span></h1>
+            <div class="flex items-center gap-4">
+                <span class="status-dot ok"></span>
+                <span class="text-xs font-mono text-slate-400">SYS_NOMINAL</span>
+            </div>
+        </header>
+        <main class="ahs-main p-6">
+            @Body
+        </main>
+    </div>
+</div>
+<TelemetryHud Latency="@_lastLatencyMs" />
+
+@code {
+    private bool _collapsed = false;
+    private int _lastLatencyMs = 12;
+
+    private void ToggleSidebar()
+    {
+        _collapsed = !_collapsed;
+    }
+}

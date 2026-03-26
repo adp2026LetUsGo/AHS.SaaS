@@ -1,4 +1,4 @@
-<Solution>
+﻿<Solution>
   <Folder Name="/Foundation/">
     <Project Path="src/Foundation/AHS.Common/AHS.Common.csproj" />
     <Project Path="src/Foundation/AHS.Web.Common/AHS.Web.Common.csproj" />
@@ -7,12 +7,12 @@
   </Folder>
   <Folder Name="/Infrastructure/" />
   <Folder Name="/Cells/">
-    <Project Path="src/Cells/ColdChain/AHS.Cell.ColdChain.API/AHS.Cell.ColdChain.API.csproj" />
-    <Project Path="src/Cells/ColdChain/AHS.Cell.ColdChain.Application/AHS.Cell.ColdChain.Application.csproj" />
-    <Project Path="src/Cells/ColdChain/AHS.Cell.ColdChain.Contracts/AHS.Cell.ColdChain.Contracts.csproj" />
-    <Project Path="src/Cells/ColdChain/AHS.Cell.ColdChain.Domain/AHS.Cell.ColdChain.Domain.csproj" />
-    <Project Path="src/Cells/ColdChain/AHS.Cell.ColdChain.Infrastructure/AHS.Cell.ColdChain.Infrastructure.csproj" />
-    <Project Path="tests/Cells/ColdChain/AHS.Cell.ColdChain.Tests/AHS.Cell.ColdChain.Tests.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.API/AHS.Cell.Xinfer.API.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Application/AHS.Cell.Xinfer.Application.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Contracts/AHS.Cell.Xinfer.Contracts.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Domain/AHS.Cell.Xinfer.Domain.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Infrastructure/AHS.Cell.Xinfer.Infrastructure.csproj" />
+    <Project Path="tests/Cells/Xinfer/AHS.Cell.Xinfer.Tests/AHS.Cell.Xinfer.Tests.csproj" />
   </Folder>
   <Folder Name="/Control Tower/">
     <Project Path="src/Presentation/AHS.Web.UI/AHS.Web.UI.csproj" />

@@ -13,10 +13,10 @@ public class NpgsqlConnectionFactory(IConfiguration config, ITenantContext tenan
     public async Task<IDbConnection> CreateAsync(CancellationToken ct)
     {
         var conn = new NpgsqlConnection(config.GetConnectionString("Default"));
-        await conn.OpenAsync(ct);
+        await conn.OpenAsync(ct).ConfigureAwait(false);
         await conn.ExecuteAsync(
             "SELECT set_config('app.current_tenant_id', @tid, true)",
-            new { tid = tenant.TenantId.ToString() });
+            new { tid = tenant.TenantId.ToString() }).ConfigureAwait(false);
         return conn;
     }
 }

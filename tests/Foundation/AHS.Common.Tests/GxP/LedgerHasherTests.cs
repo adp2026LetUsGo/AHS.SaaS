@@ -15,28 +15,28 @@ public class LedgerHasherTests
     private readonly LedgerHasher _hasher = new(TestKey);
 
     [Fact]
-    public void ComputeEntryHash_is_deterministic()
+    public void ComputeEntryHashIsDeterministic()
     {
         var entry = BuildEntry();
-        _hasher.ComputeEntryHash(entry).Should().Be(_hasher.ComputeEntryHash(entry));
+        LedgerHasher.ComputeEntryHash(entry).Should().Be(LedgerHasher.ComputeEntryHash(entry));
     }
 
     [Fact]
-    public void VerifyChain_detects_tampering()
+    public void VerifyChainDetectsTampering()
     {
-        var entries = BuildValidChain(5).ToList();
+        var entries = BuildValidChain(5);
         entries[2] = entries[2] with { PayloadJson = """{"tampered":true}""" };
         _hasher.VerifyChain(entries).Should().BeFalse();
     }
 
     [Fact]
-    public void VerifyChain_passes_for_valid_chain()
+    public void VerifyChainPassesForValidChain()
     {
-        var entries = BuildValidChain(5).ToList();
+        var entries = BuildValidChain(5);
         _hasher.VerifyChain(entries).Should().BeTrue();
     }
 
-    private LedgerEntry BuildEntry() => new()
+    private static LedgerEntry BuildEntry() => new()
     {
         Sequence = 1,
         TenantId = Guid.NewGuid(),
@@ -46,16 +46,16 @@ public class LedgerHasherTests
         OccurredAt = DateTimeOffset.UtcNow
     };
 
-    private IEnumerable<LedgerEntry> BuildValidChain(int count)
+    private static List<LedgerEntry> BuildValidChain(int count)
     {
         var entries = new List<LedgerEntry>();
         var prevHash = "GENESIS";
         for (int i = 0; i < count; i++)
         {
             var entry = BuildEntry() with { Sequence = i + 1, PreviousHash = prevHash };
-            var hash = _hasher.ComputeEntryHash(entry);
+            var hash = LedgerHasher.ComputeEntryHash(entry);
             entry = entry with { EntryHash = hash };
-            var seal = _hasher.ComputeHmac(entry);
+            var seal = LedgerHasher.ComputeHmac(TestKey, entry);
             entry = entry with { HmacSeal = seal };
             entries.Add(entry);
             prevHash = hash;

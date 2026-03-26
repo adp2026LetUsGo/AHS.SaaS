@@ -1,0 +1,31 @@
+﻿<!-- tests/Cells/Xinfer/AHS.Cell.Xinfer.Tests/AHS.Cell.Xinfer.Tests.csproj -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <RootNamespace>AHS.Cell.Xinfer.Tests</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\Cells\Xinfer\AHS.Cell.Xinfer.API\AHS.Cell.Xinfer.API.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Cells\Xinfer\AHS.Cell.Xinfer.Application\AHS.Cell.Xinfer.Application.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Cells\Xinfer\AHS.Cell.Xinfer.Domain\AHS.Cell.Xinfer.Domain.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Cells\Xinfer\AHS.Cell.Xinfer.Infrastructure\AHS.Cell.Xinfer.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\..\src\Cells\Xinfer\AHS.Cell.Xinfer.Contracts\AHS.Cell.Xinfer.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="NetArchTest.Rules" />
+    <PackageReference Include="Reqnroll.xUnit" />
+  </ItemGroup>
+</Project>

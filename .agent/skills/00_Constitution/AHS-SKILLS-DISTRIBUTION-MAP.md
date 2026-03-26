@@ -81,10 +81,10 @@
 │   ├── Hybrid-Persistence-Standard.md       ← REEMPLAZAR con Hybrid-Persistence-Standard-UPDATED.md
 │   ├── multitenancy\SKILL.md               ← AÑADIR
 │   ├── gxp-ledger-eventsourcing\SKILL.md   ← AÑADIR
-│   ├── industrial-cold-chain-logic\SKILL.md ← AÑADIR
+│   ├── industrial-xinfer-logic\SKILL.md    ← AÑADIR
 │   ├── logistics-oracle-xai\SKILL.md        ← AÑADIR
 │   ├── ahs-testing-quality\SKILL.md         ← AÑADIR
-│   └── azure-devops-coldchain\SKILL.md      ← AÑADIR
+│   └── azure-devops-xinfer\SKILL.md         ← AÑADIR
 │
 ├── 04_UI_UX\
 │   ├── Antigravity-UI-and-Motion Design Expert.md ← ya existe (conservar ✅ — motion/animation complementario)

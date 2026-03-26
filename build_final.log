@@ -1,0 +1,57 @@
+  Determining projects to restore...
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj (in 754 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj (in 761 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Domain\AHS.Cell.ColdChain.Domain.csproj (in 747 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Web.Common\AHS.Web.Common.csproj (in 739 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj (in 766 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Contracts\AHS.Cell.ColdChain.Contracts.csproj (in 748 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Engines\AHS.Engines.HPC\AHS.Engines.HPC.csproj (in 761 ms).
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Application\AHS.Cell.ColdChain.Application.csproj (in 761 ms).
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Domain\AggregateRoot.cs(21,29): warning CA1716: Rename virtual/interface member AggregateRoot.When(DomainEvent) so that it no longer conflicts with the reserved language keyword 'When'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1716) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Infrastructure\Tenancy\TenantSessionInterceptor.cs(39,34): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+  AHS.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\bin\Debug\net10.0\AHS.Common.dll
+  AHS.Engines.HPC -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Engines\AHS.Engines.HPC\bin\Debug\net10.0\AHS.Engines.HPC.dll
+  AHS.Cell.ColdChain.Contracts -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Contracts\bin\Debug\net10.0\AHS.Cell.ColdChain.Contracts.dll
+  AHS.Cell.ColdChain.Domain -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Domain\bin\Debug\net10.0\AHS.Cell.ColdChain.Domain.dll
+  AHS.Cell.ColdChain.Application -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Application\bin\Debug\net10.0\AHS.Cell.ColdChain.Application.dll
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\Persistence\ShipmentRepository.cs(29,30): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\Persistence\ShipmentRepository.cs(13,30): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj]
+  AHS.Cell.ColdChain.Infrastructure -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\bin\Debug\net10.0\AHS.Cell.ColdChain.Infrastructure.dll
+  AHS.Web.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Web.Common\bin\Debug\net10.0\AHS.Web.Common.dll
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(30,22): warning CA1515: Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+  AHS.Cell.ColdChain.API -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\bin\Debug\net10.0\AHS.Cell.ColdChain.API.dll
+
+Build succeeded.
+
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Domain\AggregateRoot.cs(21,29): warning CA1716: Rename virtual/interface member AggregateRoot.When(DomainEvent) so that it no longer conflicts with the reserved language keyword 'When'. Using a reserved keyword as the name of a virtual/interface member makes it harder for consumers in other languages to override/implement the member. (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1716) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\Infrastructure\Tenancy\TenantSessionInterceptor.cs(39,34): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\AHS.Common.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\Persistence\ShipmentRepository.cs(29,30): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\Persistence\ShipmentRepository.cs(13,30): warning CA2007: Consider calling ConfigureAwait on the awaited task (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca2007) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\AHS.Cell.ColdChain.Infrastructure.csproj]
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\Program.cs(30,22): warning CA1515: Because an application's API isn't typically referenced from outside the assembly, types can be made internal (https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1515) [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\AHS.Cell.ColdChain.API.csproj]
+    5 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:16.87
+  Determining projects to restore...
+  Restored C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\tests\Cells\ColdChain\AHS.Cell.ColdChain.Tests\AHS.Cell.ColdChain.Tests.csproj (in 1.31 sec).
+  8 of 9 projects are up-to-date for restore.
+  ReqnrollFeatureFiles: BDD\Features\ColdChainOracle.feature
+  -> Using default config
+  ReqnrollGeneratedFiles: BDD\Features\ColdChainOracle.feature.cs
+  AHS.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Common\bin\Debug\net10.0\AHS.Common.dll
+  AHS.Engines.HPC -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Engines\AHS.Engines.HPC\bin\Debug\net10.0\AHS.Engines.HPC.dll
+  AHS.Cell.ColdChain.Domain -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Domain\bin\Debug\net10.0\AHS.Cell.ColdChain.Domain.dll
+  AHS.Cell.ColdChain.Contracts -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Contracts\bin\Debug\net10.0\AHS.Cell.ColdChain.Contracts.dll
+  AHS.Cell.ColdChain.Application -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Application\bin\Debug\net10.0\AHS.Cell.ColdChain.Application.dll
+  AHS.Cell.ColdChain.Infrastructure -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.Infrastructure\bin\Debug\net10.0\AHS.Cell.ColdChain.Infrastructure.dll
+  AHS.Web.Common -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Foundation\AHS.Web.Common\bin\Debug\net10.0\AHS.Web.Common.dll
+  AHS.Cell.ColdChain.API -> C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\src\Cells\ColdChain\AHS.Cell.ColdChain.API\bin\Debug\net10.0\AHS.Cell.ColdChain.API.dll
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\tests\Cells\ColdChain\AHS.Cell.ColdChain.Tests\Integration\TenantIsolationTests.cs(10,14): error CS0051: Inconsistent accessibility: parameter type 'ColdChainWebAppFactory' is less accessible than method 'TenantIsolationTests.TenantIsolationTests(ColdChainWebAppFactory)' [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\tests\Cells\ColdChain\AHS.Cell.ColdChain.Tests\AHS.Cell.ColdChain.Tests.csproj]
+
+Build FAILED.
+
+C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\tests\Cells\ColdChain\AHS.Cell.ColdChain.Tests\Integration\TenantIsolationTests.cs(10,14): error CS0051: Inconsistent accessibility: parameter type 'ColdChainWebAppFactory' is less accessible than method 'TenantIsolationTests.TenantIsolationTests(ColdChainWebAppFactory)' [C:\Users\armando\Documents\_AHS\projects\AHS.SaaS\tests\Cells\ColdChain\AHS.Cell.ColdChain.Tests\AHS.Cell.ColdChain.Tests.csproj]
+    0 Warning(s)
+    1 Error(s)
+
+Time Elapsed 00:00:12.35

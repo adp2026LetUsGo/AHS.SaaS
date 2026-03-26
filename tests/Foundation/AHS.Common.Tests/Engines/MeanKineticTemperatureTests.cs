@@ -8,7 +8,7 @@ namespace AHS.Common.Tests.Engines;
 public class MeanKineticTemperatureTests
 {
     [Fact]
-    public void MKT_of_constant_readings_equals_that_temperature()
+    public void MktOfConstantReadingsEqualsThatTemperature()
     {
         var readings = Enumerable.Repeat(5.0, 100).ToArray();
         var mkt = MeanKineticTemperature.Calculate(readings.AsSpan());
@@ -16,7 +16,7 @@ public class MeanKineticTemperatureTests
     }
 
     [Fact]
-    public void MKT_within_range_for_pharma_oscillating_readings()
+    public void MktWithinRangeForPharmaOscillatingReadings()
     {
         var readings = Enumerable.Range(0, 200)
             .Select(i => 2.0 + Math.Sin(i * 0.1) * 3.0)
@@ -26,7 +26,7 @@ public class MeanKineticTemperatureTests
     }
 
     [Fact]
-    public void Empty_span_throws_ArgumentException()
+    public void EmptySpanThrowsArgumentException()
     {
         var act = () => MeanKineticTemperature.Calculate(ReadOnlySpan<double>.Empty);
         act.Should().Throw<ArgumentException>();

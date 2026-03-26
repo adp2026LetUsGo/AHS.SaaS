@@ -10,7 +10,7 @@ namespace AHS.Web.Common.Tests.Components;
 public class ReasonForChangeModalTests : BunitContext
 {
     [Fact]
-    public void Modal_does_not_render_content_when_closed()
+    public void ModalDoesNotRenderContentWhenClosed()
     {
         var cut = Render<ReasonForChangeModal>(parameters => parameters
             .Add(p => p.IsOpen, false));
@@ -19,7 +19,7 @@ public class ReasonForChangeModalTests : BunitContext
     }
 
     [Fact]
-    public void Modal_validates_empty_reason()
+    public void ModalValidatesEmptyReason()
     {
         var cut = Render<ReasonForChangeModal>(parameters => parameters
             .Add(p => p.IsOpen, true));
@@ -31,7 +31,7 @@ public class ReasonForChangeModalTests : BunitContext
     }
 
     [Fact]
-    public void Modal_calls_OnConfirm_with_reason()
+    public void ModalCallsOnConfirmWithReason()
     {
         string? confirmedReason = null;
         var cut = Render<ReasonForChangeModal>(parameters => parameters

@@ -4,6 +4,7 @@ namespace AHS.Engines.HPC;
 
 public static class LogisticsInferenceEngine {
     public static LogisticsOracleResult PredictLogisticsRisk(ShipmentRiskProfile p, float currentTtf) {
+        ArgumentNullException.ThrowIfNull(p);
         // Cálculo de Riesgo Ponderado (Lógica de Emiliano)
         // Ruta 40%, Carrier 30%, TempExt 30%
         float baseRisk = (p.RouteThreatLevel * 0.4f) + 

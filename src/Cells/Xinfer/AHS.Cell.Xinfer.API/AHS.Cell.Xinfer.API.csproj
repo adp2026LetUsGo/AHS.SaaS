@@ -1,0 +1,23 @@
+﻿<!-- src/Cells/Xinfer/AHS.Cell.Xinfer.API/AHS.Cell.Xinfer.API.csproj -->
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <RootNamespace>AHS.Cell.Xinfer.API</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Application\AHS.Cell.Xinfer.Application.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Infrastructure\AHS.Cell.Xinfer.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
+    <ProjectReference Include="..\..\..\Foundation\AHS.Web.Common\AHS.Web.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <PackageReference Include="Microsoft.Identity.Web" />
+  </ItemGroup>
+</Project>
