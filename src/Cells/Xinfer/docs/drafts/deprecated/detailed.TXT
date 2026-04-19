@@ -1,0 +1,101 @@
+# Wireframes Detallados (Option A)
+
+## Screen 1: Shipment Input
+
+### Objetivo
+Capturar identidad del embarque
+
+### Fields
+- Product (dropdown)
+- Route:
+  - Origin
+  - Destination
+- Packaging (dropdown)
+- Date (date picker)
+
+### Validaciones
+- Todos obligatorios
+- Route consistente
+
+### CTA
+[Next → Conditions]
+
+---
+
+## Screen 2: Conditions Input
+
+### Objetivo
+Definir condiciones operativas
+
+### Fields
+- Carrier (dropdown)
+- Departure Time (datetime)
+- Duration (hours)
+
+### CTA
+[Analyze Risk]
+
+---
+
+## Screen 3: Data Readiness
+
+### Objetivo
+Validar si el sistema puede predecir
+
+---
+
+### Estado: NotAcceptable
+- 🔴 Mensaje crítico
+- Lista de issues
+- Recomendaciones
+
+CTA:
+[Fix Inputs]
+
+---
+
+### Estado: Risky
+- 🟡 Warning
+- Explicación de riesgo
+
+CTA:
+[Continue Anyway]
+
+---
+
+### Estado: Acceptable
+- 🟢 Confirmación
+- Auto-continue
+
+---
+
+## Screen 4: Risk Result
+
+### Objetivo
+Mostrar decisión del sistema
+
+### Componentes
+
+#### Risk Level
+- Color-coded:
+  - Green / Yellow / Red
+
+#### Probability
+- % numérico
+
+#### Explanation (XAI)
+- Top factores:
+  - temperatura
+  - duración
+  - carrier
+
+#### Recommendations
+- Cambiar carrier
+- Ajustar horario
+- Reforzar packaging
+
+---
+
+### CTA
+- [Adjust Parameters]
+- [Export Report]

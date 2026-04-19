@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.0" />
+    <PackageReference Include="xunit" Version="2.9.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
+    <PackageReference Include="Testcontainers.PostgreSql" Version="3.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AHS.Cell.Xinfer.API\AHS.Cell.Xinfer.API.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Application\AHS.Cell.Xinfer.Application.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Domain\AHS.Cell.Xinfer.Domain.csproj" />
+    <ProjectReference Include="..\AHS.Cell.Xinfer.Infrastructure\AHS.Cell.Xinfer.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

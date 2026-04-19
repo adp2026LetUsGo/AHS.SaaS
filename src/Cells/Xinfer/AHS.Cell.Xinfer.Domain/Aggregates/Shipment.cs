@@ -1,4 +1,4 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.Domain/Aggregates/Shipment.cs
+// src/Cells/Xinfer/AHS.Cell.Xinfer.Domain/Aggregates/Shipment.cs
 using AHS.Common.Domain;
 using AHS.Cell.Xinfer.Domain.Enums;
 using InsulationType = AHS.Cell.Xinfer.Domain.Enums.InsulationType;
@@ -12,6 +12,9 @@ public class Shipment : AggregateRoot
     public CargoType       CargoType           { get; private set; }
     public InsulationType  InsulationType      { get; private set; }
     public ShipmentStatus  Status              { get; private set; }
+    public double?         LastRiskScore       { get; private set; }
+    public double?         LastAccuracyScore   { get; private set; }
+    public double?         LastReliabilityScore { get; private set; }
     public string         OriginLocation      { get; private set; } = string.Empty;
     public string         DestinationLocation { get; private set; } = string.Empty;
     public DateTimeOffset PlannedDeparture    { get; private set; }
@@ -99,6 +102,13 @@ public class Shipment : AggregateRoot
         Status = ShipmentStatus.Active; 
     }
 
+    public void RecordPrediction(double riskScore, double accuracyScore, double reliabilityScore)
+    {
+        if (IsSealed) throw new InvalidOperationException("Cannot record prediction on a sealed shipment.");
+        
+        Apply(new PredictionRecorded(Id, riskScore, accuracyScore, reliabilityScore, TenantId));
+    }
+
     public void Seal(
         ShipmentStatus finalStatus,
         double mktCelsius,
@@ -139,6 +149,11 @@ public class Shipment : AggregateRoot
             case ShipmentSealed e:
                 Status = e.FinalStatus;
                 SealedAt = DateTimeOffset.UtcNow;
+                break;
+            case PredictionRecorded e:
+                LastRiskScore = e.RiskScore;
+                LastAccuracyScore = e.AccuracyScore;
+                LastReliabilityScore = e.ReliabilityScore;
                 break;
         }
     }

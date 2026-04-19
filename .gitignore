@@ -1,28 +1,63 @@
-﻿# --- AHS.SaaS Master GitIgnore ---
+# --- AHS.SaaS Master GitIgnore (Optimizado para AG & .NET 10) ---
 
-# .NET 10 & Visual Studio
+# [1. .NET / Visual Studio 2022-2026]
 [Bb]in/
 [Oo]bj/
 .vs/
 .vscode/
 *.user
+*.userosscache
 *.sln.docuser
 *.sln.docstates
+*.suo
+*.userprefs
+# Filtros de solución (usar con cuidado si planeas versionar los .slnx o .slnf)
+# *.slnx 
+# *.slnf
 
-# JetBrains / Java IDEs
-.idea/
-
-# Environment & Secrets (SECURITY)
-.env*
-!.env.example
-
-# Antigravity / Cursor / AI tools
+# [2. Antigravity / Cursor / AI Context]
+# Ignoramos las carpetas de CACHÉ del agente para que no se indexe a sí mismo
 .antigravity/
 .cursor/
+.agent/
+.ai-studio/
+# Pero nos aseguramos de NO ignorar tus instrucciones
+!/Prompts AG/ 
 
-# OS Specific
-.DS_Store
-Thumbs.db
-# Samples & Data
+# [3. Seguridad y Configuración Local]
+.env*
+!.env.example
+usersecrets.json
+appsettings.Development.json
+appsettings.local.json
+
+# [4. Optimización de Tokens para AG (Ruido)]
+# Evitamos que la IA gaste tokens leyendo imágenes o binarios pesados
+/Images/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.pdf
+*.zip
+*.7z
+
+# [5. Infraestructura y Scripts]
+# Permitimos scripts pero ignoramos logs de ejecución
+/scripts/logs/
+*.log
+
+# [6. Gestión de Muestras (Samples)]
+# Tu regla original era incluir samples pero ignorar archivos de datos específicos
 !samples/
 **/shipments_sample.*
+# Sugerencia: ignorar archivos de datos gigantes si vas a tener 50 proyectos
+*.csv
+*.jsonl
+*.sqlite
+
+# [7. OS Específicos]
+.DS_Store
+Thumbs.db
+desktop.ini

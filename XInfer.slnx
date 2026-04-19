@@ -1,0 +1,41 @@
+﻿<Solution>
+  <Folder Name="/Foundation/">
+    <Project Path="src/Foundation/AHS.Common/AHS.Common.csproj" />
+    <Project Path="src/Foundation/AHS.Web.Common/AHS.Web.Common.csproj" />
+    <Project Path="tests/Foundation/AHS.Common.Tests/AHS.Common.Tests.csproj" />
+    <Project Path="tests/Foundation/AHS.Web.Common.Tests/AHS.Web.Common.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/" />
+  <Folder Name="/Cells/">
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.API/AHS.Cell.Xinfer.API.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Application/AHS.Cell.Xinfer.Application.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Contracts/AHS.Cell.Xinfer.Contracts.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Domain/AHS.Cell.Xinfer.Domain.csproj" />
+    <Project Path="src/Cells/Xinfer/AHS.Cell.Xinfer.Infrastructure/AHS.Cell.Xinfer.Infrastructure.csproj" />
+    <Project Path="tests/Cells/Xinfer/AHS.Cell.Xinfer.Tests/AHS.Cell.Xinfer.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Control Tower/">
+    <Project Path="src/Presentation/AHS.Web.UI/AHS.Web.UI.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Folder Name="/src/Engines/">
+      <Project Path="src/Engines/Inference.Prediction.Engine/AHS.Engines.Inference.Prediction.Engine.csproj" />
+      <Project Path="src/Engines/AHS.Engines.HPC/AHS.Engines.HPC.csproj" />
+      <Project Path="src/Engines/AHS.Engines.ML/AHS.Engines.ML.csproj" />
+    </Folder>
+    <Folder Name="/src/Suites/">
+      <Folder Name="/src/Suites/Pharma/">
+        <Project Path="src/Suites/Pharma/GxP.Traceability.BC/AHS.Suites.Pharma.GxP.Traceability.BC.csproj" />
+      </Folder>
+    </Folder>
+    <Folder Name="/src/Shared/">
+      <Project Path="src/SharedKernel/AHS.SharedKernel.csproj" />
+    </Folder>
+    <Folder Name="/src/Presentation/">
+      <Project Path="src/Presentation/AHS.Gateway.API/AHS.Gateway.API.csproj" />
+    </Folder>
+    <Folder Name="/src/Platform/">
+      <Project Path="src/Platform/AHS.Platform.Compliance/AHS.Platform.Compliance.csproj" />
+    </Folder>
+  </Folder>
+</Solution>

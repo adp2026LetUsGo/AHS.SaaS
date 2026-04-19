@@ -1,13 +1,20 @@
-﻿<!-- src/Cells/Xinfer/AHS.Cell.Xinfer.Contracts/AHS.Cell.Xinfer.Contracts.csproj -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>AHS.Cell.Xinfer.Contracts</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
   </ItemGroup>
+
+ <ItemGroup>
+    <!-- AHSCellForge: Aquí es donde "reconoce" el archivo explícitamente -->
+    <Protobuf Include="xinfer_v1.proto" GrpcServices="Both" />
+  </ItemGroup>
+
 </Project>

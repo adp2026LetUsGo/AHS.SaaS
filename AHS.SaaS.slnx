@@ -1,4 +1,4 @@
-﻿<Solution>
+<Solution>
   <Folder Name="/Foundation/">
     <Project Path="src/Foundation/AHS.Common/AHS.Common.csproj" />
     <Project Path="src/Foundation/AHS.Web.Common/AHS.Web.Common.csproj" />
@@ -15,7 +15,7 @@
     <Project Path="tests/Cells/Xinfer/AHS.Cell.Xinfer.Tests/AHS.Cell.Xinfer.Tests.csproj" />
   </Folder>
   <Folder Name="/Control Tower/">
-    <Project Path="src/Presentation/AHS.Web.UI/AHS.Web.UI.csproj" />
+    <Project Path="src/Presentation/AHS.Web.Hive/AHS.Web.Hive.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Folder Name="/src/Engines/">

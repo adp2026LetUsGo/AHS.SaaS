@@ -30,8 +30,8 @@ namespace AHS.Cell.Xinfer.Tests.BDD.Features
                 "REQ-001",
                 "GxP"};
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDD/Features", "Logistics Oracle Risk Assessment", "  As a quality officer\r\n  I want the Oracle to calculate logistics risk accuratel" +
-                "y\r\n  So that I can protect pharmaceutical shipments", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BDD/Features", "Logistics Oracle Risk Assessment", ("  As a quality officer\r\n  I want the Oracle to calculate logistics risk accuratel" +
+                "y\r\n  So that I can protect pharmaceutical shipments"), global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         

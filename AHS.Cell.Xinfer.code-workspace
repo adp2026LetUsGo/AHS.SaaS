@@ -1,0 +1,81 @@
+{
+  "folders": [
+    {
+      "name": "🛡️ SYSTEM: Root (Config & Context)",
+      "path": "."
+    },
+    {
+      "name": "📦 CELL: Xinfer (Core)",
+      "path": "src/Cells/Xinfer"
+    },
+    {
+      "name": "🏗️ INFRA: Foundation & Common",
+      "path": "src/Foundation"
+    },
+    {
+      "name": "🗼 CONTROL: Web UI",
+      "path": "src/Control Tower"
+    },
+    {
+      "name": "🧠 AGENT: Skills & Prompts",
+      "path": "agents/skills"
+    }
+  ],
+
+  "settings": {
+    // Solución y analizadores Roslyn para .NET
+    "omnisharp.solution": "${workspaceFolder}/AHS.SaaS.sln",
+    "omnisharp.enableRoslynAnalyzers": true,
+
+    // Configuración Antigravity
+    "antigravity.workspace.mode": "cell-based",
+    "antigravity.workspace.currentCell": "Xinfer",
+    "antigravity.context.includeFolders": [
+      "src/Cells/Xinfer",
+      "src/Foundation",
+      "agents/skills",
+      "docs"                   // <-- incluimos docs para blueprints y flows
+    ],
+    "antigravity.context.maxDepth": 8,  // permitimos subcarpetas más profundas
+    "antigravity.context.autoIndex": true,
+
+    // Archivos a excluir del explorador
+    "files.exclude": {
+      "src/Cells/!(Xinfer)": true,
+      "**/bin": true,
+      "**/obj": true,
+      "**/.vs": true,
+      "**/.git": true,
+      "**/TestResults": true,
+      "**/.antigravity": false,
+      "**/.ai-studio": true,
+      "**/*.log": true,
+      "**/node_modules": true,
+      "Images": true,
+      "docs": false,             // <-- docs visibles para Antigravity
+      "samples": true,
+      "scripts": true
+    },
+
+    // Archivos a excluir de búsqueda
+    "search.exclude": {
+      "src/Cells/!(Xinfer)": true,
+      "**/bin": true,
+      "**/obj": true,
+      "**/.git": true,
+      "**/node_modules": true
+    },
+
+    // Explorador
+    "explorer.excludeGitIgnore": true,
+    "explorer.compactFolders": true
+  },
+
+  "extensions": {
+    "recommendations": [
+      "ms-dotnettools.csharp",
+      "ms-dotnettools.csharp-dev-kit",
+      "ms-dotnettools.vscode-dotnet-runtime"
+    ]
+  }
+}

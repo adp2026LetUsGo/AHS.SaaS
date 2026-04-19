@@ -1,4 +1,4 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.API/XinferJsonContext.cs
+// src/Cells/Xinfer/AHS.Cell.Xinfer.API/XinferJsonContext.cs
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using AHS.Cell.Xinfer.Application.DTOs;
@@ -22,6 +22,8 @@ namespace AHS.Cell.Xinfer.API;
 [JsonSerializable(typeof(ShipmentStatus))]
 [JsonSerializable(typeof(QualityDecision))]
 [JsonSerializable(typeof(ProblemDetails))]
+[JsonSerializable(typeof(XinferHealthDto))]
+[JsonSerializable(typeof(XinferLifecycleState))]
 [JsonSourceGenerationOptions(
     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
     WriteIndented = false,

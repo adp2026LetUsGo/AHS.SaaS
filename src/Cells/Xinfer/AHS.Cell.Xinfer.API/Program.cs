@@ -10,6 +10,7 @@ using AHS.Cell.Xinfer.API;
 using AHS.Cell.Xinfer.API.Endpoints;
 using AHS.Cell.Xinfer.API.Middlewares;
 using AHS.Cell.Xinfer.Infrastructure.Extensions;
+using AHS.Cell.Xinfer.Infrastructure.Services;
 
 [assembly: InternalsVisibleTo("AHS.Cell.Xinfer.Tests")]
 
@@ -23,6 +24,10 @@ builder.Services.ConfigureHttpJsonOptions(o =>
 
 builder.Services.AddXinferInfrastructure(builder.Configuration);
 
+// Operational Health & Outbox
+builder.Services.AddScoped<XinferHealthService>();
+builder.Services.AddHostedService<OutboxPublisherService>();
+
 var app = builder.Build();
 app.UseMiddleware<TenantMiddleware>();
 
@@ -30,6 +35,12 @@ app.MapGroup("/api/shipments").MapShipmentEndpoints();
 app.MapGroup("/api/oracle").MapOracleEndpoints();
 
 app.MapGet("/health", () => Results.Ok(new { status = "healthy", cell = "Xinfer" }));
+
+app.MapGet("/health/operational", async (XinferHealthService health, CancellationToken ct) =>
+{
+    var report = await health.GetOperationalHealthAsync(ct).ConfigureAwait(false);
+    return report.Healthy ? Results.Ok(report) : Results.StatusCode(503);
+});
 
 // CA1515 suppressed: required for WebApplicationFactory<Program> in integration tests
 #pragma warning disable CA1515

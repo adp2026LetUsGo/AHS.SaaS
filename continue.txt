@@ -1,0 +1,18 @@
+Agrega rate limiting por tenant
+Crea endpoint /api/token
+Convierte templates en plantilla
+Agrega visualizaciones con SHAP
+Genera script para validación cruzada
+
+
+¿Cómo conecto C2 con C3 en Azure?
+¿Cómo configuro Visual Studio con C2?
+¿Cómo administro permisos en C3?
+
+
+
+
+! First copy your one-time code: 7FA7-1076
+Press Enter to open https://github.com/login/device in your browser...
+
+

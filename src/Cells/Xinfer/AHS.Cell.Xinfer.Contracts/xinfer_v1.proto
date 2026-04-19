@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package ahs.xinfer.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Servicio Principal de la Cell Xinfer
+// Diseñado para cumplimiento Native AOT y comunicación determinista.
+service XinferService {
+  // Paso 1: Evaluación de Data Readiness (Gate Obligatorio)
+  rpc AnalyzeDataReadiness (ReadinessRequest) returns (ReadinessResponse);
+
+  // Paso 2: Inferencia de Riesgo (Solo si el paso 1 es Acceptable/Risky)
+  rpc PredictThermalRisk (PredictionRequest) returns (PredictionResponse);
+}
+
+// --- Objetos de Dominio ---
+
+message ShipmentIdentity {
+  string product_id = 1;      // ej: "Insulin-X"
+  string category = 2;        // ej: "Biologics"
+  string origin_node = 3;     // ej: "MEX-Hub"
+  string destination_node = 4; // ej: "FRA-Airport"
+  google.protobuf.Timestamp departure_date = 5;
+  string packaging_type = 6;  // ej: "Passive-Box-V4"
+}
+
+message OperationalModifiers {
+  string carrier_id = 1;      // El carrier altera el riesgo, no define la identidad
+  google.protobuf.Timestamp scheduled_time = 2;
+  double estimated_duration_hours = 3;
+  
+  // Datos ambientales (opcionales según Doc 06.6)
+  map<string, string> environmental_context = 4; 
+}
+
+// --- Mensajes de Petición ---
+
+message ReadinessRequest {
+  ShipmentIdentity identity = 1;
+  OperationalModifiers modifiers = 2;
+}
+
+message PredictionRequest {
+  ShipmentIdentity identity = 1;
+  OperationalModifiers modifiers = 2;
+  string readiness_token = 3; // Token opcional para validar que pasó por el Gate
+}
+
+// --- Mensajes de Respuesta ---
+
+enum ReadinessStatus {
+  READINESS_STATUS_UNSPECIFIED = 0;
+  READINESS_STATUS_ACCEPTABLE = 1;
+  READINESS_STATUS_RISKY = 2;
+  READINESS_STATUS_NOT_ACCEPTABLE = 3; // Bloqueante según RULE-01
+}
+
+message ReadinessResponse {
+  ReadinessStatus status = 1;
+  repeated string issues = 2;         // Lista de incompatibilidades detectadas
+  repeated string recommendations = 3; // Sugerencias para el usuario
+}
+
+enum RiskLevel {
+  RISK_LEVEL_UNSPECIFIED = 0;
+  RISK_LEVEL_LOW = 1;
+  RISK_LEVEL_MEDIUM = 2;
+  RISK_LEVEL_HIGH = 3;
+}
+
+message PredictionResponse {
+  double probability = 1;            // 0.0 a 1.0
+  RiskLevel risk_level = 2;
+  string explanation_xai = 3;        // Explicabilidad del modelo
+  repeated string actions = 4;       // Recomendaciones operativas
+  string model_version = 5;          // Trazabilidad S1-S11
+}

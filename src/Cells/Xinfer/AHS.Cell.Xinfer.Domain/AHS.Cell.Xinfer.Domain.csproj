@@ -1,13 +1,15 @@
-﻿<!-- src/Cells/Xinfer/AHS.Cell.Xinfer.Domain/AHS.Cell.Xinfer.Domain.csproj -->
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>AHS.Cell.Xinfer.Domain</RootNamespace>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Foundation\AHS.Common\AHS.Common.csproj" />
   </ItemGroup>
+
 </Project>
