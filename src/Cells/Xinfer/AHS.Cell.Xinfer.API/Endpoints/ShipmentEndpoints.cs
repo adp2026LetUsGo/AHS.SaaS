@@ -1,4 +1,4 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.API/Endpoints/ShipmentEndpoints.cs
+// src/Cells/Xinfer/AHS.Cell.Xinfer.API/Endpoints/ShipmentEndpoints.cs
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -7,6 +7,7 @@ using AHS.Cell.Xinfer.Application.Queries;
 using AHS.Cell.Xinfer.Application.Commands;
 using AHS.Common.Infrastructure.Tenancy;
 using AHS.Common.Domain;
+using AHS.Cell.Xinfer.Application;
 
 namespace AHS.Cell.Xinfer.API.Endpoints;
 

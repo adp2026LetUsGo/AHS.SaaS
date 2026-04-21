@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using AHS.Cell.Xinfer.API;
+using AHS.Cell.Xinfer.Application;
 using AHS.Cell.Xinfer.API.Endpoints;
 using AHS.Cell.Xinfer.API.Middlewares;
 using AHS.Cell.Xinfer.Infrastructure.Extensions;

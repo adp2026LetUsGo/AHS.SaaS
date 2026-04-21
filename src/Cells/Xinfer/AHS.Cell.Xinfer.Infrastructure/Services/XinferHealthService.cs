@@ -11,8 +11,20 @@ public class XinferHealthService(XinferDbContext db)
 {
     public async Task<XinferHealthDto> GetOperationalHealthAsync(CancellationToken ct)
     {
+        // 0. Active Database Check (Mandated by C3 Audit)
+        bool dbAccessible = await db.Database.CanConnectAsync(ct).ConfigureAwait(false);
+        
+        if (!dbAccessible)
+        {
+            return new XinferHealthDto 
+            {
+                 CellState = XinferLifecycleState.Degraded,
+                 Healthy = false
+            };
+        }
+
         // 1. Check Model Lifecycle State
-        var activeModel = await db.Models.FirstOrDefaultAsync(m => m.IsActive, ct);
+        var activeModel = await db.Models.FirstOrDefaultAsync(m => m.IsActive, ct).ConfigureAwait(false);
         var state = activeModel switch
         {
             null => XinferLifecycleState.Degraded, // No model
@@ -21,8 +33,7 @@ public class XinferHealthService(XinferDbContext db)
         };
 
         // 2. Check Outbox Health
-        // Ignore the query filter to count ALL pending messages (though filter is processed_at == null)
-        var pendingMessages = await db.OutboxMessages.CountAsync(ct);
+        var pendingMessages = await db.OutboxMessages.CountAsync(ct).ConfigureAwait(false);
 
         return new XinferHealthDto 
         {

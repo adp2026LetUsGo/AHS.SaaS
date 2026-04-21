@@ -15,6 +15,33 @@ public sealed class XinferDbContext(DbContextOptions<XinferDbContext> options)
     public DbSet<ModelVersion> Models => Set<ModelVersion>();
     public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
+    public override async Task<int> SaveChangesAsync(CancellationToken ct = default)
+    {
+        var aggregates = ChangeTracker.Entries<AHS.Common.Domain.AggregateRoot>()
+            .Where(x => x.Entity.UncommittedEvents.Count != 0)
+            .Select(x => x.Entity)
+            .ToList();
+
+        foreach (var aggregate in aggregates)
+        {
+            foreach (var evt in aggregate.UncommittedEvents)
+            {
+                var message = new OutboxMessage
+                {
+                    Id = Guid.NewGuid(),
+                    OccurredAt = DateTimeOffset.UtcNow,
+                    EventType = evt.GetType().Name,
+                    // Native AOT safe serialization using Source Generation
+                    PayloadJson = System.Text.Json.JsonSerializer.Serialize(evt, evt.GetType(), AHS.Cell.Xinfer.Application.XinferJsonContext.Default)
+                };
+                OutboxMessages.Add(message);
+            }
+            aggregate.ClearUncommitted();
+        }
+
+        return await base.SaveChangesAsync(ct).ConfigureAwait(false);
+    }
+
     public Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginTransactionAsync(CancellationToken ct = default) 
         => Database.BeginTransactionAsync(ct);
 
