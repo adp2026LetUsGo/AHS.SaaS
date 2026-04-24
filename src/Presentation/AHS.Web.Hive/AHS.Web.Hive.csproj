@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Platform\AHS.Platform.Compliance\AHS.Platform.Compliance.csproj" />
     <ProjectReference Include="..\..\Engines\AHS.Engines.HPC\AHS.Engines.HPC.csproj" />
     <ProjectReference Include="..\..\Foundation\AHS.Web.Common\AHS.Web.Common.csproj" />
+    <ProjectReference Include="..\..\Cells\Xinfer\AHS.Cell.Xinfer.UI\AHS.Cell.Xinfer.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

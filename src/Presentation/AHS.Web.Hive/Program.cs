@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using AHS.Web.Hive;
-using AHS.Web.Hive.Services;
+using AHS.Cell.Xinfer.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

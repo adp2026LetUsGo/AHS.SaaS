@@ -1,55 +1,446 @@
-/* src/Foundation/AHS.Web.Common/wwwroot/css/sovereign-elite.css */
+/* ================================================================
+   AHS Sovereign Elite — Solid-State UI v2.0
+   Design System for the AHS Ecosystem
+   Paradigm: Chromatic Elevation · Stroke-based · Bento Grid · Zero-blur
+   ADR-008 canonical source — consumed by ALL Cell UIs
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. DESIGN TOKENS — Chromatic Elevation Scale (Luma hierarchy)
+      Rule: Z-axis elevation = lighter luma. No transparency.
+   ---------------------------------------------------------------- */
 :root {
-  --glass-sm:           rgba(255, 255, 255, 0.05);
-  --glass-md:           rgba(255, 255, 255, 0.10);
-  --glass-lg:           rgba(255, 255, 255, 0.18);
-  --glass-xl:           rgba(255, 255, 255, 0.28);
-  --glass-border:       rgba(255, 255, 255, 0.18);
-  --glass-border-hover: rgba(255, 255, 255, 0.35);
-  --blur-sm:            4px;
-  --blur-md:            12px;
-  --blur-lg:            24px;
-  --blur-xl:            48px;
-  --shadow-glass:       0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
-  --shadow-glass-lg:    0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.2);
-  --sovereign-bg:       #0a0a0f;
-  --sovereign-surface:  #12121a;
-  
-  /* Form specifics */
-  --glass-input-bg:     rgba(255, 255, 255, 0.03);
-  --glass-input-border: rgba(255, 255, 255, 0.1);
-  --glass-input-focus:  rgba(255, 255, 255, 0.2);
+  /* --- Chromatic elevation (5 tiers) --- */
+  --luma-0:          #080810;   /* page canvas — absolute base       */
+  --luma-1:          #0F0F1C;   /* primary surface (cards, panels)    */
+  --luma-2:          #161626;   /* secondary surface (nested panels)  */
+  --luma-3:          #1E1E32;   /* tertiary / hover state             */
+  --luma-4:          #26263E;   /* active / selected state            */
+  --luma-5:          #30304C;   /* top-layer (modals, tooltips)       */
+
+  /* --- Stroke scale --- */
+  --stroke-subtle:   #1E1E32;   /* de-emphasis, dividers              */
+  --stroke-default:  #2A2A42;   /* default borders                    */
+  --stroke-strong:   #3C3C5A;   /* interactive borders on hover       */
+  --stroke-brand:    #00BDD6;   /* primary brand accent stroke        */
+
+  /* --- Brand palette (desaturated for enterprise legibility) --- */
+  --primary:         #00BDD6;   /* brand cyan — high contrast on luma-1 */
+  --primary-dim:     #007F8F;   /* dimmed for secondary text/icons    */
+  --secondary:       #5B17C2;   /* brand violet                       */
+  --secondary-dim:   #3D0F82;   /* dimmed secondary                   */
+
+  /* --- Risk scale (chromatic reliability) --- */
+  --risk-safe:       #00C96B;   /* within threshold — green           */
+  --risk-caution:    #E8A200;   /* approaching limit — amber          */
+  --risk-critical:   #E82348;   /* excursion / breach — red           */
+  --risk-unknown:    #5A5A7A;   /* no data / pending                  */
+
+  /* --- Text hierarchy --- */
+  --text-primary:    #F0F0FF;   /* headings, labels                   */
+  --text-secondary:  #9090B0;   /* supporting text, metadata          */
+  --text-disabled:   #505068;   /* disabled / unavailable             */
+  --text-brand:      #00BDD6;   /* brand-colored text                 */
+
+  /* --- Skeleton / loading shimmer --- */
+  --skeleton-base:   #141424;
+  --skeleton-shine:  #1E1E34;
+
+  /* --- Transition budget (deterministic) --- */
+  --t-instant:       80ms  linear;
+  --t-quick:         150ms linear;
+
+  /* --- Spatial scale (consistent across Bento cells) --- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+
+  /* --- Border radius scale --- */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+
+  /* --- Typography --- */
+  --font-sans: 'Inter', 'Outfit', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
 }
 
-.glass-select, .glass-textarea, .glass-input {
-    background: var(--glass-input-bg);
-    border: 1px solid var(--glass-input-border);
-    backdrop-filter: blur(var(--blur-sm));
-    color: white;
-    padding: 0.75rem;
-    border-radius: 8px;
-    width: 100%;
+/* ----------------------------------------------------------------
+   2. BASELINE
+   ---------------------------------------------------------------- */
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
-.glass-select:focus, .glass-textarea:focus, .glass-input:focus {
-    outline: none;
-    border-color: var(--glass-input-focus);
+.ahs-app {
+  margin: 0;
+  padding: 0;
+  background-color: var(--luma-0);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
-.btn-primary {
-    background: var(--glass-xl);
-    border: 1px solid var(--glass-border-hover);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
+/* ----------------------------------------------------------------
+   3. BENTO GRID SYSTEM
+      Isomorphic containers — structure is constant before/after data
+   ---------------------------------------------------------------- */
+
+/* Shell wrapper for a Bento dashboard page */
+.bento-grid {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
+/* Standard 12-column fluid grid */
+.bento-grid--12 {
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Common span presets */
+.bento-col-1  { grid-column: span 1; }
+.bento-col-2  { grid-column: span 2; }
+.bento-col-3  { grid-column: span 3; }
+.bento-col-4  { grid-column: span 4; }
+.bento-col-5  { grid-column: span 5; }
+.bento-col-6  { grid-column: span 6; }
+.bento-col-7  { grid-column: span 7; }
+.bento-col-8  { grid-column: span 8; }
+.bento-col-9  { grid-column: span 9; }
+.bento-col-10 { grid-column: span 10; }
+.bento-col-11 { grid-column: span 11; }
+.bento-col-12 { grid-column: span 12; }
+
+/* Row spanning */
+.bento-row-1  { grid-row: span 1; }
+.bento-row-2  { grid-row: span 2; }
+.bento-row-3  { grid-row: span 3; }
+
+/* Responsive collapse to 1-col on narrow screens */
+@media (max-width: 768px) {
+  .bento-grid--12 {
+    grid-template-columns: 1fr;
+  }
+  [class^="bento-col-"],
+  [class*=" bento-col-"] {
+    grid-column: span 1;
+  }
+}
+
+/* ----------------------------------------------------------------
+   4. SURFACE COMPONENTS (Stroke-based, zero blur)
+   ---------------------------------------------------------------- */
+
+/* Base panel — first elevation above canvas */
+.solid-panel {
+  background: var(--luma-1);
+  border: 1px solid var(--stroke-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+/* Nested panel — second elevation */
+.solid-panel--nested {
+  background: var(--luma-2);
+  border: 1px solid var(--stroke-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+/* Interactive panel — hover elevates to luma-3 */
+.solid-panel--interactive {
+  background: var(--luma-1);
+  border: 1px solid var(--stroke-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  cursor: pointer;
+  transition: background var(--t-quick), border-color var(--t-quick);
+}
+.solid-panel--interactive:hover {
+  background: var(--luma-3);
+  border-color: var(--stroke-strong);
+}
+.solid-panel--interactive:active {
+  background: var(--luma-4);
+}
+
+/* Brand-stroke variant — for primary action panels */
+.solid-panel--brand {
+  background: var(--luma-1);
+  border: 1px solid var(--stroke-brand);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+/* Backward-compat: .glass-card maps to solid-panel */
+.glass-card {
+  background: var(--luma-1);
+  border: 1px solid var(--stroke-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: background var(--t-quick), border-color var(--t-quick);
+}
+.glass-card:hover {
+  background: var(--luma-2);
+  border-color: var(--stroke-strong);
+}
+
+/* ----------------------------------------------------------------
+   5. RISK INDICATOR SYSTEM
+   ---------------------------------------------------------------- */
+
+/* Chromatic risk border accent on a panel */
+.risk-border--safe     { border-left: 3px solid var(--risk-safe); }
+.risk-border--caution  { border-left: 3px solid var(--risk-caution); }
+.risk-border--critical { border-left: 3px solid var(--risk-critical); }
+.risk-border--unknown  { border-left: 3px solid var(--risk-unknown); }
+
+/* Risk badge — inline label */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+}
+.risk-badge--safe     { background: #002A17; color: var(--risk-safe);     border-color: #004D2A; }
+.risk-badge--caution  { background: #2D1F00; color: var(--risk-caution);  border-color: #5C3E00; }
+.risk-badge--critical { background: #2D0010; color: var(--risk-critical); border-color: #5C0020; }
+
+/* Influence bar — Solid-State version (no glow) */
+.influence-bar__track {
+  height: 6px;
+  background: var(--luma-3);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+.influence-bar__fill--positive { background: var(--risk-safe);     }
+.influence-bar__fill--negative { background: var(--risk-critical);  }
+.influence-bar__fill--neutral  { background: var(--primary-dim);    }
+
+/* ----------------------------------------------------------------
+   6. FORM CONTROLS (Solid inputs)
+   ---------------------------------------------------------------- */
+.glass-select,
+.glass-textarea,
+.glass-input {
+  background:   var(--luma-2);
+  border:       1px solid var(--stroke-default);
+  border-radius: var(--radius-md);
+  color:        var(--text-primary);
+  padding:      var(--space-3) var(--space-4);
+  font-family:  var(--font-sans);
+  font-size:    14px;
+  width:        100%;
+  outline:      none;
+  transition:   border-color var(--t-quick), background var(--t-quick);
+  box-sizing:   border-box;
+}
+.glass-select:focus,
+.glass-textarea:focus,
+.glass-input:focus {
+  border-color: var(--stroke-brand);
+  background:   var(--luma-3);
+}
+.glass-select:disabled,
+.glass-input:disabled {
+  background:   var(--luma-1);
+  color:        var(--text-disabled);
+  cursor:       not-allowed;
+}
+
+/* ----------------------------------------------------------------
+   7. BUTTONS (Solid-State, deterministic)
+   ---------------------------------------------------------------- */
+
+/* Primary CTA — solid brand fill */
+.glass-button,
+.btn-solid-primary {
+  background:    var(--primary);
+  border:        1px solid var(--primary);
+  border-radius: var(--radius-md);
+  color:         var(--luma-0);          /* dark text on bright fill */
+  padding:       var(--space-3) var(--space-5);
+  font-family:   var(--font-sans);
+  font-weight:   700;
+  font-size:     13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor:        pointer;
+  transition:    background var(--t-quick), border-color var(--t-quick);
+  display:       inline-flex;
+  align-items:   center;
+  gap:           var(--space-2);
+}
+.glass-button:hover,
+.btn-solid-primary:hover {
+  background:    var(--primary-dim);
+  border-color:  var(--primary-dim);
+}
+.glass-button:active,
+.btn-solid-primary:active {
+  background:    #005F6B;
+  border-color:  #005F6B;
+}
+.glass-button:disabled,
+.btn-solid-primary:disabled {
+  background:    var(--luma-3);
+  border-color:  var(--stroke-default);
+  color:         var(--text-disabled);
+  cursor:        not-allowed;
+}
+
+/* Secondary — outlined */
+.btn-outline {
+  background:    transparent;
+  border:        1px solid var(--stroke-strong);
+  border-radius: var(--radius-md);
+  color:         var(--text-primary);
+  padding:       var(--space-3) var(--space-5);
+  font-family:   var(--font-sans);
+  font-weight:   600;
+  font-size:     13px;
+  cursor:        pointer;
+  transition:    background var(--t-quick), border-color var(--t-quick);
+}
+.btn-outline:hover {
+  background:    var(--luma-3);
+  border-color:  var(--primary);
+}
+
+/* Ghost */
 .btn-ghost {
-    background: transparent;
-    border: 1px solid transparent;
-    color: rgba(255,255,255,0.7);
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    cursor: pointer;
+  background:    transparent;
+  border:        1px solid transparent;
+  border-radius: var(--radius-md);
+  color:         var(--text-secondary);
+  padding:       var(--space-2) var(--space-4);
+  font-family:   var(--font-sans);
+  font-size:     13px;
+  cursor:        pointer;
+  transition:    color var(--t-quick), border-color var(--t-quick);
 }
+.btn-ghost:hover {
+  color:         var(--text-primary);
+  border-color:  var(--stroke-default);
+}
+
+/* ----------------------------------------------------------------
+   8. SKELETON LOADING — Isomorphic (exact cell dimensions)
+      Skeletons MUST use the same class layout as the live content.
+   ---------------------------------------------------------------- */
+@keyframes ahs-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base)  0%,
+    var(--skeleton-shine) 50%,
+    var(--skeleton-base)  100%
+  );
+  background-size: 800px 100%;
+  animation: ahs-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+  color: transparent;
+  user-select: none;
+}
+
+/* Preset skeleton block heights */
+.skeleton--text-sm  { height: 12px; width: 60%; }
+.skeleton--text-md  { height: 14px; width: 80%; }
+.skeleton--text-lg  { height: 20px; width: 50%; }
+.skeleton--heading  { height: 28px; width: 40%; }
+.skeleton--badge    { height: 22px; width: 72px;  border-radius: var(--radius-sm); }
+.skeleton--score    { height: 52px; width: 80px;  border-radius: var(--radius-sm); }
+.skeleton--bar      { height: 6px;  width: 100%;  border-radius: 3px; }
+.skeleton--full     { height: 100%; width: 100%; }
+
+/* ----------------------------------------------------------------
+   9. UTILITY DIVIDERS AND LAYOUT HELPERS
+   ---------------------------------------------------------------- */
+.divider {
+  height: 1px;
+  background: var(--stroke-subtle);
+  border: none;
+  margin: var(--space-4) 0;
+}
+
+.label-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.metric-value {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+/* Dev Corner overlay */
+.dev-corner {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  background: var(--luma-5);
+  border: 1px solid var(--stroke-default);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  z-index: 9999;
+  pointer-events: none;
+  min-width: 220px;
+}
+.dev-corner__header {
+  color: var(--primary);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--stroke-subtle);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.dev-corner__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-1);
+}
+.dev-corner__key   { color: var(--text-disabled); }
+.dev-corner__value { color: var(--text-primary); }

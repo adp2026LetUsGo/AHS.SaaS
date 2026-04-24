@@ -1,5 +1,5 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.Application/Queries/ListActiveShipmentsQuery.cs
-using AHS.Cell.Xinfer.Application.DTOs;
+// src/Cells/Xinfer/AHS.Cell.Xinfer.Application/Queries/ListActiveShipmentsQuery.cs
+using AHS.Cell.Xinfer.Application.Contracts;
 using AHS.Cell.Xinfer.Application.Ports;
 
 namespace AHS.Cell.Xinfer.Application.Queries;

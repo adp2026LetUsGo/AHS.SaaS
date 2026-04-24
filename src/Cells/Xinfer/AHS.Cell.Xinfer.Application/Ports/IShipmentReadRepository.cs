@@ -1,8 +1,8 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.Application/Ports/IShipmentReadRepository.cs
+// src/Cells/Xinfer/AHS.Cell.Xinfer.Application/Ports/IShipmentReadRepository.cs
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using AHS.Cell.Xinfer.Application.DTOs;
+using AHS.Cell.Xinfer.Application.Contracts;
 
 namespace AHS.Cell.Xinfer.Application.Ports;
 

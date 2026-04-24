@@ -1,6 +1,6 @@
-﻿// src/Cells/Xinfer/AHS.Cell.Xinfer.Infrastructure/Persistence/ShipmentReadRepository.cs
+// src/Cells/Xinfer/AHS.Cell.Xinfer.Infrastructure/Persistence/ShipmentReadRepository.cs
 using AHS.Cell.Xinfer.Application.Ports;
-using AHS.Cell.Xinfer.Application.DTOs;
+using AHS.Cell.Xinfer.Application.Contracts;
 using AHS.Common.Infrastructure.Persistence; // For IDbConnectionFactory
 using Dapper;
 

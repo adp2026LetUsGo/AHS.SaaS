@@ -15,4 +15,11 @@ public record PredictOkEvent : ICellEvent
     public double         RiskScore        { get; init; }
     public double         AccuracyScore    { get; init; }
     public double         ReliabilityScore { get; init; }
+
+    /// <summary>
+    /// GxP Ledger — ALCOA+ Completeness.
+    /// Model certainty at inference time. Values &lt; 0.6 indicate low confidence
+    /// and must be flagged in the audit trail for human review per 21 CFR Part 11.
+    /// </summary>
+    public double         ConfidenceScore  { get; init; }
 }

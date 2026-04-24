@@ -1,0 +1,24 @@
+/* AHS.Xinfer.UI.Demo — index.css
+   Only app-shell resets live here.
+   ALL design tokens and component classes come from:
+   AHS.Web.Common/wwwroot/css/sovereign-elite.css  (ADR-008)
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Vite injects this; we override with sovereign baseline via .ahs-app */
+body {
+  background-color: var(--sovereign-bg, #050510);
+}

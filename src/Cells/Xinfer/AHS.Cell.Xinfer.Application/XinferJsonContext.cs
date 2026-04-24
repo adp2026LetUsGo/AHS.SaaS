@@ -1,6 +1,6 @@
 // src/Cells/Xinfer/AHS.Cell.Xinfer.Application/XinferJsonContext.cs
 using System.Text.Json.Serialization;
-using AHS.Cell.Xinfer.Application.DTOs;
+using AHS.Cell.Xinfer.Application.Contracts;
 using AHS.Cell.Xinfer.Application.Oracle;
 using AHS.Cell.Xinfer.Domain.Enums;
 using AHS.Cell.Xinfer.Domain.Events;
@@ -42,6 +42,18 @@ namespace AHS.Cell.Xinfer.Application;
 // Explicitly resolve collisions for XaiDna (Domain vs Application)
 [JsonSerializable(typeof(AHS.Cell.Xinfer.Domain.ValueObjects.XaiDna), TypeInfoPropertyName = "DomainXaiDna")]
 [JsonSerializable(typeof(AHS.Cell.Xinfer.Application.Oracle.XaiDna), TypeInfoPropertyName = "OracleXaiDna")]
+
+// Inference DTOs
+[JsonSerializable(typeof(InferenceInput_v1))]
+[JsonSerializable(typeof(InferenceOutput_v1))]
+[JsonSerializable(typeof(InfluenceFactorDto))]
+[JsonSerializable(typeof(ModelMetadataDto))]
+
+// Standard Envelope DTOs
+[JsonSerializable(typeof(StandardEnvelope<InferenceOutput_v1>))]
+[JsonSerializable(typeof(StandardEnvelope<object>))]
+[JsonSerializable(typeof(EnvelopeMetadata))]
+[JsonSerializable(typeof(EnvelopeStatus))]
 
 // Entities
 [JsonSerializable(typeof(OutboxMessage))]

@@ -12,11 +12,13 @@ using AHS.Common.Infrastructure.Persistence;
 using Dapper;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using AHS.Common.Infrastructure.Tenancy;
 
 namespace AHS.Cell.Xinfer.Infrastructure.Services;
 
 public class OutboxPublisherService(
-    IDbConnectionFactory connectionFactory,
+    IServiceProvider serviceProvider,
     ICellEventPublisher  eventPublisher,
     ILogger<OutboxPublisherService> logger
 ) : BackgroundService
@@ -42,6 +44,18 @@ public class OutboxPublisherService(
 
     private async Task ProcessPendingMessagesAsync(CancellationToken ct)
     {
+        using var scope = serviceProvider.CreateScope();
+        
+        // Ensure System Tenant Context for Background Work
+        var tenantAccessor = scope.ServiceProvider.GetRequiredService<ITenantContextAccessor>();
+        tenantAccessor.Current = new TenantContext { 
+            TenantId = Guid.Empty, 
+            TenantSlug = "system", 
+            Plan = TenantPlan.Enterprise, 
+            IsolationMode = IsolationMode.Shared 
+        };
+
+        var connectionFactory = scope.ServiceProvider.GetRequiredService<IDbConnectionFactory>();
         using var connection = await connectionFactory.CreateAsync(ct);
         if (connection.State != ConnectionState.Open)
         {

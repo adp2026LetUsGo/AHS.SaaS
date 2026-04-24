@@ -1,0 +1,38 @@
+@using AHS.Cell.Xinfer.UI.Services
+@inject IXinferDemoService DataService
+@implements IDisposable
+
+<div class="glass-card text-center p-[2rem] bg-slate-900/40 border border-white/5 rounded-[1.25rem] backdrop-blur-md">
+    <div class="flex justify-between items-center mb-[1.5rem]">
+        <h4 class="text-primary font-black text-[0.875rem] uppercase tracking-widest">Predictive Risk</h4>
+        <button class="px-[0.75rem] py-[0.25rem] border border-primary/40 rounded-full text-primary text-[0.625rem] font-mono hover:bg-primary/20 transition-all" @onclick="() => _showDna = true">
+            ENGINE_DNA
+        </button>
+    </div>
+    
+    <div class="relative py-[1rem]">
+        <h1 class="text-[5rem] font-black text-white drop-shadow-[0_0_1.5rem_rgba(236,91,19,0.5)] leading-tight">@RiskPercent%</h1>
+        <div class="absolute inset-0 bg-radial-gradient from-primary/10 to-transparent pointer-events-none"></div>
+    </div>
+    
+    @if (IsCritical)
+    {
+        <span class="inline-block px-[0.75rem] py-[0.25rem] bg-red-500/10 border border-red-500/20 rounded-full text-red-500 text-[0.625rem] font-bold uppercase mt-[0.5rem] animate-pulse">
+            CRITICAL ANOMALY
+        </span>
+    }
+</div>
+
+@if (_showDna)
+{
+    <XaiDiagnostic IsVisible="true" OnClose="() => _showDna = false" />
+}
+
+@code {
+    [Parameter] public int RiskPercent { get; set; }
+    [Parameter] public bool IsCritical { get; set; }
+
+    private bool _showDna = false;
+
+    public void Dispose() { }
+}
